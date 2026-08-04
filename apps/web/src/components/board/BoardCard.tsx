@@ -5,28 +5,26 @@ interface Owner {
     owner: string;
 }
 
-interface WorkspaceCardData {
+interface BoardCardData {
     id: number;
-    image: string;
-    nameWorkspace: string;
-    quantityBoards: number;
+    nameBoard: string;
+    quantityTasks: number;
     owners: Owner[];
 }
 
-interface WorkspaceCardProps {
-    card: WorkspaceCardData;
-    href: string;
+interface BoardCardProps {
+    card: BoardCardData;
+    href:string;
 }
 
-export default function WorkspaceCard({ card,href }: WorkspaceCardProps) {
+export default function BoardCard({ card, href }: BoardCardProps) {
     return (
         <li className={"cards__item"}>
             <Link href={href}>
                 <div className="cards__item-info">
                     {/*<img src="" alt="board image" />*/}
-                    <b>{card.image}</b>
-                    <h3>{card.nameWorkspace}</h3>
-                    <p>{card.quantityBoards} boards</p>
+                    <h3>{card.nameBoard}</h3>
+                    <p>{card.quantityTasks} tasks</p>
                 </div>
 
                 <hr />
