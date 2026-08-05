@@ -19,7 +19,7 @@ export default async function WorkspacePage({ params }: WorkspacePageProps) {
         <div className={"workspace"}>
             <header className="workspace-header">
                 <div className="workspace-header__title-block">
-                    <h1>{workspace?.nameWorkspace}</h1>
+                    <h1>Workspace:{workspace?.nameWorkspace}</h1>
                 </div>
                 {/*Данная кнопка под вопросом, т к есть элемент создания внутри карточек workspaces*/}
                 <Button type={"button"} className={"workspace-header__add-board"}>

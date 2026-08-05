@@ -1,23 +1,22 @@
 import { ReactNode } from "react";
 import Button from "@/components/ui/Button";
 
-interface IStatusBars {
-    title: string;
-    count: number;
-}
 
 interface ColumnProps {
     children: ReactNode;
-    statusBars: IStatusBars;
+    status: string;
+    countTasks: number | undefined;
 }
 
-export default function Column({ children, statusBars }: ColumnProps) {
+export default function Column({ children, status, countTasks }: ColumnProps) {
     return (
         <section className={"column"}>
-            <header className={"column-header"}>
-                <span className={"column-header__count"}>COUNT{statusBars.count}</span>
-                <h3 className={"column-header__title"}>{statusBars.title}</h3>
-                <Button type={"button"} className={"column-header__create-board"}>
+            <header className={"column__header"}>
+                <span className={"column__header-count"}>
+                    COUNT:<b>{countTasks}</b>
+                </span>
+                <h3 className={"column__header-title"}>{status}</h3>
+                <Button type={"button"} className={"column__create-board"}>
                     +PLUS
                 </Button>
             </header>
