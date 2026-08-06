@@ -14,13 +14,14 @@ export interface TaskCard {
     title: string;
     description?: string; // Опционально, если описание есть не у всех задач
     status: "todo" | "reviewed" | "in-progress" | "done"; // Пример статусов (можно изменить на string)
+    priority: "low" | "medium" | "high";
     dateUpdate: string;
     dateCreated: string;
     owners: Owner[];
     commentsUser: CommentsTask[];
 }
 
-interface ColumnsBoard {
+export interface ColumnsBoard {
     id: TaskCard["status"];
     title: string;
 }
@@ -69,7 +70,8 @@ export const WORKSPACES: Workspace[] = [
                     {
                         id: 111,
                         title: "Learn TypeScript Basics",
-                        status: "done",
+                        status: "todo",
+                        priority: "high",
                         dateUpdate: "17.06.2026",
                         dateCreated: "17.06.2026",
                         description: "Loren ipsum description 111",
@@ -93,6 +95,7 @@ export const WORKSPACES: Workspace[] = [
                         id: 112,
                         title: "Learn TypeScript Types",
                         status: "done",
+                        priority: "low",
                         dateUpdate: "17.06.2026",
                         dateCreated: "17.06.2026",
                         description: "Loren ipsum description 112",
@@ -106,6 +109,7 @@ export const WORKSPACES: Workspace[] = [
                         id: 113,
                         title: "Setup Next.js Project",
                         status: "in-progress",
+                        priority: "medium",
                         dateUpdate: "17.06.2026",
                         dateCreated: "17.06.2026",
                         commentsUser: [],
@@ -115,6 +119,7 @@ export const WORKSPACES: Workspace[] = [
                         id: 114,
                         title: "Create Workspace Layout",
                         status: "todo",
+                        priority: "medium",
                         dateUpdate: "17.06.2026",
                         dateCreated: "17.06.2026",
                         description: "Loren ipsum description 114",

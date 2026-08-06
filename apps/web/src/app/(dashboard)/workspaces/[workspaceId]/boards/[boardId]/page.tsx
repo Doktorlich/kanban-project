@@ -5,24 +5,20 @@ import TaskCard from "@/components/board/TaskCard";
 interface BoardsProps {
     params: Promise<{ workspaceId: string; boardId: string }>;
 }
+
 export default async function BoardsPage({ params }: BoardsProps) {
     // В Next.js params является асинхронным объектом
-    const dataUrl = await params;
-    //[BoardsPage] — ты получил boardId из params, но нигде его не используешь — заголовок всё ещё жёстко выводит Workspace:
-    // {workspaceId}, хотя эта страница уже должна показывать конкретную доску, а не воркспейс.
-    // Стоит поправить заголовок на что-то вроде названия доски (пока хардкодом, раз данных ещё нет),
-    // и в принципе задуматься — используешь ли ты workspaceId/boardId для того, чтобы найти конкретный мок-объект доски в данных
-    // (как ты уже делал в WorkspacePage через .find())? Сейчас STATUS_BARS статичен и никак не привязан к конкретной доске.
-    const workspace: Workspace | undefined = WORKSPACES.find(workspace => workspace.id === +dataUrl.workspaceId);
-    const board: Board | undefined = workspace?.boards.find(board => board.id === +dataUrl.boardId);
+    const { workspaceId, boardId } = await params;
+    const workspace: Workspace | undefined = WORKSPACES.find(workspace => workspace.id === +workspaceId);
+    const board: Board | undefined = workspace?.boards.find(board => board.id === +boardId);
     if (!board) {
         return <div className="workspace">Board not found</div>;
     }
     return (
-        <div className={"workspace"}>
-            <header>
-                <div>
-                    <h1>Board: {board?.nameBoard}</h1>
+        <div className="board-page">
+            <header className="board-page__header">
+                <div className="board-page__title-wrapper">
+                    <h1 className="board-page__title">Board: {board.nameBoard}</h1>
                 </div>
             </header>
             <div>
@@ -31,14 +27,20 @@ export default async function BoardsPage({ params }: BoardsProps) {
 
                     return (
                         <Column key={col.id} status={col.title} countTasks={filteredTasks?.length}>
-                            <ul>
+                            <ul className="board-column__list">
                                 {filteredTasks?.length === 0 ? (
-                                    <li>
-                                        <p className="board-column__empty">No tasks</p>
+                                    <li className="board-column__item board-column__item--empty">
+                                        <p className="board-column__empty-text">No tasks</p>
                                     </li>
                                 ) : (
                                     filteredTasks?.map(task => {
-                                        return <TaskCard key={task.id} task={task} />;
+                                        return (
+                                            <TaskCard
+                                                key={task.id}
+                                                task={task}
+                                                href={`/workspaces/${workspaceId}/boards/${boardId}/tasks/${task.id}`}
+                                            />
+                                        );
                                     })
                                 )}
                             </ul>

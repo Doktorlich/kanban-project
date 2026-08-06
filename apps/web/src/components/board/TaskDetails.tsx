@@ -1,22 +1,32 @@
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
+import { COLUMNS, TaskCard } from "@/constants/mock-workspaces";
+import CommentUserItem from "@/components/task/CommentUserItem";
+import CloseModalButton from "@/components/ui/CloseModalButton";
 
-export default function TaskDetails() {
+interface TaskDetailsProps {
+    task: TaskCard;
+}
+
+export default function TaskDetails({ task }: TaskDetailsProps) {
+
+    const statusOptions = COLUMNS.map(col => ({
+        value: col.id,
+        label: col.title,
+    }));
     return (
         <div className="task-card">
-            {/* Верхняя панель управления */}
             <div className="task-card__actions">
-                <p className="task-card__badge">[STATUS PRIORITY]</p>
+                <p className="task-card__badge">{task.priority}</p>
                 {/*<Button type="button">share</Button>*/}
-                <Button type="button" className="task-card__close-btn">
-                    X(CLOSE)
-                </Button>
+
+                <CloseModalButton className="task-card__close-btn"> X(CLOSE)</CloseModalButton>
             </div>
 
-            {/* Главный заголовок и навигация */}
             <div className="task-card__header">
-                <h1 className="task-card__title">[TITLE CARD H1]</h1>
+                <h1 className="task-card__title">{task.title}</h1>
+                {/*ХЛЕБНЫЕ КРОШКИ, РЕАЛИЗОВАТЬ ПОЗЖЕ, ВЫЯСНИТЬ КАК ЛУЧШЕ*/}
                 <div className="task-card__breadcrumbs">
                     <p className="task-card__breadcrumb-item">
                         in board <span>[NAME PARENT BOARD]</span>
@@ -27,12 +37,15 @@ export default function TaskDetails() {
                 </div>
             </div>
 
-            {/* Мета-информация (исполнители и даты) */}
             <div className="task-card__meta">
                 <div className="task-card__meta-item">
                     <span className="task-card__label">Assignees</span>
                     <div className="task-card__assignees-list">
-                        <div className="task-card__avatars">[LIST AVATAR USERS]</div>
+                        <div className="task-card__avatars">
+                            {task.owners.map(owner => (
+                                <span key={owner.id}>{owner.owner} </span>
+                            ))}
+                        </div>
                         <Button type="button" className="task-card__add-btn">
                             +
                         </Button>
@@ -43,44 +56,37 @@ export default function TaskDetails() {
                     <span className="task-card__label">Due date</span>
                     <div className="task-card__date-display">
                         {/*Заглушка временная*/}
-                        <svg className="task-card__date-icon">ICON CALENDAR</svg>
+                        <span className="task-card__date-icon">&#34;ICON CALENDAR&#34;</span>
                         <time dateTime="2024-12-08" className="task-card__date-text">
-                            [DATE UPDATE]Dec 8, 2024
+                            {/*! Преобразовать дату в формат Dec 8, 2024*/}
+                            {task.dateCreated}
                         </time>
                     </div>
                 </div>
             </div>
 
-            {/* Выбор статуса карточки */}
             <div className="task-card__field">
                 <span className="task-card__label">Status</span>
-                <Select options={[]} className="task-card__select" />
+                <Select options={statusOptions} defaultValue={task.status} className="task-card__select" />
             </div>
 
-            {/* Описание задачи */}
             <div className="task-card__field">
                 <span className="task-card__label">Description</span>
                 <Textarea className="task-card__textarea" placeholder="description">
-                    [DESCRIPTION]
+                    {task.description}
                 </Textarea>
             </div>
 
-            {/* Секция комментариев */}
             <div className="task-card__comments-section">
                 <div className="task-card__comments-header">
                     <span className="task-card__label">Comments </span>
-                    <span className="task-card__comments-count">[COUNT COMMENTS] </span>
+                    <span className="task-card__comments-count">{task.commentsUser.length} </span>
                 </div>
 
                 <ul className="task-card__comments-list">
-                    {/*Сделать для LI отдельный компонент, что бы можно было его формировать через map*/}
-                    <li className="task-card__comment-item">
-                        <img src="" alt="AVATAR" className="task-card__comment-avatar" />
-                        <div className="task-card__comment-body">
-                            <h4 className="task-card__comment-author">[FULL NAME USER]</h4>
-                            <p className="task-card__comment-text">[USER COMMENTS]</p>
-                        </div>
-                    </li>
+                    {task.commentsUser.map(item => (
+                        <CommentUserItem key={item.id} comment={item} />
+                    ))}
                 </ul>
 
                 <form action="" className="task-card__comment-form">
