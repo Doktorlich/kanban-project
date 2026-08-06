@@ -10,9 +10,7 @@ export default async function WorkspacePage({ params }: WorkspacePageProps) {
     const { workspaceId } = await params;
     const workspace = WORKSPACES.find(card => card.id === +workspaceId);
     if (!workspace) {
-        // Можно вернуть красивый JSX:
         return <div className="workspace">Workspace not found</div>;
-        // Либо отправить на стандартную 404 страницу Next.js:
         // notFound();
     }
     return (

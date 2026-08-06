@@ -1,9 +1,8 @@
-import { ReactNode } from "react";
 import InputLabel from "@/components/ui/InputLabel";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
-export default function LoginPage(): Promise<ReactNode> {
+export default function LoginPage(){
   return (
     <div className={"container"}>
       <h1> Login</h1>

@@ -1,9 +1,8 @@
-import { ReactNode } from "react";
 import InputLabel from "@/components/ui/InputLabel";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
-export default function RegisterPage(): Promise<ReactNode> {
+export default function RegisterPage() {
   return (
     <div className={"container"}>
       <h1>create account</h1>
