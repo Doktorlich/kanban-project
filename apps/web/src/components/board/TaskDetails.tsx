@@ -10,7 +10,6 @@ interface TaskDetailsProps {
 }
 
 export default function TaskDetails({ task }: TaskDetailsProps) {
-
     const statusOptions = COLUMNS.map(col => ({
         value: col.id,
         label: col.title,
@@ -72,9 +71,7 @@ export default function TaskDetails({ task }: TaskDetailsProps) {
 
             <div className="task-card__field">
                 <span className="task-card__label">Description</span>
-                <Textarea className="task-card__textarea" placeholder="description">
-                    {task.description}
-                </Textarea>
+                <Textarea className="task-card__textarea" placeholder="description" defaultValue={task.description} />
             </div>
 
             <div className="task-card__comments-section">
