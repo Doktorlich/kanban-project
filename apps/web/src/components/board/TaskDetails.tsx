@@ -1,4 +1,4 @@
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { COLUMNS, TaskCard } from "@/constants/mock-workspaces";

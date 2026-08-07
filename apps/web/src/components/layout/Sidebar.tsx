@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import NavList from "@/components/ui/NavList";
 

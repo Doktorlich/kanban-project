@@ -1,5 +1,5 @@
 import InputLabel from "@/components/ui/InputLabel";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import Link from "next/link";
 
 export default function RegisterPage() {

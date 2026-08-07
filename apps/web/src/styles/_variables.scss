@@ -1,0 +1,72 @@
+// === Colors ===
+$color-accent: #7f77dd;
+$color-accent-dark: #4F46E5;
+$color-accent-light: #eeedfe;
+
+$color-text-primary: #1a1a2e;
+$color-text-secondary: #6b7280;
+$color-text-muted: #9ca3af;
+
+$color-bg-primary: #f7f7fb;
+$color-bg-surface: #ffffff;
+$color-border: #e5e7eb;
+
+$color-danger: #d4537e;
+$color-success: #1d9e75;
+$color-warning: #f0997b;
+
+// теги приоритета (можно расширять)
+$color-tag-important-bg: #eeedfe;
+$color-tag-important-text: #4038a6;
+$color-tag-high-bg: #fbe4e4;
+$color-tag-high-text: #99315a;
+$color-tag-low-bg: #e1f5ee;
+$color-tag-low-text: #1d9e75;
+
+
+
+// === Typography ===
+//$font-family-base -> Базовый шрифт проекта (Inter) с системными заглушками на случай его сбоя
+//$font-size-sm     -> Мелкий текст (подписи, даты обновлений карточек, счетчики задач)
+//$font-size-base   -> Основной размер текста по умолчанию (описание задач, имена владельцев)
+//$font-size-md     -> Средний акцентный текст (названия колонок на доске, элементы меню)
+//$font-size-lg     -> Подзаголовки и крупные названия элементов (названия досок, имена карточек)
+//$font-size-xl     -> Главные заголовки страниц самого верхнего уровня (h1 для "Your Workspaces")
+$font-family-base: 'Inter', system-ui, sans-serif;
+$font-size-sm: 13px;
+$font-size-base: 14px;
+$font-size-md: 16px;
+$font-size-lg: 20px;
+$font-size-xl: 28px;
+
+
+
+
+// === Radius ===
+//// === Radius (Скругление углов) ===
+//$radius-sm   -> Мелкие элементы (кнопки, теги приоритетов, аватарки владельцев)
+//$radius-base -> Средние элементы (карточки задач TaskCard, выпадающие списки Select)
+//$radius-lg   -> Крупные блоки (колонки доски Column, модальные окна, панели)
+//$radius-full -> Идеальный круг (круглые иконки, счетчики количества задач в колонке)
+$radius-sm: 6px;
+$radius-base: 10px;
+$radius-lg: 16px;
+$radius-full: 999px;
+
+// === Spacing ===
+//// === Spacing (Внутренние отступы padding / Внешние отступы margin) ===
+//$spacing-xs  -> Минимальный шаг (отступ между иконкой и текстом, расстояние в аватарах)
+//$spacing-sm  -> Небольшой отступ (между заголовком и описанием внутри карточки задачи)
+//$spacing-md  -> Стандартный отступ (внутренний padding карточки, расстояние между кнопками)
+//$spacing-lg  -> Крупный отступ (расстояние между колонками на доске, отступ от шапки)
+//$spacing-xl  -> Максимальный отступ (свободное пространство между большими секциями страницы)
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// === Breakpoints (значения для мануального сравнения, используются через миксин) ===
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;

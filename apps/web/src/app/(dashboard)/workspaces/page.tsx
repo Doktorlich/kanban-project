@@ -1,4 +1,4 @@
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import WorkspaceCard from "@/components/workspace/WorkspaceCard";
 import { WORKSPACES } from "@/constants/mock-workspaces";
 

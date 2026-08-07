@@ -1,0 +1,74 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+.button {
+    @include m.flex-center;
+    color: v.$color-bg-primary;
+    gap: v.$spacing-sm;
+    padding: 0 v.$spacing-md;
+    height: 40px;
+    border: none;
+    border-radius: v.$radius-full;
+    background-color: v.$color-accent;
+    text-transform: capitalize;
+    cursor: pointer;
+    font-family: v.$font-family-base;
+    font-size: v.$font-size-base;
+    font-weight: 500;
+    transition:
+        background 0.15s ease,
+        opacity 0.15s ease,
+        transform 0.1s ease;
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+// вариант по умолчанию — primary (акцентная заливка)
+.button--primary {
+    background: v.$color-accent;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+        background: v.$color-accent-dark;
+    }
+}
+
+.button--secondary {
+    background: v.$color-bg-surface;
+    color: v.$color-text-primary;
+    border: 1px solid v.$color-border;
+
+    &:hover:not(:disabled) {
+        border-color: v.$color-accent;
+    }
+}
+
+.button--ghost {
+    background: transparent;
+    color: v.$color-text-secondary;
+
+    &:hover:not(:disabled) {
+        background: v.$color-bg-primary;
+    }
+}
+
+.button--danger {
+    background: v.$color-danger;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+        opacity: 0.9;
+    }
+}
+
+// круглая кнопка-иконка (крестик закрытия, плюс и т.д.)
+.button--icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: v.$radius-full;
+}
