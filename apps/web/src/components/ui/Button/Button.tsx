@@ -15,5 +15,5 @@ interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
 
 export default function Button({ variant = "primary", className, ...props }: ButtonProps) {
     const buttonClassName = clsx(classes.button, classes[`button--${variant}`], className);
-    return <button className={buttonClassName} {...props}></button>;
+    return <button {...props} className={buttonClassName}></button>;
 }

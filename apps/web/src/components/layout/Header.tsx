@@ -1,4 +1,4 @@
-import Input from "@/components/ui/Input";
+import Input from "@/components/ui/Input/Input";
 import Button from "@/components/ui/Button/Button";
 
 export default function Header() {
@@ -10,7 +10,7 @@ export default function Header() {
                 либо сделать раскрытие input при нажатии на кнопку button,
                 или сделать через ховер, при наведении раскрытия инпута
              */}
-            <Input type={"search"} className={"header__search"} id={"header__search"} />
+            <Input type={"search"} className={"header__search"} id={"header__search"} variant={"search"} placeholder={"search"}/>
             <Button type={"button"} className={"header__share"}>
                 Share
             </Button>

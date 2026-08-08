@@ -1,0 +1,33 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.input {
+    @include m.flex-center;
+    box-sizing: border-box;
+    font-family: v.$font-family-base;
+    font-size: v.$font-size-base;
+    font-weight: 500;
+
+    background-color: v.$color-bg-primary;
+    border: 2px solid v.$color-accent-light;
+    border-radius: v.$radius-sm;
+    padding: 0 5px;
+    height: 35px;
+    &::placeholder {
+        opacity: 70%;
+    }
+    &:focus {
+        outline: none;
+        border-color: v.$color-accent-dark;
+    }
+}
+
+.input--search {
+}
+
+.input--form {
+}
+
+.input--checkbox {
+
+}

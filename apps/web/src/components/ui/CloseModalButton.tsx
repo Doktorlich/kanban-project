@@ -1,11 +1,18 @@
 "use client";
 
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button/Button";
 
-type CloseModalButtonProps = ComponentPropsWithoutRef<"button">;
+interface CloseModalButtonProps extends Omit<ComponentPropsWithoutRef<"button">, "onClick"> {
+    children?: ReactNode;
+}
 
-export default function CloseModalButton({ ...props }: CloseModalButtonProps) {
+export default function CloseModalButton({ className, children, ...props }: CloseModalButtonProps) {
     const router = useRouter();
-    return <button {...props} onClick={() => router.back()}></button>;
+    return (
+        <Button variant={"secondary"} type={"button"} className={className} {...props} onClick={() => router.back()}>
+            {children}
+        </Button>
+    );
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button/Button";
-import Input from "@/components/ui/Input";
+import Input from "@/components/ui/Input/Input";
 import NavList from "@/components/ui/NavList";
 
 export default function Sidebar() {
@@ -12,7 +12,7 @@ export default function Sidebar() {
             </Link>
 
             {/*Данный вид поиска отложить на конец разработки приложения */}
-            {/*<Input type={"search"} className={"search"} placeholder={"Search..."} />*/}
+            <Input type={"search"} className={"search"} placeholder={"Search..."} variant={"search"}/>
 
             <NavList />
 

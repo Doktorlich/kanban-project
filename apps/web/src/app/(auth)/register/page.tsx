@@ -1,4 +1,4 @@
-import InputLabel from "@/components/ui/InputLabel";
+import InputLabel from "@/components/ui/InputLabel/InputLabel";
 import Button from "@/components/ui/Button/Button";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function RegisterPage() {
           confirm password
         </InputLabel>
 
-        <InputLabel type={"checkbox"} id={"privacy-policy"}>
+        <InputLabel type={"checkbox"} id={"privacy-policy"} variant={"checkbox"} labelClassName={"label"}>
           I agree to the <Link href={""}>Terms</Link> and <Link href={""}>Privacy Policy</Link>
         </InputLabel>
 
