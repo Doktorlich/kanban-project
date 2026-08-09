@@ -6,13 +6,16 @@
 
     gap: v.$spacing-sm;
     height: 40px;
+
     padding: 0 v.$spacing-md;
+
     border: none;
     border-radius: v.$radius-full;
     color: v.$color-bg-primary;
     font-size: v.$font-size-base;
     font-family: v.$font-family-base;
     font-weight: 500;
+
     transition:
         background 0.15s ease,
         opacity 0.15s ease,
@@ -73,6 +76,8 @@
 .button--icon {
     width: 40px;
     height: 40px;
+
     padding: 0;
+
     border-radius: v.$radius-full;
 }
