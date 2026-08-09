@@ -10,6 +10,7 @@ interface CloseModalButtonProps extends Omit<ComponentPropsWithoutRef<"button">,
 
 export default function CloseModalButton({ className, children, ...props }: CloseModalButtonProps) {
     const router = useRouter();
+
     return (
         <Button variant={"secondary"} type={"button"} className={className} {...props} onClick={() => router.back()}>
             {children}

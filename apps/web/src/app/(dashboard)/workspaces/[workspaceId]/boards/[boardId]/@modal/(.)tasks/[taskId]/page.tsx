@@ -1,7 +1,7 @@
 import TaskDetails from "@/components/board/TaskDetails";
 import { Board, TaskCard, Workspace, WORKSPACES } from "@/constants/mock-workspaces";
 
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal/Modal";
 import CloseModalButton from "@/components/ui/CloseModalButton";
 interface TaskDetailsModalPageProps {
     params: Promise<{ workspaceId: string; boardId: string; taskId: string }>;

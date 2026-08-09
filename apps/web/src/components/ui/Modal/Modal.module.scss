@@ -1,0 +1,29 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0;
+    padding: 24px;
+
+    border: none;
+    border-radius: v.$radius-base;
+
+    background: v.$color-bg-surface;
+
+    box-shadow: v.$shadow-lite;
+    transform: translate(-50%, -50%);
+
+    &::backdrop {
+        background-color: v.$modal-backdrop;
+
+        opacity: 70%;
+    }
+}

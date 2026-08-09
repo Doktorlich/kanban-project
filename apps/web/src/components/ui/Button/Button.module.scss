@@ -1,23 +1,26 @@
 @use "../../../styles/variables" as v;
 @use "../../../styles/mixins" as m;
+
 .button {
     @include m.flex-center;
-    color: v.$color-bg-primary;
+
     gap: v.$spacing-sm;
-    padding: 0 v.$spacing-md;
     height: 40px;
+    padding: 0 v.$spacing-md;
     border: none;
     border-radius: v.$radius-full;
-    background-color: v.$color-accent;
-    text-transform: capitalize;
-    cursor: pointer;
-    font-family: v.$font-family-base;
+    color: v.$color-bg-primary;
     font-size: v.$font-size-base;
+    font-family: v.$font-family-base;
     font-weight: 500;
     transition:
         background 0.15s ease,
         opacity 0.15s ease,
         transform 0.1s ease;
+    cursor: pointer;
+    background-color: v.$color-accent;
+    text-transform: capitalize;
+
     &:active {
         transform: scale(0.98);
     }
@@ -27,6 +30,7 @@
         cursor: not-allowed;
     }
 }
+
 // вариант по умолчанию — primary (акцентная заливка)
 .button--primary {
     background: v.$color-accent;
@@ -38,9 +42,9 @@
 }
 
 .button--secondary {
+    border: 1px solid v.$color-border;
     background: v.$color-bg-surface;
     color: v.$color-text-primary;
-    border: 1px solid v.$color-border;
 
     &:hover:not(:disabled) {
         border-color: v.$color-accent;
