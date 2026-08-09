@@ -1,5 +1,5 @@
 import Button from "@/components/ui/Button/Button";
-import Select from "@/components/ui/Select";
+import Select from "@/components/ui/Select/Select";
 import Textarea from "@/components/ui/Textarea";
 import { COLUMNS, TaskCard } from "@/constants/mock-workspaces";
 import CommentUserItem from "@/components/task/CommentUserItem";
@@ -92,6 +92,14 @@ export default function TaskDetails({ task }: TaskDetailsProps) {
                         SEND
                     </Button>
                 </form>
+            </div>
+            {/*Можно реализовать данную кнопку:
+            при каком то изменении документа появляется блок Применить изменения или Отменить изменения
+            */}
+            <div className={"task-card__button-list"}>
+                <p>ДИНАМИЧЕСКИЙ БЛОК</p>
+                <Button type={"button"}>Apply change</Button>
+                <Button variant={"danger"} type={"button"}>Cancel</Button>
             </div>
         </div>
     );
