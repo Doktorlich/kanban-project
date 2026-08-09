@@ -1,6 +1,6 @@
 import Button from "@/components/ui/Button/Button";
 import Select from "@/components/ui/Select/Select";
-import Textarea from "@/components/ui/Textarea";
+import Textarea from "@/components/ui/Textarea/Textarea";
 import { COLUMNS, TaskCard } from "@/constants/mock-workspaces";
 import CommentUserItem from "@/components/task/CommentUserItem";
 import CloseModalButton from "@/components/ui/CloseModalButton";
