@@ -1,0 +1,35 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.textarea {
+    display: block;
+    width: 100%;
+    min-height: 100px; /* Чтобы по умолчанию поле не было слишком узким */
+
+    padding: 12px 16px;
+
+    border: 1px solid v.$color-accent; /* Подставьте ваши переменные */
+    border-radius: v.$radius-base;
+    background: v.$color-bg-surface;
+    color: v.$color-text-primary;
+    font-size: 14px;
+    font-family: inherit; /* Чтобы шрифт наследовался от проекта */
+
+    resize: vertical; /* Разрешает растягивать поле только по вертикали, чтобы не ломать верстку вширь */
+    outline: none;
+
+    &::placeholder {
+        color: v.$color-text-muted;
+    }
+
+    &:focus {
+        border-color: v.$color-accent;
+
+        box-shadow: v.$shadow-lite;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
