@@ -1,4 +1,4 @@
-import TaskDetails from "@/components/board/TaskDetails";
+import TaskDetails from "@/components/task/TaskDetails";
 import { Board, TaskCard, Workspace, WORKSPACES } from "@/constants/mock-workspaces";
 
 import Modal from "@/components/ui/Modal/Modal";

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import classes from "./WorkspaceCard.module.scss";
 
 interface Owner {
     id: number;
@@ -18,28 +19,28 @@ interface WorkspaceCardProps {
     href: string;
 }
 
-export default function WorkspaceCard({ card,href }: WorkspaceCardProps) {
+export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
     return (
-        <li className={"cards__item"}>
-            <Link href={href}>
-                <div className="cards__item-info">
-                    {/*<img src="" alt="board image" />*/}
-                    <b>{card.image}</b>
-                    <h3>{card.nameWorkspace}</h3>
-                    <p>{card.quantityBoards} boards</p>
+        <li className={classes["cards__item"]}>
+            <Link href={href} className={classes["link"]}>
+                <div className={classes["cards__item-info"]}>
+                    {/*<img className={classes["cards__item-image"]} src="" alt="board image" />*/}
+                    <b className={classes["cards__item-image"]}>{card.image}</b>
+                    <h3 className={classes["cards__item-title"]}>{card.nameWorkspace}</h3>
+                    <p className={classes["cards__item-qty"]}>{card.quantityBoards} boards</p>
                 </div>
 
                 <hr />
 
-                <div className="owners">
-                    <ul className={"owners__list"}>
+                <div className={classes.owners}>
+                    <ul className={classes["owners__list"]}>
                         {card.owners.map(item => (
-                            <li key={item.id} className={"owners__item"}>
+                            <li key={item.id} className={classes["owners__item"]}>
                                 {item.owner}
                             </li>
                         ))}
                     </ul>
-                    <span>Owner</span>
+                    <span className={classes["owners__span"]}>Owner</span>
                 </div>
             </Link>
         </li>
