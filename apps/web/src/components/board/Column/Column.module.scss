@@ -1,0 +1,56 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.column {
+    width: 334px;
+
+    padding: 12px;
+
+    border: 1px solid v.$color-border;
+    border-radius: v.$fort-size-xxl;
+    box-sizing: border-box;
+}
+.container {
+
+}
+.column__header {
+    @include m.flex-vertical-center;
+    box-sizing: border-box;
+
+    margin-bottom: 16px;
+    padding: 0 8px;
+
+    border-radius: v.$radius-full;
+    background-color: v.$color-accent-dark;
+}
+.column__header-count {
+    @include m.flex-center;
+    width: 41px;
+    height: 32px;
+
+    border-radius: v.$radius-full;
+
+    color: v.$color-accent-dark;
+
+    background-color: v.$color-bg-surface;
+}
+.column__header-title {
+    color: v.$color-bg-surface;
+}
+.column__create-board {
+    margin-left: auto;
+
+
+    background-color: transparent;
+    &::after {
+        content: "+";
+
+        color: v.$color-bg-surface;
+        font-size: v.$fort-size-xxl;
+    }
+    &:hover {
+        &::after {
+            color: v.$color-accent-dark;
+        }
+    }
+}
