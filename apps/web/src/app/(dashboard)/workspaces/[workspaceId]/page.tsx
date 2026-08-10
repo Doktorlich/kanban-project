@@ -1,5 +1,5 @@
 import Button from "@/components/ui/Button/Button";
-import BoardCard from "@/components/board/BoardCard";
+import BoardCard from "@/components/board/BoardCard/BoardCard";
 import { WORKSPACES } from "@/constants/mock-workspaces";
 
 interface WorkspacePageProps {

@@ -1,7 +1,10 @@
-@use "../../styles/variables" as v;
-@use "../../styles/mixins" as m;
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+.cards__item {
 
-.link {
+}
+
+.cards__link {
     display: block;
     max-width: 320px;
 
@@ -22,21 +25,9 @@
     }
 }
 
-.cards__item {
-
-}
 .cards__item-info {
 }
-.cards__item-image {
-    @include m.flex-center;
-    width: 50px;
-    height: 50px;
 
-    border-radius: v.$radius-base;
-    color: v.$color-accent;
-    font-size: v.$font-size-xl;
-    background-color: v.$color-accent-light;
-}
 .cards__item-title {
     margin-top: 10px;
     margin-bottom: 5px;
