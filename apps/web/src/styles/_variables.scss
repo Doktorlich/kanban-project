@@ -19,6 +19,9 @@ $color-tag-high-bg: #fbe4e4;
 $color-tag-high-text: #99315a;
 $color-tag-low-bg: #e1f5ee;
 $color-tag-low-text: #1d9e75;
+$color-tag-medium-bg: #e1f5ee;
+$color-tag-medium-text: #1d9e75;
+
 $modal-bg: #eeedfe;
 $modal-backdrop: #6b7280;
 
@@ -45,7 +48,9 @@ $fort-size-xxl: 32px;
 // $radius-full -> Идеальный круг (круглые иконки, счетчики количества задач в колонке)
 $radius-sm: 6px;
 $radius-base: 10px;
+$radius-medium: 14px;
 $radius-lg: 16px;
+$radius-xl: 24px;
 $radius-full: 999px;
 
 // === Spacing ===

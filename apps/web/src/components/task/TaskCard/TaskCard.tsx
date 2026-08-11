@@ -26,6 +26,11 @@ export default function TaskCard({ task, href }: TaskCardProps) {
                         ))}
                     </ul>
                 </div>
+                <div className={classes["task-card__metrics"]}>
+                    {/*Счетчики добавить позже*/}
+                    <span className={classes["task-card__metric--comments"]}>[0]</span>
+                    <span className={classes["task-card__metric--completed"]}>[0]</span>
+                </div>
             </Link>
         </li>
     );

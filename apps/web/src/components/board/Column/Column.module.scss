@@ -2,7 +2,8 @@
 @use "../../../styles/mixins" as m;
 
 .column {
-    width: 334px;
+    width: 344px;
+    background-color: v.$color-bg-primary;
 
     padding: 12px;
 
@@ -11,7 +12,6 @@
     box-sizing: border-box;
 }
 .container {
-
 }
 .column__header {
     @include m.flex-vertical-center;
@@ -39,7 +39,6 @@
 }
 .column__create-board {
     margin-left: auto;
-
 
     background-color: transparent;
     &::after {
