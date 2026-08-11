@@ -1,0 +1,86 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.task-card {
+}
+.task-card__actions {
+    display: flex;
+    justify-content: space-between;
+}
+.task-card__priority {
+    @include m.flex-center;
+    height: 24px;
+
+    padding: 0 8px;
+
+    border-radius: v.$radius-full;
+    font-size: v.$font-size-sm;
+    font-family: v.$font-family-base;
+    font-weight: bold;
+    &--low {
+        background-color: v.$color-tag-low-bg;
+
+        color: v.$color-tag-low-text;
+    }
+    &--medium {
+        background-color: v.$color-tag-important-bg;
+
+        color: v.$color-tag-important-text;
+    }
+    &--high {
+        background-color: v.$color-tag-high-bg;
+
+        color: v.$color-tag-high-text;
+    }
+}
+
+.task-card__close-btn {
+}
+.task-card__header {
+}
+.task-card__title {
+}
+.task-card__breadcrumbs {
+}
+.task-card__breadcrumb-item {
+}
+.task-card__meta {
+}
+.task-card__meta-item {
+}
+.task-card__label {
+}
+.task-card__assignees-list {
+}
+.task-card__avatars {
+}
+.task-card__add-btn {
+}
+.task-card__date-display {
+}
+.task-card__date-icon {
+}
+.task-card__date-text {
+}
+.task-card__field {
+}
+.task-card__select {
+}
+.task-card__textarea {
+}
+.task-card__comments-section {
+}
+.task-card__comments-header {
+}
+.task-card__comments-count {
+}
+.task-card__comments-list {
+}
+.task-card__comment-form {
+}
+.task-card__comment-input {
+}
+.task-card__submit-btn {
+}
+.task-card__button-list {
+}
