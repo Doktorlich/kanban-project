@@ -1,6 +1,6 @@
 import Column from "@/components/board/Column/Column";
 import { Board, COLUMNS, Workspace, WORKSPACES } from "@/constants/mock-workspaces";
-import TaskCard from "@/components/task/TaskCard";
+import TaskCard from "@/components/task/TaskCard/TaskCard";
 
 interface BoardsProps {
     params: Promise<{ workspaceId: string; boardId: string }>;
