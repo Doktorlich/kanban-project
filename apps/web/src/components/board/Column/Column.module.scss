@@ -8,7 +8,7 @@
     padding: 12px;
 
     border: 1px solid v.$color-border;
-    border-radius: v.$fort-size-xxl;
+    border-radius: v.$font-size-xxl;
     box-sizing: border-box;
 }
 .container {
@@ -45,7 +45,7 @@
         content: "+";
 
         color: v.$color-bg-surface;
-        font-size: v.$fort-size-xxl;
+        font-size: v.$font-size-xxl;
     }
     &:hover {
         &::after {

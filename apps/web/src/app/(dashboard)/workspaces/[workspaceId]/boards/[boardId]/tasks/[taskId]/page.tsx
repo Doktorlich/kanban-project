@@ -10,8 +10,8 @@ export default async function TaskDetailsPage({ params }: TaskDetailsPageProps) 
     const board: Board | undefined = workspace?.boards.find(board => board.id === +boardId);
     const task: TaskCard | undefined = board?.tasks.find(task => task.id === +taskId);
 
-    if (!task) {
-        return <div>Task not found</div>;
+    if (!task || !board) {
+        return <div>Task or Board not found</div>;
     }
-    return <TaskDetails task={task} />;
+    return <TaskDetails task={task} board={board} />;
 }

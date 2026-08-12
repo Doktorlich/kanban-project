@@ -30,6 +30,16 @@
     column-gap: 5px;
 }
 
+@mixin flex-direction-col {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-jc-space-b {
+    display: flex;
+    justify-content: space-between;
+}
+
 @mixin card-surface {
     border: 1px solid v.$color-border;
     border-radius: v.$radius-base;

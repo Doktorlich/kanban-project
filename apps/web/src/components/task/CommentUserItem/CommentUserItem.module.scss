@@ -1,0 +1,41 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.task-card__comment-item {
+    display: flex;
+    gap: 10px;
+}
+
+.task-card__comment-avatar {
+    @include m.flex-center;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 100%;
+
+    color: v.$color-accent-light;
+    background-color: v.$color-danger;
+}
+
+.task-card__comment-body {
+    @include m.flex-direction-col;
+    gap: 5px;
+    width: 90%;
+    max-width: 90%;
+
+    padding: 10px;
+
+    border-radius: v.$radius-base;
+    background-color: v.$color-bg-primary;
+}
+
+.task-card__comment-author {
+    margin: 0;
+}
+
+.task-card__comment-text {
+    margin: 0;
+
+    color: v.$color-text-secondary;
+}
