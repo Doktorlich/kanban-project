@@ -1,23 +1,27 @@
 import Button from "@/components/ui/Button/Button";
 import Select from "@/components/ui/Select/Select";
 import Textarea from "@/components/ui/Textarea/Textarea";
-import { Board, COLUMNS, TaskCard } from "@/constants/mock-workspaces";
+import {Board, COLUMNS, TaskCard, Workspace} from "@/constants/mock-workspaces";
 import CommentUserItem from "@/components/task/CommentUserItem/CommentUserItem";
 import CloseModalButton from "@/components/ui/CloseModalButton";
 import classes from "./TaskDetails.module.scss";
 import clsx from "clsx";
-import {Calendar, Send} from "lucide-react";
+import { Calendar, Send } from "lucide-react";
+import Link from "next/link";
 
 interface TaskDetailsProps {
     board: Board;
     task: TaskCard;
+    workspace:Workspace;
+    isModal: boolean;
 }
 
-export default async function TaskDetails({ board, task }: TaskDetailsProps) {
+export default async function TaskDetails({ workspace, board, task, isModal }: TaskDetailsProps) {
     const statusOptions = COLUMNS.map(col => ({
         value: col.id,
         label: col.title,
     }));
+
     const column = COLUMNS.find(col => col.id === task.status);
     const priorityClassName = clsx(classes["task-card__priority"], classes[`task-card__priority--${task.priority}`]);
     const dateObj = new Date(task.dateCreated);
@@ -32,11 +36,17 @@ export default async function TaskDetails({ board, task }: TaskDetailsProps) {
             <div className={classes["task-card__actions"]}>
                 <p className={priorityClassName}>{task.priority}</p>
                 {/*<Button type="button">share</Button>*/}
-
-                <CloseModalButton
-                    className={classes["task-card__close-btn"]}
-                    aria-label={"Close modal window"}
-                ></CloseModalButton>
+                {isModal ? (
+                    <CloseModalButton
+                        className={classes["task-card__close-btn"]}
+                        aria-label={"Close modal window"}
+                    ></CloseModalButton>
+                ) : (
+                    <Link
+                        href={`/workspaces/${workspace.id}/boards/${board.id}`}
+                        className={classes["task-card__close-btn"]}
+                    ></Link>
+                )}
             </div>
 
             <div className={classes["task-card__header"]}>

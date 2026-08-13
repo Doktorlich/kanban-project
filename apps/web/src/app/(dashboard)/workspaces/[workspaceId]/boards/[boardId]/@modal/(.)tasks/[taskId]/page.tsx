@@ -12,13 +12,13 @@ export default async function TaskDetailsModalPage({ params }: TaskDetailsModalP
     const board: Board | undefined = workspace?.boards.find(board => board.id === +boardId);
     const task: TaskCard | undefined = board?.tasks.find(task => task.id === +taskId);
 
-    if (!task || !board) {
-        return <div>Task or Board not found</div>;
+    if (!task || !board || !workspace)  {
+        return <div>Task or Board or Workspace not found</div>;
     }
 
     return (
         <Modal>
-            <TaskDetails task={task} board={board} />
+            <TaskDetails task={task} board={board} isModal={true} workspace={workspace} />
         </Modal>
     );
 }

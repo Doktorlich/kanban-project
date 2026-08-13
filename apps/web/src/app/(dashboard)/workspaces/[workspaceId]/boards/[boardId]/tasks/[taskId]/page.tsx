@@ -1,5 +1,6 @@
 import TaskDetails from "@/components/task/TaskDetails/TaskDetails";
 import { Board, TaskCard, Workspace, WORKSPACES } from "@/constants/mock-workspaces";
+import Link from "next/link";
 
 interface TaskDetailsPageProps {
     params: Promise<{ workspaceId: string; boardId: string; taskId: string }>;
@@ -10,8 +11,9 @@ export default async function TaskDetailsPage({ params }: TaskDetailsPageProps) 
     const board: Board | undefined = workspace?.boards.find(board => board.id === +boardId);
     const task: TaskCard | undefined = board?.tasks.find(task => task.id === +taskId);
 
-    if (!task || !board) {
-        return <div>Task or Board not found</div>;
+    if (!task || !board || !workspace)  {
+        return <div>Task or Board or workspace not found</div>;
     }
-    return <TaskDetails task={task} board={board} />;
+
+    return <TaskDetails workspace={workspace} task={task} board={board} isModal={false} />;
 }

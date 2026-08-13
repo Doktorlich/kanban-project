@@ -36,10 +36,30 @@
 
 .task-card__close-btn {
     @include m.flex-center;
-    background-color: transparent;
 
-    border-color: transparent;
+    gap: v.$spacing-sm;
+    height: 40px;
 
+    padding: 0 v.$spacing-md;
+
+
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-full;
+    background: v.$color-bg-surface;
+    text-decoration: none;
+
+    color: v.$color-text-primary;
+    font-size: v.$font-size-base;
+    font-family: v.$font-family-base;
+    font-weight: 500;
+
+    transition:
+            background 0.15s ease,
+            opacity 0.15s ease,
+            transform 0.1s ease;
+    cursor: pointer;
+    //background-color: v.$color-accent;
+    text-transform: capitalize;
     &::after {
         content: "+";
 
