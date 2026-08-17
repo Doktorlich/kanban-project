@@ -1,0 +1,33 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.search {
+    @include m.flex-vertical-center;
+
+  height: 40px;
+}
+.search__input {
+}
+.search__close {
+    @include m.flex-center;
+
+
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    &:after {
+        content: "+";
+
+        font-size: v.$font-size-xl;
+
+        transform: rotate(45deg);
+    }
+    &:hover {
+        border: 1px solid v.$color-accent;
+    }
+}
+.search__open {
+  border: 1px solid transparent;
+  &:hover {
+	border: 1px solid v.$color-accent;
+  }
+}

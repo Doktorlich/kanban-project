@@ -1,0 +1,23 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+.header {
+    @include m.flex-jc-space-b;
+    align-items: center;
+
+    margin: 0;
+
+    padding: 32px;
+    background-color: v.$color-accent-light;
+    box-sizing: border-box;
+}
+.header__button-list {
+    @include m.flex-center;
+    column-gap: 5px;
+
+    height: 40px;
+}
+.header__title {
+    text-transform: capitalize;
+}
+.header__share {
+}
