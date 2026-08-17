@@ -5,7 +5,9 @@
     @include m.flex-center;
 
     height: 35px;
+
     padding: 0 5px;
+
     border: 2px solid v.$color-accent-light;
     border-radius: v.$radius-sm;
     font-size: v.$font-size-base;
@@ -25,11 +27,17 @@
 }
 
 .input--search {
+    width: 100%;
+    max-width: 280px;
+
+
+    padding: 9px 12px;
+
+    border-radius: v.$radius-full;
 }
 
 .input--form {
 }
 
 .input--checkbox {
-
 }
