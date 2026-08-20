@@ -1,10 +1,6 @@
 import Link from "next/link";
 import classes from "./BoardCard.module.scss";
-
-interface Owner {
-    id: number;
-    owner: string;
-}
+import { Owner } from "@/constants/mock-workspaces";
 
 interface BoardCardData {
     id: number;
@@ -15,7 +11,7 @@ interface BoardCardData {
 
 interface BoardCardProps {
     card: BoardCardData;
-    href:string;
+    href: string;
 }
 
 export default function BoardCard({ card, href }: BoardCardProps) {

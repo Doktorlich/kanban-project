@@ -1,10 +1,6 @@
 import Link from "next/link";
 import classes from "./WorkspaceCard.module.scss";
-
-interface Owner {
-    id: number;
-    owner: string;
-}
+import { Owner } from "@/constants/mock-workspaces";
 
 interface WorkspaceCardData {
     id: number;

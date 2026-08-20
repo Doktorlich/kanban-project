@@ -2,17 +2,20 @@
 @use "../../../styles/mixins" as m;
 
 .column {
+    box-sizing: border-box;
     width: 344px;
-    background-color: v.$color-bg-column;
 
     padding: 12px;
 
+    background-color: v.$color-bg-column;
+
     border: 1px solid v.$color-border;
     border-radius: v.$font-size-xxl;
-    box-sizing: border-box;
 }
+
 .container {
 }
+
 .column__header {
     @include m.flex-vertical-center;
     box-sizing: border-box;
@@ -20,33 +23,40 @@
     margin-bottom: 16px;
     padding: 0 8px;
 
-    border-radius: v.$radius-full;
     background-color: v.$color-accent-dark;
+
+    border-radius: v.$radius-full;
 }
+
 .column__header-count {
     @include m.flex-center;
     width: 41px;
     height: 32px;
 
+    background-color: v.$color-bg-surface;
+
     border-radius: v.$radius-full;
 
     color: v.$color-accent-dark;
-
-    background-color: v.$color-bg-surface;
 }
+
 .column__header-title {
     color: v.$color-bg-surface;
 }
+
 .column__create-board {
     margin-left: auto;
 
     background-color: transparent;
+
     &::after {
-        content: "+";
+        font-size: v.$font-size-xxl;
 
         color: v.$color-bg-surface;
-        font-size: v.$font-size-xxl;
+
+        content: "+";
     }
+
     &:hover {
         &::after {
             color: v.$color-accent-dark;
