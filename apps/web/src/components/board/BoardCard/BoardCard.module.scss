@@ -1,11 +1,14 @@
 @use "../../../styles/variables" as v;
 @use "../../../styles/mixins" as m;
+
 .cards__item {
 }
 
 .cards__link {
+    box-sizing: border-box;
     display: block;
-    max-width: 320px;
+    width: 100%;
+    width: 320px;
 
     padding: 10px;
 
@@ -14,10 +17,11 @@
 
     color: v.$color-text-secondary;
     text-decoration: none;
-    box-sizing: border-box;
+
     &:hover {
         background: v.$color-bg-primary;
     }
+
     &:active {
         color: v.$color-text-secondary;
         text-decoration: none;
@@ -31,35 +35,44 @@
     margin-top: 10px;
     margin-bottom: 5px;
 
-    color: v.$color-accent-dark;
-    font-size: v.$font-size-lg;
     font-family: v.$font-family-base;
+    font-size: v.$font-size-lg;
+
+    color: v.$color-accent-dark;
 }
+
 .cards__item-qty {
     margin: 0;
 }
 
 .owners {
     @include m.flex-vertical-center;
-    //display: flex;
+
+    // display: flex;
 
     gap: 10px;
 }
+
 .owners__list {
     display: flex;
 }
+
 .owners__item {
     @include m.flex-center;
     width: 32px;
     height: 32px;
 
+    background-color: v.$color-bg-primary;
+
     border: 1px solid v.$color-accent;
     border-radius: v.$radius-full;
+
     font-size: v.$font-size-base;
-    background-color: v.$color-bg-primary;
+
     &:not(:first-child) {
         margin-left: -8px;
     }
 }
+
 .owners__span {
 }

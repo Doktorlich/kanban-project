@@ -1,19 +1,19 @@
-@use "../../../styles/variables" as v;
-@use "../../../styles/mixins" as m;
+@use "../../../../styles/variables" as v;
+@use "../../../../styles/mixins" as m;
 
-.workspaces {
+.workspace {
 }
 
-.workspaces-header {
+.workspace-header {
 }
 
-.workspaces-header__title-block {
+.workspace-header__title-block {
 }
 
-.workspaces-header__add-workspace {
+.workspace-header__add-board {
 }
 
-.workspaces-cards {
+.workspace-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -21,16 +21,18 @@
     padding: 10px;
 }
 
-.workspaces-cards__list {
+.workspace-cards__list {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+
+
 }
 
-.workspaces-cards__add-workspace {
+.workspace-cards__add-board {
     @include m.flex-direction-col;
     box-sizing: border-box;
-    height: 180px;
+    height: 130px;
 
     background-color: transparent;
     border: 1px dashed v.$color-text-ghost;

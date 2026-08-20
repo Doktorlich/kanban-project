@@ -1,6 +1,7 @@
 import Button from "@/components/ui/Button/Button";
 import BoardCard from "@/components/board/BoardCard/BoardCard";
 import { WORKSPACES } from "@/constants/mock-workspaces";
+import classes from "./page.module.scss";
 
 interface WorkspacePageProps {
     params: Promise<{ workspaceId: string }>;
@@ -9,24 +10,24 @@ interface WorkspacePageProps {
 export default async function WorkspacePage({ params }: WorkspacePageProps) {
     const { workspaceId } = await params;
     const workspace = WORKSPACES.find(card => card.id === +workspaceId);
+
     if (!workspace) {
-        return <div className="workspace">Workspace not found</div>;
-        // notFound();
+        return <div className={classes["workspace"]}>Workspace not found</div>;
     }
+
     return (
-        <div className={"workspace"}>
-            <header className="workspace-header">
-                <div className="workspace-header__title-block">
+        <div className={classes["workspace"]}>
+            <header className={classes["workspace-header"]}>
+                <div className={classes["workspace-header__title-block"]}>
                     <h1>Workspace:{workspace?.nameWorkspace}</h1>
                 </div>
-                {/*Данная кнопка под вопросом, т к есть элемент создания внутри карточек workspaces*/}
-                <Button type={"button"} className={"workspace-header__add-board"}>
+                <Button type={"button"} className={classes["workspace-header__add-board"]}>
                     + New board
                 </Button>
             </header>
 
-            <section className={"workspace-cards"}>
-                <ul>
+            <section className={classes["workspace-cards"]}>
+                <ul className={classes["workspace-cards__list"]}>
                     {workspace.boards.length === 0 ? (
                         <p>There are no boards in this workspace yet. Create the first one!</p>
                     ) : (
@@ -41,7 +42,7 @@ export default async function WorkspacePage({ params }: WorkspacePageProps) {
                         })
                     )}
                 </ul>
-                <Button type={"button"} className={"workspace-cards__add-workspace"}>
+                <Button type={"button"} className={classes["workspace-cards__add-board"]}>
                     <span>+</span>
                     <p>Create board</p>
                 </Button>
