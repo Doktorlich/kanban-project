@@ -1,0 +1,51 @@
+@use "../../../../../../styles/variables" as v;
+@use "../../../../../../styles/mixins" as m;
+
+
+.workspace {
+
+}
+
+.board-page {
+
+}
+
+.board-page__header {
+
+}
+
+.board-page__title-wrapper {
+
+}
+
+.board-page__title {
+
+}
+
+.column__list{
+    display: flex;
+    gap: 10px;
+}
+
+.column__item{
+
+}
+
+.board-column__list {
+    @include m.flex-direction-col;
+    gap: 8px;
+
+}
+
+.board-column__item {
+
+}
+
+.board-column__item--empty {
+    @include m.flex-center;
+
+}
+
+.board-column__empty-text {
+
+}
