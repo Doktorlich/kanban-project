@@ -1,0 +1,52 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.workspaces {
+}
+
+.workspaces-header {
+}
+
+.workspaces-header__title-block {
+}
+
+.workspaces-header__add-workspace {
+}
+
+.workspaces-cards {
+    display: flex;
+    column-gap: 10px;
+
+    padding: 10px;
+}
+
+.workspaces-cards__list {
+    display: flex;
+    column-gap: 10px;
+}
+
+.workspaces-cards__add-workspace {
+    @include m.flex-direction-col;
+    box-sizing: border-box;
+    height: 180px;
+
+    background-color: transparent;
+    border: 1px dashed v.$color-text-ghost;
+    border-radius: v.$radius-base;
+
+    font-size: v.$font-size-md;
+
+    color: v.$color-text-ghost;
+
+    span {
+        font-size: v.$font-size-xxl;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    &:hover {
+        color: v.$color-bg-surface;
+    }
+}

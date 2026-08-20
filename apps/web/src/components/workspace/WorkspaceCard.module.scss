@@ -1,8 +1,14 @@
 @use "../../styles/variables" as v;
 @use "../../styles/mixins" as m;
 
+.cards__item {
+}
+
 .link {
+    box-sizing: border-box;
     display: block;
+
+    width: 100%;
     max-width: 320px;
 
     padding: 10px;
@@ -12,64 +18,75 @@
 
     color: v.$color-text-secondary;
     text-decoration: none;
-    box-sizing: border-box;
+
     &:hover {
         background: v.$color-bg-primary;
     }
+
     &:active {
         color: v.$color-text-secondary;
         text-decoration: none;
     }
 }
 
-.cards__item {
-
-}
 .cards__item-info {
 }
+
 .cards__item-image {
     @include m.flex-center;
     width: 50px;
     height: 50px;
 
-    border-radius: v.$radius-base;
-    color: v.$color-accent;
-    font-size: v.$font-size-xl;
     background-color: v.$color-accent-light;
+
+    border-radius: v.$radius-base;
+
+    font-size: v.$font-size-xl;
+    color: v.$color-accent;
 }
+
 .cards__item-title {
     margin-top: 10px;
     margin-bottom: 5px;
 
-    color: v.$color-accent;
-    font-size: v.$font-size-lg;
     font-family: v.$font-family-base;
+    font-size: v.$font-size-lg;
+
+    color: v.$color-accent;
 }
+
 .cards__item-qty {
     margin: 0;
 }
 
 .owners {
     @include m.flex-vertical-center;
-    //display: flex;
+
+    // display: flex;
 
     gap: 10px;
 }
+
 .owners__list {
     display: flex;
 }
+
 .owners__item {
     @include m.flex-center;
     width: 32px;
     height: 32px;
 
+    background-color: v.$color-bg-primary;
+
     border: 1px solid v.$color-accent;
     border-radius: v.$radius-full;
+
     font-size: v.$font-size-base;
-    background-color: v.$color-bg-primary;
+
     &:not(:first-child) {
         margin-left: -8px;
     }
 }
+
 .owners__span {
 }
