@@ -1,44 +1,42 @@
+"use client";
+
 import Link from "next/link";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input/Input";
 import NavList from "@/components/layout/NavList/NavList";
 import classes from "./Sidebar.module.scss";
 import { LogOut } from "lucide-react";
+import clsx from "clsx";
+import { useSidebar } from "@/components/layout/SidebarContext";
 
 export default function Sidebar() {
+    const { isOpen, close } = useSidebar();
     return (
-        <aside className={classes.sidebar}>
-            <div className={classes["sidebar__nav-menu"]}>
-                <Link href={"/workspaces"} className={classes["top-logo"]}>
-                    {/*<img src="EMPTY" alt="logo image" className={classes["top-logo__logo-img"]} />*/}
-                    <span className={classes["top-logo__logo-img"]}>K</span>
-                    <span className={classes["top-logo__name"]}>Kanban</span>
-                </Link>
-
-                {/*Данный вид поиска отложить на конец разработки приложения */}
-                <Input type={"search"} className={classes.search} placeholder={"Search..."} variant={"search"} />
-
-                <NavList />
-            </div>
-
-            <div className={classes["user-block"]}>
-                <div className={classes["user-block__container"]}>
-                    <hr className={classes["user-block__line"]} />
-
-                    {/*<img src="PHOTO_USER" alt="user photo" className={classes["user-block__photo"]} />*/}
-                    <span className={classes["user-block__photo"]}>USER</span>
-
-                    <div className={classes["user-block__user-info"]}>
-                        <p className={classes["user-block__full-name"]}>My nickname</p>
-                        <p className={classes["user-block__role"]}>My role</p>
-                    </div>
+        <>
+            <aside className={clsx(classes.sidebar, isOpen && classes["sidebar--open"])}>
+                <div className={classes["sidebar__nav-menu"]}>
+                    <Link href={"/workspaces"} className={classes["top-logo"]}>
+                        <span className={classes["top-logo__logo-img"]}>K</span>
+                        <span className={classes["top-logo__name"]}>Kanban</span>
+                    </Link>
+                    <Input type={"search"} className={classes.search} placeholder={"Search..."} variant={"search"} />
+                    <NavList />
                 </div>
-
-                <Button type={"submit"} className={classes["user-block__button-exit"]} variant={"secondary"}>
-                    {/*<img src="" alt="button exit image" />*/}
-                    <LogOut size={16} />
-                </Button>
-            </div>
-        </aside>
+                <div className={classes["user-block"]}>
+                    <div className={classes["user-block__container"]}>
+                        <hr className={classes["user-block__line"]} />
+                        <span className={classes["user-block__photo"]}>USER</span>
+                        <div className={classes["user-block__user-info"]}>
+                            <p className={classes["user-block__full-name"]}>My nickname</p>
+                            <p className={classes["user-block__role"]}>My role</p>
+                        </div>
+                    </div>
+                    <Button type={"submit"} className={classes["user-block__button-exit"]} variant={"secondary"}>
+                        <LogOut size={16} />
+                    </Button>
+                </div>
+            </aside>
+            {isOpen && <div className={classes.overlay} onClick={close} />}
+        </>
     );
 }

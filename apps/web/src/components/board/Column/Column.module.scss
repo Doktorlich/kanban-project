@@ -3,17 +3,20 @@
 
 .column {
     box-sizing: border-box;
-    width: 344px;
+    display: grid;
+    gap: 16px;
+    width: 100%;   // было: 344px — теперь тянется на всю ширину li
 
     padding: 12px;
 
     background-color: v.$color-bg-column;
-
     border: 1px solid v.$color-border;
     border-radius: v.$font-size-xxl;
+
 }
 
 .container {
+
 }
 
 .column__header {

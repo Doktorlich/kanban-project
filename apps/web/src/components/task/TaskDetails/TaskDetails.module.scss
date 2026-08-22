@@ -2,6 +2,14 @@
 @use "../../../styles/mixins" as m;
 
 .task-card {
+    box-sizing: border-box;
+
+    padding: 24px;
+
+    @include m.mobile {
+        padding: 16px;
+    }
+
 }
 
 .task-card__actions {
@@ -102,6 +110,10 @@
 
     margin: 0;
     padding: 0;
+
+    @include m.mobile {
+        flex-wrap: wrap;
+    }
 }
 
 .task-card__breadcrumb-item {
@@ -117,6 +129,12 @@
     @include m.flex-jc-space-b;
 
     margin-bottom: 10px;
+
+    @include m.mobile {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
 }
 
 .task-card__meta-item {
@@ -195,15 +213,24 @@
     margin-bottom: 10px;
 }
 
+
 .task-card__select {
     max-width: 250px;
+
+    @include m.mobile {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 .task-card__textarea {
     box-sizing: border-box;
+    width: 100%;          // добавлено
     max-width: 600px;
 
     font-size: v.$font-size-lg;
+
+    resize: vertical;     // добавлено
     outline: none;
 
     &:focus {
@@ -213,6 +240,10 @@
 
         border-width: 5px;
         border-color: v.$color-border-textarea;
+    }
+
+    @include m.mobile {
+        max-width: 100%;
     }
 }
 
@@ -242,17 +273,28 @@
 
 .task-card__comment-form {
     @include m.flex-jc-space-b;
+
+    @include m.mobile {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
 }
 
 .task-card__comment-input {
     box-sizing: border-box;
+    width: 100%;
 
     max-width: 600px;
     min-height: 40px;
 
     border: 2px solid v.$color-text-muted;
 
-    resize: none;
+    resize: vertical;
+
+    @include m.mobile {
+        max-width: 100%;
+    }
 }
 
 .task-card__submit-btn {

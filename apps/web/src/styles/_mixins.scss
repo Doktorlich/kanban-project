@@ -1,19 +1,19 @@
 @use "variables" as v;
-
-@mixin mobile {
-    @media (max-width: #{v.$breakpoint-mobile}) {
+@use "breakpoints" as b;
+@mixin desktop {
+    @media (min-width: b.$breakpoint-desktop) {
         @content;
     }
 }
 
 @mixin tablet {
-    @media (max-width: #{v.$breakpoint-tablet}) {
+    @media (min-width: b.$breakpoint-tablet) and (max-width: #{b.$breakpoint-desktop - 1px}) {
         @content;
     }
 }
 
-@mixin desktop {
-    @media (min-width: #{v.$breakpoint-desktop}) {
+@mixin mobile {
+    @media (max-width: #{b.$breakpoint-tablet - 1px}) {
         @content;
     }
 }
@@ -26,8 +26,8 @@
 
 @mixin flex-vertical-center {
     display: flex;
-    align-items: center;
     column-gap: 5px;
+    align-items: center;
 }
 
 @mixin flex-direction-col {
@@ -41,9 +41,9 @@
 }
 
 @mixin card-surface {
+    background: v.$color-bg-surface;
     border: 1px solid v.$color-border;
     border-radius: v.$radius-base;
-    background: v.$color-bg-surface;
 
     // box-shadow: v.$shadow-sm;
     transition:

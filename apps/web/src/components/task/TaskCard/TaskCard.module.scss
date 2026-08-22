@@ -4,22 +4,27 @@
 .task-card__item {
 }
 
+
 .task-card__link {
+    box-sizing: border-box;
     display: block;
-    max-width: 320px;
+    width: 100%;
+min-width: 300px;
 
     padding: 10px;
 
+    background-color: v.$color-bg-surface;
+
     border: 1px solid v.$color-border;
     border-radius: v.$radius-sm;
-    background-color: v.$color-bg-surface;
 
     color: v.$color-text-secondary;
     text-decoration: none;
-    box-sizing: border-box;
+
     &:hover {
         background: v.$color-bg-primary
     }
+
     &:active {
         color: v.$color-text-secondary;
         text-decoration: none;
@@ -32,19 +37,23 @@
     padding: 0 8px;
 
     border-radius: v.$radius-full;
-    font-size: v.$font-size-sm;
+
     font-family: v.$font-family-base;
+    font-size: v.$font-size-sm;
     font-weight: bold;
+
     &--low {
         background-color: v.$color-tag-low-bg;
 
         color: v.$color-tag-low-text;
     }
+
     &--medium {
         background-color: v.$color-tag-important-bg;
 
         color: v.$color-tag-important-text;
     }
+
     &--high {
         background-color: v.$color-tag-high-bg;
 
@@ -56,29 +65,38 @@
     margin-top: 10px;
     margin-bottom: 5px;
 
-    color: v.$color-accent;
-    font-size: v.$font-size-lg;
     font-family: v.$font-family-base;
+    font-size: v.$font-size-lg;
+
+    color: v.$color-accent;
 }
+
 .task-card__description {
 }
+
 .task-card__owners {
 }
+
 .owners__list {
     @include m.flex-vertical-center;
-    //display: flex;
+
+    // display: flex;
 
     gap: 10px;
 }
+
 .owners__item {
     @include m.flex-center;
     width: 32px;
     height: 32px;
 
+    background-color: v.$color-bg-primary;
+
     border: 1px solid v.$color-accent;
     border-radius: v.$radius-full;
+
     font-size: v.$font-size-base;
-    background-color: v.$color-bg-primary;
+
     &:not(:first-child) {
         margin-left: -8px;
     }

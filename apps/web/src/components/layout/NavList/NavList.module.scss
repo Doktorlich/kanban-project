@@ -1,49 +1,62 @@
 @use "../../../styles/variables" as v;
 @use "../../../styles/mixins" as m;
+
 .nav {
 }
+
 .nav__list {
     @include m.flex-direction-col;
 }
+
 .nav__item {
     &:not(:last-child) {
         margin-bottom: 8px;
     }
 }
+
 .nav__link {
     @include m.flex-jc-space-b;
+    box-sizing: border-box;
     align-items: center;
     max-width: 280px;
     height: 48px;
-
-
 
     padding: 12px;
 
     border: 1px solid transparent;
     border-radius: v.$radius-base;
+
     color: v.$color-text-primary;
-    box-sizing: border-box;
     text-decoration: none;
+
     &:hover {
         border: 1px solid v.$color-accent;
     }
-
 }
+
 .nav__icon-text {
     @include m.flex-vertical-center;
+
+    span {
+        @include m.mobile{
+            font-weight: 700;
+        }
+    }
 }
+
 .nav__icon {
     color: v.$color-text-ghost;
 }
+
 .nav__count {
     @include m.flex-center;
     width: 36px;
     height: 28px;
 
+    background-color: v.$color-bg-primary;
+
     border: 1px solid v.$color-accent;
     border-radius: v.$radius-full;
-    background-color: v.$color-bg-primary;
 
     color: v.$color-accent-dark;
 }

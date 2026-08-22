@@ -24,11 +24,16 @@
 
 .column__list{
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+    width: 100%;
+
 }
 
 .column__item{
-
+    flex: 1 1 300px;   // растёт и сжимается, стартовая ширина 300px
+    min-width: 280px;  // не уже этого
+    max-width: 600px;  // не шире этого
 }
 
 .board-column__list {

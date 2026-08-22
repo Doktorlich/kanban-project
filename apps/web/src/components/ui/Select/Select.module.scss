@@ -6,9 +6,18 @@
 
     padding: 0 v.$spacing-sm;
 
-    border-radius: v.$radius-sm;
-    border-color: v.$color-accent;
-
     background: v.$color-bg-surface;
+    border: 1px solid v.$color-border;   // нейтральная рамка по умолчанию
+    border-radius: v.$radius-sm;
+
     color: v.$color-text-primary;
+    outline: none;
+
+    &:focus {
+        border-color: v.$color-accent;   // акцент только при фокусе/открытии
+    }
+
+    &:hover {
+        border-color: v.$color-accent;   // по желанию — подсветка при наведении
+    }
 }
