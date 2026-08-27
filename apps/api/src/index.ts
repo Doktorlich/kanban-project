@@ -1,6 +1,11 @@
-import "dotenv/config";
 import express, { type Response, type Request } from "express";
+import "dotenv/config";
+import { authRouter } from "./modules/auth/auth.routes";
+
 const app = express();
+
+app.use(express.json()); // без этого req.body будет undefined
+app.use("/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
