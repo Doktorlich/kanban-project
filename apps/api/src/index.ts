@@ -1,10 +1,12 @@
 import express, { type Response, type Request } from "express";
 import "dotenv/config";
 import { authRouter } from "./modules/auth/auth.routes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(express.json()); // без этого req.body будет undefined
+app.use(express.json());
+app.use(cookieParser());
 app.use("/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {

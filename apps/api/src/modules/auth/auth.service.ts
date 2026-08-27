@@ -1,6 +1,8 @@
-import { RegisterDto } from "./auth.types";
+import { LoginDto, RegisterDto } from "./auth.types";
 import { prisma } from "../../prisma";
 import bcrypt from "bcrypt";
+import { signAccessToken, signRefreshToken } from "../../lib/jwt";
+import { hashToken } from "../../lib/hash";
 
 export async function registerUser(dto: RegisterDto) {
     const existingUser = await prisma.user.findFirst({
@@ -25,4 +27,26 @@ export async function registerUser(dto: RegisterDto) {
     });
     const { passwordHash: _, ...safeUser } = user;
     return safeUser;
+}
+
+export async function loginUser(dto: LoginDto) {
+    const user = await prisma.user.findUnique({
+        where: { email: dto.email },
+    });
+    if (!user) {
+        throw new Error("Invalid email or password");
+    }
+    const accessToken = signAccessToken({ userId: user.id });
+    const refreshToken = signRefreshToken({ userId: user.id });
+
+    await prisma.refreshToken.create({
+        data: {
+            tokenHash: hashToken(refreshToken),
+            userId: user.id,
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+    });
+
+    const { passwordHash: _, ...safeUser } = user;
+    return { user: safeUser, accessToken, refreshToken };
 }
