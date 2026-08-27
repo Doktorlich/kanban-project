@@ -4,32 +4,49 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+    provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────
+// REFRESH_TOKEN — хранит хеш refresh-токена, поддержка нескольких сессий на юзера
+// ─────────────────────────────────────────────
+model RefreshToken {
+    id        Int       @id @default(autoincrement())
+    tokenHash String    @unique @map("token_hash")
+    expiresAt DateTime  @map("expires_at")
+    createdAt DateTime  @default(now()) @map("created_at")
+    revokedAt DateTime? @map("revoked_at") // null = токен ещё активен
+
+    userId Int  @map("user_id")
+    user   User @relation(fields: [userId], references: [id])
+
+    @@map("refresh_token")
 }
 
 // ─────────────────────────────────────────────
 // USER
 // ─────────────────────────────────────────────
 model User {
-  id               Int               @id @default(autoincrement())
-  email            String            @unique
-  passwordHash     String            @map("password_hash")
-  username         String            @unique
-  firstName        String            @map("first_name")
-  lastName         String            @map("last_name")
-  avatarUrl        String?           @map("avatar_url")
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  workspaceMembers WorkspaceMember[]
-  comments         Comment[]
-  taskOwners       TaskOwner[]
+    id               Int               @id @default(autoincrement())
+    email            String            @unique
+    passwordHash     String            @map("password_hash")
+    username         String            @unique
+    firstName        String            @map("first_name")
+    lastName         String            @map("last_name")
+    avatarUrl        String?           @map("avatar_url")
+    createdAt        DateTime          @default(now()) @map("created_at")
+    updatedAt        DateTime          @updatedAt @map("updated_at")
+    workspaceMembers WorkspaceMember[]
+    comments         Comment[]
+    taskOwners       TaskOwner[]
+    refreshTokens    RefreshToken[]
 
-  @@map("user")
+    @@map("user")
 }
 
 // ─────────────────────────────────────────────
@@ -37,29 +54,29 @@ model User {
 // ─────────────────────────────────────────────
 
 model Workspace {
-  id      Int               @id @default(autoincrement())
-  title   String
-  boards  Board[]
-  members WorkspaceMember[]
+    id      Int               @id @default(autoincrement())
+    title   String
+    boards  Board[]
+    members WorkspaceMember[]
 
-  @@map("workspace")
+    @@map("workspace")
 }
 
 // ─────────────────────────────────────────────
 // WORKSPACE_MEMBER — junction User ↔ Workspace, с ролью (RBAC)
 // ─────────────────────────────────────────────
 model WorkspaceMember {
-  id        Int      @id @default(autoincrement())
-  role      String
-  createdAt DateTime @default(now()) @map("created_at")
+    id        Int      @id @default(autoincrement())
+    role      String
+    createdAt DateTime @default(now()) @map("created_at")
 
-  userId      Int       @map("user_id")
-  workspaceId Int       @map("workspace_id")
-  user        User      @relation(fields: [userId], references: [id])
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+    userId      Int       @map("user_id")
+    workspaceId Int       @map("workspace_id")
+    user        User      @relation(fields: [userId], references: [id])
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-  @@unique([userId, workspaceId])
-  @@map("workspace_member")
+    @@unique([userId, workspaceId])
+    @@map("workspace_member")
 }
 
 // ─────────────────────────────────────────────
@@ -67,15 +84,15 @@ model WorkspaceMember {
 // ─────────────────────────────────────────────
 
 model Board {
-  id    Int    @id @default(autoincrement())
-  title String
+    id    Int    @id @default(autoincrement())
+    title String
 
-  workspaceId Int       @map("workspace_id")
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+    workspaceId Int       @map("workspace_id")
+    workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-  columns Column[]
+    columns Column[]
 
-  @@map("board")
+    @@map("board")
 }
 
 // ─────────────────────────────────────────────
@@ -83,27 +100,27 @@ model Board {
 // ─────────────────────────────────────────────
 
 model Column {
-  id       Int    @id @default(autoincrement())
-  title    String
-  position Int
-  boardId  Int    @map("board_id")
-  board    Board  @relation(fields: [boardId], references: [id])
-  tasks    Task[]
+    id       Int    @id @default(autoincrement())
+    title    String
+    position Int
+    boardId  Int    @map("board_id")
+    board    Board  @relation(fields: [boardId], references: [id])
+    tasks    Task[]
 
-  @@map("column")
+    @@map("column")
 }
 
 // ─────────────────────────────────────────────
 // PRIORITY — отдельная таблица вместо enum, для гибкости
 // ─────────────────────────────────────────────
 model Priority {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
-  color  String
-  weight Int    @default(0)
-  tasks  Task[]
+    id     Int    @id @default(autoincrement())
+    name   String @unique
+    color  String
+    weight Int    @default(0)
+    tasks  Task[]
 
-  @@map("priority")
+    @@map("priority")
 }
 
 // ─────────────────────────────────────────────
@@ -111,24 +128,24 @@ model Priority {
 // ─────────────────────────────────────────────
 
 model Task {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  position    Int
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+    id          Int      @id @default(autoincrement())
+    title       String
+    description String?
+    position    Int
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  columnId Int    @map("column_id")
-  column   Column @relation(fields: [columnId], references: [id])
+    columnId Int    @map("column_id")
+    column   Column @relation(fields: [columnId], references: [id])
 
-  priorityId Int      @map("priority_id")
-  priority   Priority @relation(fields: [priorityId], references: [id])
+    priorityId Int      @map("priority_id")
+    priority   Priority @relation(fields: [priorityId], references: [id])
 
-  comments    Comment[]
-  owners      TaskOwner[]
-  attachments Attachment[]
+    comments    Comment[]
+    owners      TaskOwner[]
+    attachments Attachment[]
 
-  @@map("task")
+    @@map("task")
 }
 
 // ─────────────────────────────────────────────
@@ -136,13 +153,13 @@ model Task {
 // ─────────────────────────────────────────────
 
 model TaskOwner {
-  userId Int  @map("user_id")
-  taskId Int  @map("task_id")
-  user   User @relation(fields: [userId], references: [id])
-  task   Task @relation(fields: [taskId], references: [id])
+    userId Int  @map("user_id")
+    taskId Int  @map("task_id")
+    user   User @relation(fields: [userId], references: [id])
+    task   Task @relation(fields: [taskId], references: [id])
 
-  @@id([userId, taskId])
-  @@map("task_owners")
+    @@id([userId, taskId])
+    @@map("task_owners")
 }
 
 // ─────────────────────────────────────────────
@@ -150,32 +167,32 @@ model TaskOwner {
 // ─────────────────────────────────────────────
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  text      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+    id        Int      @id @default(autoincrement())
+    text      String
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
 
-  userId Int  @map("user_id")
-  user   User @relation(fields: [userId], references: [id])
+    userId Int  @map("user_id")
+    user   User @relation(fields: [userId], references: [id])
 
-  taskId Int  @map("task_id")
-  task   Task @relation(fields: [taskId], references: [id])
+    taskId Int  @map("task_id")
+    task   Task @relation(fields: [taskId], references: [id])
 
-  @@map("comment")
+    @@map("comment")
 }
 
 // ─────────────────────────────────────────────
 // ATTACHMENT
 // ─────────────────────────────────────────────
 model Attachment {
-  id        Int      @id @default(autoincrement())
-  fileName  String   @map("file_name")
-  fileUrl   String   @map("file_url")
-  fileSize  Int      @map("file_size")
-  createdAt DateTime @default(now()) @map("created_at")
+    id        Int      @id @default(autoincrement())
+    fileName  String   @map("file_name")
+    fileUrl   String   @map("file_url")
+    fileSize  Int      @map("file_size")
+    createdAt DateTime @default(now()) @map("created_at")
 
-  taskId Int  @map("task_id")
-  task   Task @relation(fields: [taskId], references: [id])
+    taskId Int  @map("task_id")
+    task   Task @relation(fields: [taskId], references: [id])
 
-  @@map("attachment")
+    @@map("attachment")
 }
