@@ -50,3 +50,18 @@ export async function loginUser(dto: LoginDto) {
     const { passwordHash: _, ...safeUser } = user;
     return { user: safeUser, accessToken, refreshToken };
 }
+
+export async function logoutUser(refreshTokenCookie: string) {
+    // await prisma.refreshToken.deleteMany({
+    //     where: { tokenHash: hashToken(refreshTokenCookie) },
+    // });
+
+    await prisma.refreshToken.updateMany({
+        where: {
+            tokenHash: hashToken(refreshTokenCookie),
+            revokedAt: null,
+        },
+        data: { revokedAt: new Date() },
+    });
+    return { message: "Logged out successfully" };
+}
