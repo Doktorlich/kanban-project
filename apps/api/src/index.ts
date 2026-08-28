@@ -1,3 +1,4 @@
+import type {} from "./types/express.d.ts";
 import express, { type Response, type Request } from "express";
 import "dotenv/config";
 import { authRouter } from "./modules/auth/auth.routes";
