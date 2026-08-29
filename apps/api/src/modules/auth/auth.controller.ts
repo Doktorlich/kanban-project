@@ -1,5 +1,5 @@
-import type { Request, Response } from "express";
-import { loginUser, logoutUser, registerUser } from "./auth.service";
+import { NextFunction, Request, Response } from "express";
+import { loginUser, logoutUser, registerUser, updateToken, validateSession } from "./auth.service";
 import { clearAuthCookies, setAuthCookies } from "../../lib/cookies";
 
 export async function register(req: Request, res: Response) {
@@ -46,5 +46,28 @@ export async function logout(req: Request, res: Response) {
             return;
         }
         res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export async function refresh(req: Request, res: Response) {
+    const token: string = req.cookies?.refreshToken;
+    if (!token) {
+        res.status(401).json({ message: "No refresh token provided" });
+        return;
+    }
+    try {
+        const { safeRefreshToken } = await validateSession(token);
+        const userId = safeRefreshToken.userId;
+        const { newAccessToken, newRefreshToken } = await updateToken(safeRefreshToken.id, userId);
+
+        setAuthCookies(res, newAccessToken, newRefreshToken);
+        res.status(200).json({ message: "Token refreshed" });
+    } catch (error) {
+        const errorMessage = (error as Error).message;
+
+        await logoutUser(token).catch(() => {});
+
+        clearAuthCookies(res);
+        res.status(401).json({ message: errorMessage });
     }
 }
