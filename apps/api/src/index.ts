@@ -1,15 +1,16 @@
 import type {} from "./types/express.d.ts";
 import express, { type Response, type Request } from "express";
 import "dotenv/config";
-import { authRouter } from "./modules/auth/auth.routes";
 import cookieParser from "cookie-parser";
+import { authRouter } from "./modules/auth/auth.routes";
+import { workspaceRouter } from "./modules/workspace/workspace.routes";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use("/auth", authRouter);
-
+app.use("/workspaces", workspaceRouter);
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
