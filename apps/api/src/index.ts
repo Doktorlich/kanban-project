@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { authRouter } from "./modules/auth/auth.routes";
 import { workspaceRouter } from "./modules/workspace/workspace.routes";
 import { boardRouter } from "./modules/board/board.routes";
+import { columnRouter } from "./modules/column/column.routes";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/workspaces", workspaceRouter);
 app.use("/workspaces/:workspaceId/boards", boardRouter);
+app.use("/workspaces/:workspaceId/boards/:boardId/columns", columnRouter);
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
