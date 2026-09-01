@@ -12,9 +12,9 @@ export async function create(req: Request, res: Response) {
     }
 }
 export async function getOne(req: Request, res: Response) {
-    const { columnId } = req.params;
+    const { boardId, columnId } = req.params;
     try {
-        const column = await columnService.getColumnById(Number(columnId));
+        const column = await columnService.getColumnById(Number(boardId), Number(columnId));
         res.status(200).json(column);
     } catch (error) {
         res.status(404).json({ message: (error as Error).message });
@@ -32,19 +32,19 @@ export async function getAll(req: Request, res: Response) {
 }
 
 export async function update(req: Request, res: Response) {
-    const { columnId } = req.params;
+    const { boardId, columnId } = req.params;
 
     try {
-        const column = await columnService.updateColumn(Number(columnId), req.body);
+        const column = await columnService.updateColumn(Number(boardId), Number(columnId), req.body);
         res.status(200).json(column);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
     }
 }
 export async function remove(req: Request, res: Response) {
-    const { columnId } = req.params;
+    const { boardId, columnId } = req.params;
     try {
-        await columnService.deleteColumn(Number(columnId));
+        await columnService.deleteColumn(Number(boardId), Number(columnId));
         res.status(204).send();
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });

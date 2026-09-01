@@ -18,25 +18,25 @@ export async function getColumns(boardId: number) {
         },
     });
 }
-export async function getColumnById(columnId: number) {
-    const column = await prisma.column.findUnique({ where: { id: columnId } });
+export async function getColumnById(boardId: number, columnId: number) {
+    const column = await prisma.column.findUnique({ where: { id: columnId, boardId } });
     if (!column) {
         throw new Error("Column not found");
     }
     return column;
 }
 
-export async function updateColumn(columnId: number, dto: UpdateColumnDto) {
+export async function updateColumn(boardId: number, columnId: number, dto: UpdateColumnDto) {
     return prisma.column.update({
-        where: { id: columnId },
+        where: { id: columnId, boardId },
         data: {
             title: dto.title,
             position: dto.position,
         },
     });
 }
-export async function deleteColumn(columnId: number) {
+export async function deleteColumn(boardId: number, columnId: number) {
     return prisma.column.delete({
-        where: { id: columnId },
+        where: { id: columnId, boardId },
     });
 }
