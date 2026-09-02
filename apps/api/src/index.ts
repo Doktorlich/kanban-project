@@ -3,13 +3,20 @@ import type {} from "./types/express.d.ts";
 import express, { type Response, type Request } from "express";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { authRouter } from "./modules/auth/auth.routes";
 import { workspaceRouter } from "./modules/workspace/workspace.routes";
 import { boardRouter } from "./modules/board/board.routes";
 import { columnRouter } from "./modules/column/column.routes";
 import { taskRouter } from "./modules/task/task.routes";
-
 const app = express();
+
+app.use(
+    cors({
+        origin: "http://localhost:3000",
+        credentials: true,
+    }),
+);
 
 app.use(express.json());
 app.use(cookieParser());
