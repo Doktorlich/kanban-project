@@ -21,7 +21,7 @@ export default function Sidebar() {
             router.push("/login");
         },
     });
-    function handleSubmit() {
+    function handleLogout() {
         mutation.mutate();
     }
     return (
@@ -48,7 +48,7 @@ export default function Sidebar() {
                         type={"button"}
                         className={classes["user-block__button-exit"]}
                         variant={"secondary"}
-                        onClick={handleSubmit}
+                        onClick={handleLogout}
                         disabled={mutation.isPending}
                     >
                         <LogOut size={16} />
