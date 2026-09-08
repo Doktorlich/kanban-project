@@ -2,12 +2,17 @@ import { prisma } from "../../prisma";
 import { CreateTaskDto, UpdateTaskDto } from "./task.types";
 
 export async function createTask(columnId: number, dto: CreateTaskDto) {
+    const lastTask = await prisma.task.findFirst({
+        where: { columnId },
+        orderBy: { position: "desc" },
+    });
+    const nextPosition = lastTask ? lastTask.position + 1 : 0;
     return prisma.task.create({
         data: {
             columnId,
             title: dto.title,
             description: dto.description,
-            position: dto.position,
+            position: nextPosition,
             priorityId: dto.priorityId,
         },
     });

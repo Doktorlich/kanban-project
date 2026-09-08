@@ -1,12 +1,11 @@
 export interface CreateTaskDto {
     title: string;
-    description: string;
-    position: number;
+    description?: string;
     priorityId: number;
 }
 export interface UpdateTaskDto {
-    title: string;
-    description: string;
-    position: number;
-    priorityId: number;
+    title?: string;
+    description?: string;
+    position?: number;
+    priorityId?: number;
 }
