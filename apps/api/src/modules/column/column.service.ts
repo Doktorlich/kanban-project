@@ -2,11 +2,16 @@ import { prisma } from "../../prisma";
 import { CreateColumnDto, UpdateColumnDto } from "./column.types";
 
 export async function createColumn(boardId: number, dto: CreateColumnDto) {
+    const lastColumn = await prisma.column.findFirst({
+        where: { boardId },
+        orderBy: { position: "desc" },
+    });
+    const nextPosition = lastColumn ? lastColumn.position + 1 : 0;
     return prisma.column.create({
         data: {
             boardId,
             title: dto.title,
-            position: dto.position,
+            position: nextPosition,
         },
     });
 }
