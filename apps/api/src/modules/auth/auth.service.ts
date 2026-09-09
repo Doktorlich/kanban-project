@@ -22,7 +22,7 @@ export async function registerUser(dto: RegisterDto) {
             passwordHash,
             username: dto.username,
             firstName: dto.firstName,
-            lastName: dto.firstName,
+            lastName: dto.lastName,
         },
     });
     const { passwordHash: _, ...safeUser } = user;
@@ -33,7 +33,13 @@ export async function loginUser(dto: LoginDto) {
     const user = await prisma.user.findUnique({
         where: { email: dto.email },
     });
+
     if (!user) {
+        throw new Error("Invalid email or password");
+    }
+    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
+
+    if (!isPasswordValid) {
         throw new Error("Invalid email or password");
     }
     const accessToken = signAccessToken({ userId: user.id });
