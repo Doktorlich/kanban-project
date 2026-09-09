@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode, Ref } from "react";
 import Input from "@/components/ui/Input/Input";
 import classes from "./InputLabel.module.scss";
 import clsx from "clsx";
@@ -9,15 +9,16 @@ interface InputLabelProps extends ComponentPropsWithoutRef<"input"> {
     children: ReactNode;
     labelClassName?: string;
     variant?: InputVariant;
+    ref?: Ref<HTMLInputElement>;
 }
 
-export default function InputLabel({ children, variant, labelClassName, ...props }: InputLabelProps) {
+export default function InputLabel({ children, variant, labelClassName, ref, ...props }: InputLabelProps) {
     const inputId = props.id;
     const labelClass = clsx(classes.label, labelClassName);
     return (
         <label htmlFor={inputId} className={labelClass}>
             {children}
-            <Input variant={variant} {...props} />
+            <Input ref={ref} variant={variant} {...props} />
         </label>
     );
 }
