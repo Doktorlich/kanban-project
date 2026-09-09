@@ -38,7 +38,7 @@ Reference this skill when:
 - `esm-support` - ESM-first setup plus CommonJS fallback with `moduleFormat = "cjs"`
 - `prisma-config` - creating and using `prisma.config.ts`
 - `env-variables` - explicit environment loading
-- `removed-features` - removed middleware, metrics, and legacy CLI behavior
+- `removed-features` - removed proxy, metrics, and legacy CLI behavior
 - `accelerate-users` - migration notes for Accelerate users
 
 ## Using MongoDB? This guide does not apply
