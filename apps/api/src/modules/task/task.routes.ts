@@ -2,7 +2,7 @@ import { Router } from "express";
 import { requireAuth } from "../../middleware/auth.middleware";
 import { requireRole } from "../../middleware/rbac.middleware";
 import * as taskController from "./task.controller";
-import * as taskSchema from "./task.schema";
+import { taskSchema } from "@myapp/shared-types";
 import { validate } from "../../middleware/validate.middleware";
 
 export const taskRouter = Router({ mergeParams: true });

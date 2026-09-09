@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../../middleware/validate.middleware";
 import * as authController from "./auth.controller";
-import * as authSchema from "./auth.schema";
+import { authSchema } from "@myapp/shared-types";
 
 export const authRouter = Router();
 

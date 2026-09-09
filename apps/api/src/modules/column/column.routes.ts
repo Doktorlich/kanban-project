@@ -2,7 +2,7 @@ import { Router } from "express";
 import { requireAuth } from "../../middleware/auth.middleware";
 import { requireRole } from "../../middleware/rbac.middleware";
 import * as columnController from "./column.controller";
-import * as columnSchema from "./column.schema";
+import { columnSchema } from "@myapp/shared-types";
 import { validate } from "../../middleware/validate.middleware";
 
 export const columnRouter = Router({ mergeParams: true });
