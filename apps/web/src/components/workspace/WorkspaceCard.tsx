@@ -1,17 +1,9 @@
 import Link from "next/link";
 import classes from "./WorkspaceCard.module.scss";
-import { Owner } from "@/constants/mock-workspaces";
-
-interface WorkspaceCardData {
-    id: number;
-    image: string;
-    nameWorkspace: string;
-    quantityBoards: number;
-    owners: Owner[];
-}
+import { Workspace } from "@myapp/shared-types";
 
 interface WorkspaceCardProps {
-    card: WorkspaceCardData;
+    card: Workspace;
     href: string;
 }
 
@@ -21,22 +13,23 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
             <Link href={href} className={classes["link"]}>
                 <div className={classes["cards__item-info"]}>
                     {/*<img className={classes["cards__item-image"]} src="" alt="board image" />*/}
-                    <b className={classes["cards__item-image"]}>{card.image}</b>
-                    <h3 className={classes["cards__item-title"]}>{card.nameWorkspace}</h3>
-                    <p className={classes["cards__item-qty"]}>{card.quantityBoards} boards</p>
+                    {/*Внедрить аналог картинки который будет формироваться по 1й букве title ->Смотри заметку номер 4<-*/}
+                    <b className={classes["cards__item-image"]}>IMG</b>
+                    <h3 className={classes["cards__item-title"]}>{card.title}</h3>
+                    <p className={classes["cards__item-qty"]}>{card._count.boards} boards</p>
                 </div>
 
                 <hr />
 
                 <div className={classes.owners}>
                     <ul className={classes["owners__list"]}>
-                        {card.owners.map(item => (
-                            <li key={item.id} className={classes["owners__item"]}>
-                                {item.owner}
+                        {card.members.map(member => (
+                            <li key={member.id} className={classes["owners__item"]}>
+                                {member.user.username}
                             </li>
                         ))}
                     </ul>
-                    <span className={classes["owners__span"]}>Owner</span>
+                    <span className={classes["owners__span"]}>{card.members.length > 1 ? "Owners" : "Owner"}</span>
                 </div>
             </Link>
         </li>
