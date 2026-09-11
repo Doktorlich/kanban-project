@@ -1,18 +1,11 @@
 import { apiFetch } from "./api";
 
-interface LoginPayload {
-    email: string;
-    password: string;
-    rememberMe?: string | null;
-}
-interface RegisterPayload {
-    email: string;
-    password: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    privacyPolicy?: string | null;
-}
+import { z } from "zod";
+import { authSchema } from "@myapp/shared-types";
+
+type LoginPayload = z.infer<typeof authSchema.loginSchema>;
+type RegisterPayload = z.infer<typeof authSchema.registerSchema>;
+
 export function loginUser(payload: LoginPayload) {
     return apiFetch("/auth/login", {
         method: "POST",
