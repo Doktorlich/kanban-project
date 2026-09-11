@@ -24,6 +24,12 @@ export async function getUserWorkspaces(userId: number) {
                 },
             },
         },
+        include: {
+            _count: { select: { boards: true } },
+            members: {
+                include: { user: { select: { id: true, firstName: true, lastName: true, username: true } } },
+            },
+        },
     });
 }
 
