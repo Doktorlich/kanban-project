@@ -23,12 +23,14 @@ export default function WorkspacesPage() {
                 {query.data.map(card => (
                     <WorkspaceCard card={card} key={card.id} href={`/workspaces/${card.id}`} />
                 ))}
-                <Button type={"button"} className={classes["workspaces-cards__add-workspace"]}>
-                    <span>+</span>
-                    <p>
-                        Create <br /> workspace
-                    </p>
-                </Button>
+                <li className={classes["cards__item"]}>
+                    <Button type={"button"} className={classes["workspaces-cards__add-workspace"]}>
+                        <span>+</span>
+                        <p>
+                            Create <br /> workspace
+                        </p>
+                    </Button>
+                </li>
             </ul>
         );
     }

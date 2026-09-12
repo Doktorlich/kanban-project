@@ -28,6 +28,11 @@
     width: 100%;
 }
 
+.cards__item {
+    width: 100%;
+    max-width: 320px;
+}
+
 .workspaces-cards__add-workspace {
     @include m.flex-direction-col;
     box-sizing: border-box;
