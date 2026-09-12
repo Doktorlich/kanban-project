@@ -1,6 +1,7 @@
 import Link from "next/link";
 import classes from "./WorkspaceCard.module.scss";
 import { Workspace } from "@myapp/shared-types";
+import EntityAvatar from "@/components/ui/EntityAvatar/EntityAvatar";
 
 interface WorkspaceCardProps {
     card: Workspace;
@@ -12,9 +13,8 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
         <li className={classes["cards__item"]}>
             <Link href={href} className={classes["link"]}>
                 <div className={classes["cards__item-info"]}>
-                    {/*<img className={classes["cards__item-image"]} src="" alt="board image" />*/}
                     {/*Внедрить аналог картинки который будет формироваться по 1й букве title ->Смотри заметку номер 4<-*/}
-                    <b className={classes["cards__item-image"]}>IMG</b>
+                    <EntityAvatar str={card.title} variant={"card"} />
                     <h3 className={classes["cards__item-title"]}>{card.title}</h3>
                     <p className={classes["cards__item-qty"]}>{card._count.boards} boards</p>
                 </div>
@@ -25,7 +25,7 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
                     <ul className={classes["owners__list"]}>
                         {card.members.map(member => (
                             <li key={member.id} className={classes["owners__item"]}>
-                                {member.user.username}
+                                <EntityAvatar str={member.user.username} variant={"user"} />
                             </li>
                         ))}
                     </ul>

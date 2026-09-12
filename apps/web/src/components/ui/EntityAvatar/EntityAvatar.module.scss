@@ -1,0 +1,116 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.cards__workspace-board {
+    @include m.flex-center;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+
+    border: 1px solid;
+
+    border-radius: v.$radius-base;
+
+    font-size: v.$font-size-xl;
+
+    &--0 {
+        background: v.$avatar-purple-bg;
+
+        color: v.$avatar-purple-text;
+    }
+
+    &--1 {
+        background: v.$avatar-pink-bg;
+
+        color: v.$avatar-pink-text;
+    }
+
+    &--2 {
+        background: v.$avatar-blue-bg;
+
+        color: v.$avatar-blue-text;
+    }
+
+    &--3 {
+        background: v.$avatar-green-bg;
+
+        color: v.$avatar-green-text;
+    }
+
+    &--4 {
+        background: v.$avatar-orange-bg;
+
+        color: v.$avatar-orange-text;
+    }
+
+    &--5 {
+        background: v.$avatar-teal-bg;
+
+        color: v.$avatar-teal-text;
+    }
+
+    &--6 {
+        background: v.$avatar-yellow-bg;
+
+        color: v.$avatar-yellow-text;
+    }
+}
+
+.owners__item {
+    @include m.flex-center;
+    width: 32px;
+    height: 32px;
+
+    background-color: v.$color-bg-primary;
+
+    border: 1px solid v.$color-accent;
+    border-radius: v.$radius-full;
+
+    font-size: v.$font-size-base;
+
+    &:not(:first-child) {
+        margin-left: -8px;
+    }
+
+    &--0 {
+        background: v.$user-avatar-indigo-bg;
+
+        color: v.$user-avatar-indigo-text;
+    }
+
+    &--1 {
+        background: v.$user-avatar-emerald-bg;
+
+        color: v.$user-avatar-emerald-text;
+    }
+
+    &--2 {
+        background: v.$user-avatar-coral-bg;
+
+        color: v.$user-avatar-coral-text;
+    }
+
+    &--3 {
+        background: v.$user-avatar-sky-bg;
+
+        color: v.$user-avatar-sky-text;
+    }
+
+    &--4 {
+        background: v.$user-avatar-magenta-bg;
+
+        color: v.$user-avatar-magenta-text;
+    }
+
+    &--5 {
+        background: v.$user-avatar-lime-bg;
+
+        color: v.$user-avatar-lime-text;
+    }
+
+    &--6 {
+        background: v.$user-avatar-slate-bg;
+
+        color: v.$user-avatar-slate-text;
+    }
+}

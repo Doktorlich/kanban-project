@@ -43,6 +43,72 @@ $font-size-xl: 28px;
 $font-size-xxl: 32px;
 $font-size-very-lg: 40px;
 
+// ==========================================================================
+// SCSS Переменные палитры плашек/аватаров
+// ==========================================================================
+
+// 1. Фиолетовый (Работа)
+$avatar-purple-bg: #eeedfd;
+$avatar-purple-text: #3c2eb9;
+
+// 2. Розовый (Личные проекты)
+$avatar-pink-bg: #fde8ec;
+$avatar-pink-text: #8c2b4e;
+
+// 3. Синий
+$avatar-blue-bg: #e3f2fd;
+$avatar-blue-text: #0d47a1;
+
+// 4. Зеленый
+$avatar-green-bg: #e8f5e9;
+$avatar-green-text: #1b5e20;
+
+// 5. Оранжевый
+$avatar-orange-bg: #fff3e0;
+$avatar-orange-text: #e65100;
+
+// 6. Бирюзовый
+$avatar-teal-bg: #e0f2f1;
+$avatar-teal-text: #004d40;
+
+// 7. Желтый
+$avatar-yellow-bg: #fffde7;
+$avatar-yellow-text: #f57f17;
+
+// ==========================================================================
+// SCSS Переменные палитры аватаров пользователей (User Avatars)
+// Смещенные тона относительно категорий (более насыщены для контраста аватарок)
+// ==========================================================================
+
+// 1. Фиолетовый (JD - Indigo/Violet)
+$user-avatar-indigo-bg: #E8EAF6;
+$user-avatar-indigo-text: #283593;
+
+// 2. Изумрудный / Изумрудно-зеленый (MK - Emerald/Mint)
+$user-avatar-emerald-bg: #D1F2D9;
+$user-avatar-emerald-text: #0B6623;
+
+// 3. Коралловый / Красно-оранжевый (Coral)
+$user-avatar-coral-bg: #FBE9E7;
+$user-avatar-coral-text: #D84315;
+
+// 4. Голубой / Небесный (Sky)
+$user-avatar-sky-bg: #E0F7FA;
+$user-avatar-sky-text: #006064;
+
+// 5. Малиновый / Пурпурный (Magenta)
+$user-avatar-magenta-bg: #FCE4EC;
+$user-avatar-magenta-text: #AD1457;
+
+// 6. Лайм / Салатовый (Lime)
+$user-avatar-lime-bg: #F0F4C3;
+$user-avatar-lime-text: #827717;
+
+// 7. Графитовый / Серо-синий (Slate)
+$user-avatar-slate-bg: #ECEFF1;
+$user-avatar-slate-text: #37474F;
+
+
 // === Radius ===
 //// === Radius (Скругление углов) ===
 // $radius-sm   -> Мелкие элементы (кнопки, теги приоритетов, аватарки владельцев)
@@ -68,8 +134,6 @@ $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
-
-
 
 // тени
 
