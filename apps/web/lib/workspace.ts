@@ -1,5 +1,5 @@
 // createWorkspace
-// getWorkspaces
+// getWorkspaces +++
 // getWorkspaceById
 // updateWorkspace
 // deleteWorkspace
@@ -13,5 +13,12 @@ type WorkspacePayload = z.infer<typeof workspaceSchema.workspaceSchema>;
 export function getWorkspaces() {
     return apiFetch<Workspace[]>("/workspaces", {
         method: "GET",
+    });
+}
+
+export function createWorkspace(payload: WorkspacePayload) {
+    return apiFetch<Workspace>("/workspaces", {
+        method: "POST",
+        body: JSON.stringify(payload),
     });
 }

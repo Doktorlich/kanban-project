@@ -7,9 +7,10 @@ import clsx from "clsx";
 
 interface ModalProps extends ComponentPropsWithoutRef<"dialog"> {
     children: ReactNode;
+    onClose?: () => void;
 }
 
-export default function Modal({ className, children, ...props }: ModalProps) {
+export default function Modal({ className, children, onClose, ...props }: ModalProps) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const router = useRouter();
 
@@ -18,9 +19,15 @@ export default function Modal({ className, children, ...props }: ModalProps) {
     }, []);
 
     const modalClassName = clsx(classes.modal, className);
-
+    function handleClose() {
+        if (onClose) {
+            onClose();
+        } else {
+            router.back();
+        }
+    }
     return (
-        <dialog ref={dialogRef} onClose={() => router.back()} className={modalClassName} {...props}>
+        <dialog ref={dialogRef} onClose={handleClose} className={modalClassName} {...props}>
             {children}
         </dialog>
     );
