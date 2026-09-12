@@ -25,11 +25,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    width: 100%;
 }
 
 .workspaces-cards__add-workspace {
     @include m.flex-direction-col;
     box-sizing: border-box;
+    width: 100%;
+    max-width: 320px;
     height: 180px;
 
     background-color: transparent;

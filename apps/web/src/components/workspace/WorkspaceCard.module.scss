@@ -2,14 +2,13 @@
 @use "../../styles/mixins" as m;
 
 .cards__item {
+    width: 100%;
+    max-width: 320px;
 }
 
 .link {
     box-sizing: border-box;
     display: block;
-
-    width: 100%;
-    max-width: 320px;
 
     padding: 10px;
 
