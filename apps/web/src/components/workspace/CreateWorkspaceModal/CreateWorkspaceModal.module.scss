@@ -1,0 +1,27 @@
+@use "../../../styles/variables" as v;
+@use "../../../styles/mixins" as m;
+
+.form {
+    @include m.flex-direction-col;
+    height: 250px;
+
+    padding: 15px;
+}
+
+.form__title {
+    font-size: v.$font-size-lg;
+    color: v.$color-accent;
+}
+
+.form__input {
+    width: 100%;
+    height: 30px;
+}
+
+.form__button-list {
+    display: flex;
+    column-gap: 25px;
+    justify-content: center;
+
+    margin-top: auto;
+}

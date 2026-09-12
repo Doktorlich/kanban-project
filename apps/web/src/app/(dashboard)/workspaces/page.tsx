@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getWorkspaces } from "../../../../lib/workspace";
 import { useState } from "react";
 
-import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal";
+import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";
 
 export default function WorkspacesPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
