@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { useSidebar } from "@/components/layout/SidebarContext";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { logoutUser } from "../../../../lib/auth";
+import { logoutUser } from "@/lib/auth";
 
 export default function Sidebar() {
     const { isOpen, close } = useSidebar();

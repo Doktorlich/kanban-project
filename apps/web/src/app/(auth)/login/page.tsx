@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button/Button";
 import Link from "next/link";
 import classes from "../auth-form.module.scss";
 import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "../../../../lib/auth";
+import { loginUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

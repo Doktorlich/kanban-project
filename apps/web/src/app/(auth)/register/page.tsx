@@ -5,10 +5,10 @@ import Link from "next/link";
 import classes from "../auth-form.module.scss";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { registerUser } from "../../../../lib/auth";
+import { registerUser } from "@/lib/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerFormSchema } from "../../../../lib/register-form.schema";
+import { registerFormSchema } from "@/lib/register-form.schema";
 
 export default function RegisterPage() {
     const router = useRouter();

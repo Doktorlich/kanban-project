@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button/Button";
 import WorkspaceCard from "@/components/workspace/WorkspaceCard";
 import classes from "./page.module.scss";
 import { useQuery } from "@tanstack/react-query";
-import { getWorkspaces } from "../../../../lib/workspace";
+import { getWorkspaces } from "@/lib/workspace";
 import { useState } from "react";
 
 import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";

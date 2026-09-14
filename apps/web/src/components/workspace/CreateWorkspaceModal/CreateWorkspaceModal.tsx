@@ -2,7 +2,7 @@ import Modal from "@/components/ui/Modal/Modal";
 import Button from "@/components/ui/Button/Button";
 import InputLabel from "@/components/ui/InputLabel/InputLabel";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createWorkspace } from "../../../../lib/workspace";
+import { createWorkspace } from "@/lib/workspace";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import classes from "./CreateWorkspaceModal.module.scss";
