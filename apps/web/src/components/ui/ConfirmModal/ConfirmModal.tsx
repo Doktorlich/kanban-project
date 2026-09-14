@@ -21,13 +21,13 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
     return (
         <Modal onClose={onClose}>
-            <div>
-                <h3>{title}</h3>
-                <p>{message}</p>
+            <div className={classes["modal__container"]}>
+                <h3 className={classes["modal__title"]}>{title}</h3>
+                <p className={classes["modal__message"]}>{message}</p>
                 {errorMessage && <p className={classes.error}>{errorMessage}</p>}
-                <div>
+                <div className={classes["modal__buttons-action"]}>
                     <Button type={"button"} variant={"danger"} onClick={onConfirm} disabled={isPending}>
-                        Delete
+                        {isPending ? "Deleting..." : "Delete"}
                     </Button>
                     <Button type={"button"} variant={"secondary"} onClick={onClose} disabled={isPending}>
                         Cancel

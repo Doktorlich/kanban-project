@@ -10,6 +10,9 @@ import { Workspace, workspaceSchema } from "@myapp/shared-types";
 
 type WorkspacePayload = z.infer<typeof workspaceSchema.workspaceSchema>;
 
+// искусственная задержка
+// await new Promise(resolve => setTimeout(resolve, 2000));
+
 export function getWorkspaces() {
     return apiFetch<Workspace[]>("/workspaces", {
         method: "GET",
