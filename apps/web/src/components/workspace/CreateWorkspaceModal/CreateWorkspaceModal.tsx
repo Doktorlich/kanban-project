@@ -5,13 +5,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createWorkspace } from "../../../../lib/workspace";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import classes from "./CreateWorkspaceModal.module.scss";
-import { workspaceSchema } from "@myapp/shared-types";
+import { Workspace, workspaceSchema } from "@myapp/shared-types";
+
 interface CreateWorkspaceModalProps {
     onClose: () => void;
+    workspace?: Workspace;
 }
-export default function CreateWorkspaceModal({ onClose }: CreateWorkspaceModalProps) {
+export default function CreateWorkspaceModal({ onClose, workspace }: CreateWorkspaceModalProps) {
     const queryClient = useQueryClient();
     const {
         register,
@@ -30,7 +31,13 @@ export default function CreateWorkspaceModal({ onClose }: CreateWorkspaceModalPr
         <Modal onClose={onClose}>
             <form onSubmit={handleSubmit(data => mutation.mutate(data))} className={classes.form}>
                 <h3 className={classes["form__title"]}>Create workspace</h3>
-                <InputLabel type={"text"} id={"title"} {...register("title")} className={classes["form__input"]}>
+                <InputLabel
+                    type={"text"}
+                    id={"title"}
+                    {...register("title")}
+                    className={classes["form__input"]}
+                    value={workspace?.title}
+                >
                     Write name title workspace
                 </InputLabel>
                 {errors.title && <p>{errors.title.message}</p>}
