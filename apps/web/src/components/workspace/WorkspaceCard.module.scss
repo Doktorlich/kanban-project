@@ -2,8 +2,51 @@
 @use "../../styles/mixins" as m;
 
 .cards__item {
+    position: relative;
+
     width: 100%;
     max-width: 320px;
+
+    &:hover {
+        .buttons-action {
+            opacity: 1;
+            visibility: visible;
+
+            pointer-events: auto; /* Делаем кнопки кликабельными */
+        }
+    }
+}
+
+.buttons-action {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    display: flex;
+    column-gap: 5px;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    transition: opacity 0.125s ease;
+    @include m.mobile{
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.buttons-action__item {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 0;
+
+    &:hover{
+        background-color: v.$color-accent;
+        border-radius: 5px;
+
+        color: #fff;
+    }
+
 }
 
 .link {
@@ -11,6 +54,7 @@
     display: block;
 
     padding: 10px;
+
 
     border: 1px solid v.$color-border;
     border-radius: v.$radius-sm;

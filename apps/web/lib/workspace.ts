@@ -1,4 +1,4 @@
-// createWorkspace
+// createWorkspace ++
 // getWorkspaces +++
 // getWorkspaceById
 // updateWorkspace
@@ -20,5 +20,11 @@ export function createWorkspace(payload: WorkspacePayload) {
     return apiFetch<Workspace>("/workspaces", {
         method: "POST",
         body: JSON.stringify(payload),
+    });
+}
+
+export function deleteWorkspace(workspaceId: number) {
+    return apiFetch(`/workspaces/${workspaceId}`, {
+        method: "DELETE",
     });
 }
