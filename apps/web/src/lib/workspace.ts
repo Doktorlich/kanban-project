@@ -8,7 +8,7 @@ import { apiFetch } from "./api";
 import { z } from "zod";
 import { Workspace, workspaceSchema } from "@myapp/shared-types";
 
-type WorkspacePayload = z.infer<typeof workspaceSchema.workspaceSchema>;
+export type WorkspacePayload = z.infer<typeof workspaceSchema.workspaceSchema>;
 
 // искусственная задержка
 // await new Promise(resolve => setTimeout(resolve, 2000));
@@ -30,4 +30,8 @@ export function deleteWorkspace(workspaceId: number) {
     return apiFetch(`/workspaces/${workspaceId}`, {
         method: "DELETE",
     });
+}
+
+export function updateWorkspace(workspaceId: number, payload: WorkspacePayload) {
+    return apiFetch<Workspace>(`/workspaces/${workspaceId}`, { method: "PATCH", body: JSON.stringify(payload) });
 }

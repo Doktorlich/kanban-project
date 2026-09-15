@@ -10,6 +10,7 @@ import { SquarePen, Trash2 } from "lucide-react";
 import Button from "@/components/ui/Button/Button";
 import { useState } from "react";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
+import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";
 
 interface WorkspaceCardProps {
     card: Workspace;
@@ -18,6 +19,8 @@ interface WorkspaceCardProps {
 
 export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+
     const queryClient = useQueryClient();
     const deleteMutation = useMutation({
         mutationFn: deleteWorkspace,
@@ -28,6 +31,8 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
     });
     return (
         <>
+            {isEditOpen && <CreateWorkspaceModal workspace={card} onClose={() => setIsEditOpen(false)} />}
+
             {isConfirmOpen && (
                 <ConfirmModal
                     title="Delete workspace"
@@ -61,9 +66,15 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
                     </div>
                 </Link>
                 <div className={classes["buttons-action"]}>
-                    <Button type={"button"} variant={"secondary"} className={classes["buttons-action__item"]}>
+                    <Button
+                        type={"button"}
+                        variant={"secondary"}
+                        className={classes["buttons-action__item"]}
+                        onClick={() => setIsEditOpen(true)}
+                    >
                         <SquarePen />
                     </Button>
+
                     <Button
                         type={"button"}
                         variant={"secondary"}
