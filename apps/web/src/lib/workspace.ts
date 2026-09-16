@@ -26,7 +26,7 @@ export function createWorkspace(payload: WorkspacePayload) {
 }
 
 export function deleteWorkspace(workspaceId: number) {
-    return apiFetch(`/workspaces/${workspaceId}`, {
+    return apiFetch<void>(`/workspaces/${workspaceId}`, {
         method: "DELETE",
     });
 }
