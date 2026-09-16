@@ -10,7 +10,7 @@ export const columnRouter = Router({ mergeParams: true });
 columnRouter.post(
     "/",
     requireAuth,
-    requireRole("board", ["owner", "member"]),
+    requireRole("board", ["owner"]),
     validate(columnSchema.createColumnSchema),
     columnController.create,
 );
@@ -21,7 +21,7 @@ columnRouter.get("/:columnId", requireAuth, requireRole("board", ["owner", "memb
 columnRouter.patch(
     "/:columnId",
     requireAuth,
-    requireRole("board", ["owner", "member"]),
+    requireRole("board", ["owner"]),
     validate(columnSchema.updateColumnSchema),
     columnController.update,
 );

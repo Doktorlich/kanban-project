@@ -10,7 +10,7 @@ export const boardRouter = Router({ mergeParams: true });
 boardRouter.post(
     "/",
     requireAuth,
-    requireRole("workspace", ["owner", "member"]),
+    requireRole("workspace", ["owner"]),
     validate(boardSchema.boardSchema),
     boardController.create,
 );
@@ -19,7 +19,7 @@ boardRouter.get("/:boardId", requireAuth, requireRole("board", ["owner", "member
 boardRouter.patch(
     "/:boardId",
     requireAuth,
-    requireRole("board", ["owner", "member"]),
+    requireRole("board", ["owner"]),
     validate(boardSchema.boardSchema),
     boardController.update,
 );
