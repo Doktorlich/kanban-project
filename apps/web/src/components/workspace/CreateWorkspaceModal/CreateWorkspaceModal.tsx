@@ -2,7 +2,7 @@ import Modal from "@/components/ui/Modal/Modal";
 import Button from "@/components/ui/Button/Button";
 import InputLabel from "@/components/ui/InputLabel/InputLabel";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createWorkspace, updateWorkspace, type WorkspacePayload } from "@/lib/workspace";
+import { createWorkspace, updateWorkspace, workspaceKeys, type WorkspacePayload } from "@/lib/workspace";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import classes from "./CreateWorkspaceModal.module.scss";
@@ -27,14 +27,14 @@ export default function CreateWorkspaceModal({ onClose, workspace }: CreateWorks
     const createMutation = useMutation({
         mutationFn: createWorkspace,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["workspace"] });
+            queryClient.invalidateQueries({ queryKey: workspaceKeys.all });
             onClose();
         },
     });
     const updateMutation = useMutation({
         mutationFn: (data: WorkspacePayload) => updateWorkspace(workspace!.id, data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["workspace"] });
+        onSuccess: data => {
+            queryClient.invalidateQueries({ queryKey: workspaceKeys.detail(data.id) });
             onClose();
         },
     });

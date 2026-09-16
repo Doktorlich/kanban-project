@@ -1,8 +1,3 @@
-// createWorkspace ++
-// getWorkspaces +++
-// getWorkspaceById
-// updateWorkspace
-// deleteWorkspace
 import { apiFetch } from "./api";
 
 import { z } from "zod";
@@ -12,6 +7,10 @@ export type WorkspacePayload = z.infer<typeof workspaceSchema.workspaceSchema>;
 
 // искусственная задержка
 // await new Promise(resolve => setTimeout(resolve, 2000));
+export const workspaceKeys = {
+    all: ["workspace"] as const,
+    detail: (id: number) => ["workspace", id] as const,
+};
 
 export function getWorkspaces() {
     return apiFetch<Workspace[]>("/workspaces", {

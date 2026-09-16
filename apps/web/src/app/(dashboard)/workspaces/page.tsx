@@ -3,14 +3,14 @@ import Button from "@/components/ui/Button/Button";
 import WorkspaceCard from "@/components/workspace/WorkspaceCard";
 import classes from "./page.module.scss";
 import { useQuery } from "@tanstack/react-query";
-import { getWorkspaces } from "@/lib/workspace";
+import { getWorkspaces, workspaceKeys } from "@/lib/workspace";
 import { useState } from "react";
 
 import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";
 
 export default function WorkspacesPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const query = useQuery({ queryKey: ["workspace"], queryFn: getWorkspaces });
+    const query = useQuery({ queryKey: workspaceKeys.all, queryFn: getWorkspaces });
 
     // стилизовать параграфы в условиях
     function renderContent() {

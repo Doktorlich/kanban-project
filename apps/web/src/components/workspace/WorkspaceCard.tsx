@@ -5,7 +5,7 @@ import classes from "./WorkspaceCard.module.scss";
 import { Workspace } from "@myapp/shared-types";
 import EntityAvatar from "@/components/ui/EntityAvatar/EntityAvatar";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteWorkspace } from "@/lib/workspace";
+import { deleteWorkspace, workspaceKeys } from "@/lib/workspace";
 import { SquarePen, Trash2 } from "lucide-react";
 import Button from "@/components/ui/Button/Button";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
     const deleteMutation = useMutation({
         mutationFn: deleteWorkspace,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["workspace"] });
+            queryClient.invalidateQueries({ queryKey: workspaceKeys.all });
             setIsConfirmOpen(false);
         },
     });
