@@ -2,14 +2,25 @@ import { prisma } from "../../prisma";
 import { CreateBoardDto, UpdateBoardDto } from "./board.types";
 
 export async function getUserBoards(workspaceId: number, userId: number) {
-    return prisma.board.findMany({
+    const boards = await prisma.board.findMany({
         where: {
             workspaceId,
             workspace: {
                 members: { some: { userId } },
             },
         },
+        include: {
+            columns: {
+                include: {
+                    _count: { select: { tasks: true } },
+                },
+            },
+        },
     });
+    return boards.map(({ columns, ...board }) => ({
+        ...board,
+        taskCount: columns.reduce((sum, column) => sum + column._count.tasks, 0),
+    }));
 }
 
 export async function getBoardById(boardId: number) {
