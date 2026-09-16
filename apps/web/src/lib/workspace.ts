@@ -12,12 +12,6 @@ export const workspaceKeys = {
     detail: (id: number) => ["workspace", id] as const,
 };
 
-export function getWorkspaces() {
-    return apiFetch<Workspace[]>("/workspaces", {
-        method: "GET",
-    });
-}
-
 export function createWorkspace(payload: WorkspacePayload) {
     return apiFetch<Workspace>("/workspaces", {
         method: "POST",
@@ -25,12 +19,24 @@ export function createWorkspace(payload: WorkspacePayload) {
     });
 }
 
-export function deleteWorkspace(workspaceId: number) {
-    return apiFetch<void>(`/workspaces/${workspaceId}`, {
-        method: "DELETE",
+export function getWorkspaces() {
+    return apiFetch<Workspace[]>("/workspaces", {
+        method: "GET",
+    });
+}
+
+export function getWorkspaceById(workspaceId: number) {
+    return apiFetch<Workspace>(`/workspaces/${workspaceId}`, {
+        method: "GET",
     });
 }
 
 export function updateWorkspace(workspaceId: number, payload: WorkspacePayload) {
     return apiFetch<Workspace>(`/workspaces/${workspaceId}`, { method: "PATCH", body: JSON.stringify(payload) });
+}
+
+export function deleteWorkspace(workspaceId: number) {
+    return apiFetch<void>(`/workspaces/${workspaceId}`, {
+        method: "DELETE",
+    });
 }

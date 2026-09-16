@@ -7,6 +7,7 @@ export type BoardPayload = z.infer<typeof boardSchema.boardSchema>;
 
 export const boardKeys = {
     all: ["board"] as const,
+    list: (workspaceId: number) => ["board", "workspace", workspaceId] as const,
     detail: (id: number) => ["board", id] as const,
 };
 
@@ -21,7 +22,7 @@ export function getBoards(workspaceId: number) {
         method: "GET",
     });
 }
-export function getBoard(workspaceId: number, boardId: number) {
+export function getBoardById(workspaceId: number, boardId: number) {
     return apiFetch<Board>(`/workspaces/${workspaceId}/boards/${boardId}`, {
         method: "GET",
     });

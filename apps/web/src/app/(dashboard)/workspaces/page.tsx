@@ -23,7 +23,6 @@ export default function WorkspacesPage() {
         if (!query.data || query.data.length === 0) {
             return <p>No workspaces yet — create your first one</p>;
         }
-
         return (
             <ul className={classes["workspaces-cards__list"]}>
                 {query.data.map(card => (
