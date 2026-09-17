@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button/Button";
 import { useState } from "react";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
 import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";
+import CardActions from "@/components/ui/CardActions/CardActions";
 
 interface WorkspaceCardProps {
     card: Workspace;
@@ -65,25 +66,11 @@ export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
                         <span className={classes["owners__span"]}>{card.members.length > 1 ? "Owners" : "Owner"}</span>
                     </div>
                 </Link>
-                <div className={classes["buttons-action"]}>
-                    <Button
-                        type={"button"}
-                        variant={"secondary"}
-                        className={classes["buttons-action__item"]}
-                        onClick={() => setIsEditOpen(true)}
-                    >
-                        <SquarePen />
-                    </Button>
-
-                    <Button
-                        type={"button"}
-                        variant={"secondary"}
-                        className={classes["buttons-action__item"]}
-                        onClick={() => setIsConfirmOpen(true)}
-                    >
-                        <Trash2 />
-                    </Button>
-                </div>
+                <CardActions
+                    onEdit={() => setIsEditOpen(true)}
+                    onDelete={() => setIsConfirmOpen(true)}
+                    className={classes["buttons-action"]}
+                />
             </li>
         </>
     );
