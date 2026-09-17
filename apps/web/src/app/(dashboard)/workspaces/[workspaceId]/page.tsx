@@ -59,7 +59,7 @@ export default function WorkspacePage() {
         <div className={classes["workspace"]}>
             <header className={classes["workspace-header"]}>
                 <div className={classes["workspace-header__title-block"]}>
-                    <h1>Workspace:{queryWorkspace.data?.title}</h1>
+                    <h2 className={classes["workspace-header__title"]}>{queryWorkspace.data?.title}</h2>
                 </div>
                 <Button
                     type={"button"}
