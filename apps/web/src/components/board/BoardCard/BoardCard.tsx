@@ -5,8 +5,11 @@ import classes from "./BoardCard.module.scss";
 import { Board } from "@myapp/shared-types";
 import CreateBoardModal from "@/components/board/CreateBoardModal/CreateBoardModal";
 import { useState } from "react";
-import Button from "@/components/ui/Button/Button";
-import { SquarePen, Trash2 } from "lucide-react";
+import CardActions from "@/components/ui/CardActions/CardActions";
+import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { boardKeys, deleteBoard } from "@/lib/board";
+import { useParams } from "next/navigation";
 
 interface BoardCardProps {
     card: Board;
@@ -14,10 +17,32 @@ interface BoardCardProps {
 }
 
 export default function BoardCard({ card, href }: BoardCardProps) {
+    const { workspaceId } = useParams();
+    const queryClient = useQueryClient();
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+    const deleteMutation = useMutation({
+        mutationFn: (boardId: number) => deleteBoard(Number(workspaceId), Number(boardId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: boardKeys.list(Number(workspaceId)) });
+            setIsConfirmOpen(false);
+        },
+    });
+
     return (
         <>
             {isEditOpen && <CreateBoardModal board={card} onClose={() => setIsEditOpen(false)} />}
+            {isConfirmOpen && (
+                <ConfirmModal
+                    title={"Delete board"}
+                    message={`Are you sure you want to delete "${card.title}"? This action cannot be undone.`}
+                    onConfirm={() => deleteMutation.mutate(card.id)}
+                    onClose={() => setIsConfirmOpen(false)}
+                    isPending={deleteMutation.isPending}
+                    errorMessage={deleteMutation.error?.message}
+                />
+            )}
             <li className={classes["cards__item"]}>
                 <Link href={href} className={classes["cards__link"]}>
                     <div className={classes["cards__item-info"]}>
@@ -27,25 +52,11 @@ export default function BoardCard({ card, href }: BoardCardProps) {
 
                     <hr className={classes["cards__divider"]} />
                 </Link>
-                <div className={classes["buttons-action"]}>
-                    <Button
-                        type={"button"}
-                        variant={"secondary"}
-                        className={classes["buttons-action__item"]}
-                        onClick={() => setIsEditOpen(true)}
-                    >
-                        <SquarePen />
-                    </Button>
-
-                    <Button
-                        type={"button"}
-                        variant={"secondary"}
-                        className={classes["buttons-action__item"]}
-                        // onClick={() => setIsConfirmOpen(true)}
-                    >
-                        <Trash2 />
-                    </Button>
-                </div>
+                <CardActions
+                    onEdit={() => setIsEditOpen(true)}
+                    onDelete={() => setIsConfirmOpen(true)}
+                    className={classes["buttons-action"]}
+                />
             </li>
         </>
     );

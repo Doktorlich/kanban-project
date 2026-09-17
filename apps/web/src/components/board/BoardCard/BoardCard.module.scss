@@ -2,9 +2,19 @@
 @use "../../../styles/mixins" as m;
 
 .cards__item {
+    position: relative;
+
     width: 100%;
     max-width: 320px;
 
+    &:hover {
+        .buttons-action {
+            opacity: 1;
+            visibility: visible;
+
+            pointer-events: auto;
+        }
+    }
 }
 
 .cards__link {
@@ -12,7 +22,7 @@
     display: block;
     height: 180px;
 
-    padding: 10px;
+    padding: 25px 10px 10px;
 
     border: 1px solid v.$color-border;
     border-radius: v.$radius-sm;
@@ -34,6 +44,11 @@
 }
 
 .cards__item-title {
+    overflow: hidden;
+
+    display: -webkit-box;
+    height: 90px;
+
     margin-top: 10px;
     margin-bottom: 5px;
 
@@ -41,40 +56,12 @@
     font-size: v.$font-size-lg;
 
     color: v.$color-accent-dark;
+
+    overflow-wrap: break-word;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
 }
 
 .cards__item-qty {
     margin: 0;
-}
-
-.owners {
-    @include m.flex-vertical-center;
-
-    // display: flex;
-
-    gap: 10px;
-}
-
-.owners__list {
-    display: flex;
-}
-
-.owners__item {
-    @include m.flex-center;
-    width: 32px;
-    height: 32px;
-
-    background-color: v.$color-bg-primary;
-
-    border: 1px solid v.$color-accent;
-    border-radius: v.$radius-full;
-
-    font-size: v.$font-size-base;
-
-    &:not(:first-child) {
-        margin-left: -8px;
-    }
-}
-
-.owners__span {
 }
