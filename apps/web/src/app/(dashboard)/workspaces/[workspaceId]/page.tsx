@@ -7,8 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getWorkspaceById, workspaceKeys } from "@/lib/workspace";
 import { useParams } from "next/navigation";
 import { boardKeys, getBoards } from "@/lib/board";
+import { useState } from "react";
+import CreateBoardModal from "@/components/board/CreateBoardModal/CreateBoardModal";
 
 export default function WorkspacePage() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { workspaceId } = useParams();
 
     const queryWorkspace = useQuery({
@@ -20,6 +23,7 @@ export default function WorkspacePage() {
         queryKey: boardKeys.list(Number(workspaceId)),
         queryFn: () => getBoards(Number(workspaceId)),
     });
+
     function renderContent() {
         if (queryBoards.isPending) {
             return <p>Loading...</p>;
@@ -38,7 +42,11 @@ export default function WorkspacePage() {
                     );
                 })}
                 <li className={classes["cards__item"]}>
-                    <Button type={"button"} className={classes["workspace-cards__add-board"]}>
+                    <Button
+                        type={"button"}
+                        className={classes["workspace-cards__add-board"]}
+                        onClick={() => setIsModalOpen(true)}
+                    >
                         <span>+</span>
                         <p>Create board</p>
                     </Button>
@@ -46,18 +54,27 @@ export default function WorkspacePage() {
             </ul>
         );
     }
+
     return (
         <div className={classes["workspace"]}>
             <header className={classes["workspace-header"]}>
                 <div className={classes["workspace-header__title-block"]}>
                     <h1>Workspace:{queryWorkspace.data?.title}</h1>
                 </div>
-                <Button type={"button"} className={classes["workspace-header__add-board"]}>
+                <Button
+                    type={"button"}
+                    className={classes["workspace-header__add-board"]}
+                    onClick={() => setIsModalOpen(true)}
+                >
                     + New board
                 </Button>
             </header>
 
-            <section className={classes["workspace-cards"]}>{renderContent()}</section>
+            <section className={classes["workspace-cards"]}>
+                {isModalOpen && <CreateBoardModal onClose={() => setIsModalOpen(false)} />}
+
+                {renderContent()}
+            </section>
         </div>
     );
 }
