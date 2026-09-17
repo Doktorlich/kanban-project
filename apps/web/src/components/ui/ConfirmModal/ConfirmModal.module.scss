@@ -17,6 +17,9 @@
 }
 
 .modal__message {
+    overflow: hidden;
+
+    overflow-wrap: break-word;
 }
 
 .modal__buttons-action {
