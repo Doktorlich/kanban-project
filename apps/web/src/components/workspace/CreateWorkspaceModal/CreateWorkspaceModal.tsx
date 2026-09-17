@@ -35,6 +35,7 @@ export default function CreateWorkspaceModal({ onClose, workspace }: CreateWorks
         mutationFn: (data: WorkspacePayload) => updateWorkspace(workspace!.id, data),
         onSuccess: data => {
             queryClient.invalidateQueries({ queryKey: workspaceKeys.detail(data.id) });
+            queryClient.invalidateQueries({ queryKey: workspaceKeys.all });
             onClose();
         },
     });
