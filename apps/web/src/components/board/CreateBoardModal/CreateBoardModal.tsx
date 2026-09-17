@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CreateBoardModalProps {
     onClose: () => void;
-    board?: Board; // для будущего update
+    board?: Board;
 }
 
 export default function CreateBoardModal({ onClose, board }: CreateBoardModalProps) {
