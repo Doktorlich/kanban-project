@@ -6,8 +6,6 @@ import { Workspace } from "@myapp/shared-types";
 import EntityAvatar from "@/components/ui/EntityAvatar/EntityAvatar";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteWorkspace, workspaceKeys } from "@/lib/workspace";
-import { SquarePen, Trash2 } from "lucide-react";
-import Button from "@/components/ui/Button/Button";
 import { useState } from "react";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
 import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";

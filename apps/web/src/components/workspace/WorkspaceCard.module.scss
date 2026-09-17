@@ -12,18 +12,17 @@
             opacity: 1;
             visibility: visible;
 
-            pointer-events: auto; /* Делаем кнопки кликабельными */
+            pointer-events: auto;
         }
     }
 }
 
-
 .link {
     box-sizing: border-box;
     display: block;
+    height: 180px;
 
     padding: 10px;
-
 
     border: 1px solid v.$color-border;
     border-radius: v.$radius-sm;
@@ -45,6 +44,12 @@
 }
 
 .cards__item-title {
+    overflow: hidden;
+
+    display: -webkit-box;
+
+    height: 23px;
+
     margin-top: 10px;
     margin-bottom: 5px;
 
@@ -52,6 +57,10 @@
     font-size: v.$font-size-lg;
 
     color: v.$color-accent;
+    overflow-wrap: break-word;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }
 
 .cards__item-qty {
