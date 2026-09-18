@@ -21,7 +21,7 @@ export default async function BoardsPage({ params }: BoardsProps) {
         <div className={classes["board-page"]}>
             <header className={classes["board-page__header"]}>
                 <div className={classes["board-page__title-wrapper"]}>
-                    <h1 className={classes["board-page__title"]}>Board: {board.nameBoard}</h1>
+                    <h2 className={classes["board-page__title"]}>Board: {board.nameBoard}</h2>
                 </div>
             </header>
             <ul className={classes["column__list"]}>

@@ -48,7 +48,7 @@ export default function WorkspacesPage() {
         <div className={classes.workspaces}>
             <header className={classes["workspaces-header"]}>
                 <div className={classes["workspaces-header__title-block"]}>
-                    <h1>Your Workspaces</h1>
+                    <h2>Your Workspaces</h2>
                     <p>{query.data?.length ?? 0} workspaces</p>
                 </div>
                 {/*Данная кнопка под вопросом, т к есть элемент создания внутри карточек workspaces*/}
