@@ -19,8 +19,8 @@ interface WorkspaceCardProps {
 export default function WorkspaceCard({ card, href }: WorkspaceCardProps) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
-
     const queryClient = useQueryClient();
+
     const deleteMutation = useMutation({
         mutationFn: deleteWorkspace,
         onSuccess: () => {

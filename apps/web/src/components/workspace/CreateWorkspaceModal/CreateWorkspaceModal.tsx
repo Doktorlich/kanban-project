@@ -15,6 +15,7 @@ interface CreateWorkspaceModalProps {
 export default function CreateWorkspaceModal({ onClose, workspace }: CreateWorkspaceModalProps) {
     const queryClient = useQueryClient();
     const isEditMode = Boolean(workspace);
+
     const {
         register,
         handleSubmit,
@@ -31,6 +32,7 @@ export default function CreateWorkspaceModal({ onClose, workspace }: CreateWorks
             onClose();
         },
     });
+
     const updateMutation = useMutation({
         mutationFn: (data: WorkspacePayload) => updateWorkspace(workspace!.id, data),
         onSuccess: data => {

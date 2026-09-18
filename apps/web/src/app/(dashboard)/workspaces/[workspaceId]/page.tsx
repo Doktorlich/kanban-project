@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { boardKeys, getBoards } from "@/lib/board";
 import { useState } from "react";
 import CreateBoardModal from "@/components/board/CreateBoardModal/CreateBoardModal";
+import queryState from "@/lib/query-state";
 
 export default function WorkspacePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,16 +25,23 @@ export default function WorkspacePage() {
         queryFn: () => getBoards(Number(workspaceId)),
     });
 
+    const stateWorkspace = queryState(queryWorkspace, {
+        isEmpty: data => !data,
+        emptyMessage: "Workspace not found",
+    });
+
+    if (stateWorkspace) {
+        return stateWorkspace;
+    }
+
     function renderContent() {
-        if (queryBoards.isPending) {
-            return <p>Loading...</p>;
+        const stateBoards = queryState(queryBoards, {
+            emptyMessage: "No boards yet — create your first one",
+        });
+        if (stateBoards) {
+            return stateBoards;
         }
-        if (queryBoards.isError) {
-            return <p>Error loading data</p>;
-        }
-        if (!queryBoards.data || queryBoards.data.length === 0) {
-            return <p>No boards yet — create your first one</p>;
-        }
+        if (!queryBoards.data) return null;
         return (
             <ul className={classes["workspace-cards__list"]}>
                 {queryBoards.data.map(board => {

@@ -7,6 +7,7 @@ import { getWorkspaces, workspaceKeys } from "@/lib/workspace";
 import { useState } from "react";
 
 import CreateWorkspaceModal from "@/components/workspace/CreateWorkspaceModal/CreateWorkspaceModal";
+import queryState from "@/lib/query-state";
 
 export default function WorkspacesPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,15 +15,15 @@ export default function WorkspacesPage() {
 
     // стилизовать параграфы в условиях
     function renderContent() {
-        if (query.isPending) {
-            return <p>Loading...</p>;
+        const stateWorkspace = queryState(query, {
+            isEmpty: data => !data,
+            emptyMessage: "Workspace not found",
+        });
+
+        if (stateWorkspace) {
+            return stateWorkspace;
         }
-        if (query.isError) {
-            return <p>Error loading data</p>;
-        }
-        if (!query.data || query.data.length === 0) {
-            return <p>No workspaces yet — create your first one</p>;
-        }
+        if (!query.data) return null;
         return (
             <ul className={classes["workspaces-cards__list"]}>
                 {query.data.map(card => (
