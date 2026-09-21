@@ -17,11 +17,39 @@ export async function createColumn(boardId: number, dto: CreateColumnDto) {
 }
 
 export async function getColumns(boardId: number) {
-    return prisma.column.findMany({
+    const columns = await prisma.column.findMany({
         where: { boardId },
-        include: { tasks: { orderBy: { position: "asc" } } },
+        include: {
+            tasks: {
+                orderBy: { position: "asc" },
+                include: {
+                    owners: {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    username: true,
+                                    firstName: true,
+                                    lastName: true,
+                                    avatarUrl: true,
+                                },
+                            },
+                        },
+                    },
+                    priority: true,
+                },
+            },
+        },
         orderBy: { position: "asc" },
     });
+
+    return columns.map(column => ({
+        ...column,
+        tasks: column.tasks.map(task => ({
+            ...task,
+            owners: task.owners.map(o => o.user),
+        })),
+    }));
 }
 export async function getColumnById(boardId: number, columnId: number) {
     const column = await prisma.column.findUnique({ where: { id: columnId, boardId } });
