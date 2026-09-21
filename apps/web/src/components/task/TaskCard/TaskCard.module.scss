@@ -4,12 +4,11 @@
 .task-card__item {
 }
 
-
 .task-card__link {
     box-sizing: border-box;
     display: block;
     width: 100%;
-min-width: 300px;
+    min-width: 300px;
 
     padding: 10px;
 
@@ -22,7 +21,7 @@ min-width: 300px;
     text-decoration: none;
 
     &:hover {
-        background: v.$color-bg-primary
+        background: v.$color-bg-primary;
     }
 
     &:active {
@@ -42,19 +41,19 @@ min-width: 300px;
     font-size: v.$font-size-sm;
     font-weight: bold;
 
-    &--low {
+    &--1 {
         background-color: v.$color-tag-low-bg;
 
         color: v.$color-tag-low-text;
     }
 
-    &--medium {
+    &--2 {
         background-color: v.$color-tag-important-bg;
 
         color: v.$color-tag-important-text;
     }
 
-    &--high {
+    &--3 {
         background-color: v.$color-tag-high-bg;
 
         color: v.$color-tag-high-text;
@@ -78,11 +77,11 @@ min-width: 300px;
 }
 
 .owners__list {
-    @include m.flex-vertical-center;
-
     // display: flex;
 
     gap: 10px;
+
+    @include m.flex-vertical-center;
 }
 
 .owners__item {
