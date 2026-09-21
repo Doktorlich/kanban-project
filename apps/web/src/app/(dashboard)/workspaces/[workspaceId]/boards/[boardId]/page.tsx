@@ -1,27 +1,36 @@
+"use client";
+
 import Column from "@/components/board/Column/Column";
-import { Board, COLUMNS, Workspace, WORKSPACES } from "@/constants/mock-workspaces";
 import TaskCard from "@/components/task/TaskCard/TaskCard";
 import classes from "./page.module.scss";
 import clsx from "clsx";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { boardKeys, getBoardById } from "@/lib/board";
+import queryState from "@/lib/query-state";
 
-interface BoardsProps {
-    params: Promise<{ workspaceId: string; boardId: string }>;
-}
+// interface BoardsProps {}
 
-export default async function BoardsPage({ params }: BoardsProps) {
-    const { workspaceId, boardId } = await params;
-    const workspace: Workspace | undefined = WORKSPACES.find(workspace => workspace.id === +workspaceId);
-    const board: Board | undefined = workspace?.boards.find(board => board.id === +boardId);
+export default function BoardsPage() {
+    const { workspaceId, boardId } = useParams();
 
-    if (!board) {
-        return <div className={classes["workspace"]}>Board not found</div>;
+    const queryBoard = useQuery({
+        queryKey: boardKeys.detail(Number(boardId)),
+        queryFn: () => getBoardById(Number(workspaceId), Number(boardId)),
+    });
+    const stateBoards = queryState(queryBoard, {
+        emptyMessage: "Board not found",
+    });
+    if (stateBoards) {
+        return stateBoards;
     }
+
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
     return (
         <div className={classes["board-page"]}>
             <header className={classes["board-page__header"]}>
                 <div className={classes["board-page__title-wrapper"]}>
-                    <h2 className={classes["board-page__title"]}>Board: {board.nameBoard}</h2>
+                    <h2 className={classes["board-page__title"]}>Board: {queryBoard.data?.title}</h2>
                 </div>
             </header>
             <ul className={classes["column__list"]}>
