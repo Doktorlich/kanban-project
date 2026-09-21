@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { boardKeys, getBoardById } from "@/lib/board";
 import queryState from "@/lib/query-state";
+import { columnKeys, getColumns } from "@/lib/column";
 
 // interface BoardsProps {}
 
@@ -18,35 +19,40 @@ export default function BoardsPage() {
         queryKey: boardKeys.detail(Number(boardId)),
         queryFn: () => getBoardById(Number(workspaceId), Number(boardId)),
     });
-    const stateBoards = queryState(queryBoard, {
+
+    const queryColumns = useQuery({
+        queryKey: columnKeys.list(Number(boardId)),
+        queryFn: () => getColumns(Number(workspaceId), Number(boardId)),
+    });
+
+    const stateBoard = queryState(queryBoard, {
         emptyMessage: "Board not found",
     });
-    if (stateBoards) {
-        return stateBoards;
+    if (stateBoard) {
+        return stateBoard;
     }
-
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
-    return (
-        <div className={classes["board-page"]}>
-            <header className={classes["board-page__header"]}>
-                <div className={classes["board-page__title-wrapper"]}>
-                    <h2 className={classes["board-page__title"]}>Board: {queryBoard.data?.title}</h2>
-                </div>
-            </header>
+    function renderContent() {
+        const stateColumn = queryState(queryColumns, {
+            emptyMessage: "No columns yet — create your first one",
+        });
+        if (stateColumn) {
+            return stateColumn;
+        }
+        if (!queryColumns.data) return null;
+        return (
             <ul className={classes["column__list"]}>
-                {COLUMNS.map(col => {
-                    const filteredTasks = board?.tasks.filter(task => task.status === col.id);
-
+                {queryColumns.data.map(col => {
                     return (
                         <li key={col.id} className={classes["column__item"]}>
-                            <Column status={col.title} countTasks={filteredTasks?.length}>
+                            <Column status={col.title} countTasks={col.tasks.length}>
                                 <ul className={classes["board-column__list"]}>
-                                    {filteredTasks?.length === 0 ? (
+                                    {col.tasks.length === 0 ? (
                                         <li className={columnItemClassName}>
                                             <p className={classes["board-column__empty-text"]}>No tasks</p>
                                         </li>
                                     ) : (
-                                        filteredTasks?.map(task => {
+                                        col.tasks?.map(task => {
                                             return (
                                                 <TaskCard
                                                     key={task.id}
@@ -62,6 +68,17 @@ export default function BoardsPage() {
                     );
                 })}
             </ul>
+        );
+    }
+
+    return (
+        <div className={classes["board-page"]}>
+            <header className={classes["board-page__header"]}>
+                <div className={classes["board-page__title-wrapper"]}>
+                    <h2 className={classes["board-page__title"]}>{queryBoard.data?.title}</h2>
+                </div>
+            </header>
+            {renderContent()}
         </div>
     );
 }
