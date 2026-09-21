@@ -1,7 +1,8 @@
 import { prisma } from "../../prisma";
 import { CreateTaskDto, UpdateTaskDto } from "./task.types";
+import { publicUserSelect } from "../../lib/prisma-selects";
 
-export async function createTask(columnId: number, dto: CreateTaskDto) {
+export async function createTask(columnId: number, creatorId: number, dto: CreateTaskDto) {
     const lastTask = await prisma.task.findFirst({
         where: { columnId },
         orderBy: { position: "desc" },
@@ -14,9 +15,17 @@ export async function createTask(columnId: number, dto: CreateTaskDto) {
             description: dto.description,
             position: nextPosition,
             priorityId: dto.priorityId,
+            owners: {
+                create: { userId: creatorId },
+            },
+        },
+        include: {
+            owners: { include: { user: { select: publicUserSelect } } },
+            priority: true,
         },
     });
 }
+
 export async function getTasks(columnId: number) {
     return prisma.task.findMany({
         where: {

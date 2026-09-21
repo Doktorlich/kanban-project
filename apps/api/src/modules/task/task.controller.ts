@@ -3,8 +3,14 @@ import * as taskService from "./task.service";
 
 export async function create(req: Request, res: Response) {
     const { columnId } = req.params;
+    const creatorId = req.userId;
+
+    if (!creatorId) {
+        res.status(401).json({ message: "Not authenticated" });
+        return;
+    }
     try {
-        const task = await taskService.createTask(Number(columnId), req.body);
+        const task = await taskService.createTask(Number(columnId), Number(creatorId), req.body);
         res.status(201).json(task);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
