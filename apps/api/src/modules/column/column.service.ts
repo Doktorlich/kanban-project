@@ -18,9 +18,9 @@ export async function createColumn(boardId: number, dto: CreateColumnDto) {
 
 export async function getColumns(boardId: number) {
     return prisma.column.findMany({
-        where: {
-            boardId,
-        },
+        where: { boardId },
+        include: { tasks: { orderBy: { position: "asc" } } },
+        orderBy: { position: "asc" },
     });
 }
 export async function getColumnById(boardId: number, columnId: number) {
