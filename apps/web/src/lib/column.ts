@@ -2,6 +2,7 @@ import { z } from "zod";
 import { columnSchema } from "@myapp/shared-types";
 import { apiFetch } from "@/lib/api";
 import { Column } from "@myapp/shared-types";
+import { ColumnWithTasks } from "@myapp/shared-types";
 
 export type ColumnPayloadCreate = z.infer<typeof columnSchema.createColumnSchema>;
 export type ColumnPayloadUpdate = z.infer<typeof columnSchema.updateColumnSchema>;
@@ -20,7 +21,7 @@ export function createColumn(workspaceId: number, boardId: number, payload: Colu
 }
 
 export function getColumns(workspaceId: number, boardId: number) {
-    return apiFetch<Column[]>(`/workspaces/${workspaceId}/boards/${boardId}/columns/`, {
+    return apiFetch<ColumnWithTasks[]>(`/workspaces/${workspaceId}/boards/${boardId}/columns/`, {
         method: "GET",
     });
 }
