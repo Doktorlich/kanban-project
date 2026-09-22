@@ -1,0 +1,47 @@
+// ColumnTitle.module.scss
+@use "../../../../styles/variables" as v;
+@use "../../../../styles/mixins" as m;
+
+.column__title-view {
+    box-sizing: border-box;
+
+    padding: 4px 8px;
+
+    border-radius: v.$radius-full;
+
+    color: v.$color-bg-surface;
+
+    transition: background-color 0.15s ease;
+
+    cursor: text;
+
+    &:hover {
+        background-color: rgba(v.$color-bg-surface, 0.12);
+    }
+}
+
+.column__title-edit {
+    display: flex;
+
+    align-items: center;
+}
+
+.column__input {
+    height: 25px;
+}
+
+.column__button-list {
+    display: flex;
+
+    margin-left: 5px;
+
+    transform: scale(0.8);
+}
+
+.column__button {
+    width: 50px;
+    height: 25px;
+}
+
+.column__button--cancel {
+}

@@ -1,15 +1,16 @@
 import { ReactNode } from "react";
 import Button from "@/components/ui/Button/Button";
 import classes from "./Column.module.scss";
-
+import ColumnTitle from "./ColumnTitle/ColumnTitle";
+import { type Column } from "@myapp/shared-types";
 
 interface ColumnProps {
     children: ReactNode;
-    status: string;
+    column: Column;
     countTasks: number | undefined;
 }
 
-export default function Column({ children, status, countTasks }: ColumnProps) {
+export default function Column({ children, countTasks, column }: ColumnProps) {
     return (
         <section className={classes.column}>
             <div className={classes["container"]}>
@@ -17,7 +18,7 @@ export default function Column({ children, status, countTasks }: ColumnProps) {
                     <span className={classes["column__header-count"]}>
                         <b>{countTasks}</b>
                     </span>
-                    <h3 className={classes["column__header-title"]}>{status}</h3>
+                    <ColumnTitle title={column.title} columnId={column.id} />
                     <Button
                         variant={"ghost"}
                         type={"button"}

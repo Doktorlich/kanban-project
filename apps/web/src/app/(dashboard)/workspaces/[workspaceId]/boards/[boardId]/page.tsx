@@ -45,7 +45,7 @@ export default function BoardsPage() {
                 {queryColumns.data.map(col => {
                     return (
                         <li key={col.id} className={classes["column__item"]}>
-                            <Column status={col.title} countTasks={col.tasks.length}>
+                            <Column countTasks={col.tasks.length} column={col}>
                                 <ul className={classes["board-column__list"]}>
                                     {col.tasks.length === 0 ? (
                                         <li className={columnItemClassName}>

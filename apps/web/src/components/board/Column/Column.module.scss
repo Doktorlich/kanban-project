@@ -21,18 +21,21 @@
 
 .column__header {
     @include m.flex-vertical-center;
+    overflow: hidden;
+
     box-sizing: border-box;
+    width: 100%;
 
     margin-bottom: 16px;
     padding: 0 8px;
 
     background-color: v.$color-accent-dark;
-
     border-radius: v.$radius-full;
 }
 
 .column__header-count {
     @include m.flex-center;
+    flex-shrink: 0;
     width: 41px;
     height: 32px;
 
@@ -48,6 +51,8 @@
 }
 
 .column__create-board {
+    flex-shrink: 0;
+
     margin-left: auto;
 
     background-color: transparent;
