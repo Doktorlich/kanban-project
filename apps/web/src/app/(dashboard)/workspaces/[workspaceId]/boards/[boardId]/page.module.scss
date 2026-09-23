@@ -15,6 +15,7 @@
 }
 
 .board-page__title-wrapper {
+    @include m.flex-jc-space-b
 
 }
 

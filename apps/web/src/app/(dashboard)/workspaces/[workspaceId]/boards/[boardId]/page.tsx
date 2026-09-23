@@ -5,19 +5,28 @@ import TaskCard from "@/components/task/TaskCard/TaskCard";
 import classes from "./page.module.scss";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { boardKeys, getBoardById } from "@/lib/board";
 import queryState from "@/lib/query-state";
-import { columnKeys, getColumns } from "@/lib/column";
+import { columnKeys, createColumn, getColumns } from "@/lib/column";
+import Button from "@/components/ui/Button/Button";
+import { Plus } from "lucide-react";
 
 // interface BoardsProps {}
-
+const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const { workspaceId, boardId } = useParams();
-
+    const queryClient = useQueryClient();
     const queryBoard = useQuery({
         queryKey: boardKeys.detail(Number(boardId)),
         queryFn: () => getBoardById(Number(workspaceId), Number(boardId)),
+    });
+
+    const createColumnMutation = useMutation({
+        mutationFn: () => createColumn(Number(workspaceId), Number(boardId), DEFAULT_COLUMN_TITLE),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: columnKeys.list(Number(boardId)) });
+        },
     });
 
     const queryColumns = useQuery({
@@ -76,6 +85,10 @@ export default function BoardsPage() {
             <header className={classes["board-page__header"]}>
                 <div className={classes["board-page__title-wrapper"]}>
                     <h2 className={classes["board-page__title"]}>{queryBoard.data?.title}</h2>
+                    <Button type={"button"} variant={"primary"} onClick={() => createColumnMutation.mutate()}>
+                        Add New Column
+                        <Plus size={24} />
+                    </Button>
                 </div>
             </header>
             {renderContent()}
