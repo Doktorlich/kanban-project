@@ -23,27 +23,21 @@ export function getTasks(workspaceId: number, boardId: number, columnId: number)
     });
 }
 
-export function getTaskById(workspaceId: number, boardId: number, columnId: number, taskId: number) {
-    return apiFetch<Task>(`/workspaces/${workspaceId}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+export function getTaskById(workspaceId: number, boardId: number, taskId: number) {
+    return apiFetch<Task>(`/workspaces/${workspaceId}/boards/${boardId}/tasks/${taskId}`, {
         method: "GET",
     });
 }
 
-export function updateTask(
-    workspaceId: number,
-    boardId: number,
-    columnId: number,
-    taskId: number,
-    payload: TaskPayloadUpdate,
-) {
-    return apiFetch<Task>(`/workspaces/${workspaceId}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+export function updateTask(workspaceId: number, boardId: number, taskId: number, payload: TaskPayloadUpdate) {
+    return apiFetch<Task>(`/workspaces/${workspaceId}/boards/${boardId}/tasks/${taskId}`, {
         method: "PATCH",
         body: JSON.stringify(payload),
     });
 }
 
-export function deleteTask(workspaceId: number, boardId: number, columnId: number, taskId: number) {
-    return apiFetch<void>(`/workspaces/${workspaceId}/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+export function deleteTask(workspaceId: number, boardId: number, taskId: number) {
+    return apiFetch<void>(`/workspaces/${workspaceId}/boards/${boardId}/tasks/${taskId}`, {
         method: "DELETE",
     });
 }
