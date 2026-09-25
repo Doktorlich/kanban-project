@@ -8,7 +8,7 @@ import { authRouter } from "./modules/auth/auth.routes";
 import { workspaceRouter } from "./modules/workspace/workspace.routes";
 import { boardRouter } from "./modules/board/board.routes";
 import { columnRouter } from "./modules/column/column.routes";
-import { taskRouter } from "./modules/task/task.routes";
+import { taskDetailRouter, taskRouter } from "./modules/task/task.routes";
 const app = express();
 
 app.use(
@@ -25,6 +25,7 @@ app.use("/workspaces", workspaceRouter);
 app.use("/workspaces/:workspaceId/boards", boardRouter);
 app.use("/workspaces/:workspaceId/boards/:boardId/columns", columnRouter);
 app.use("/workspaces/:workspaceId/boards/:boardId/columns/:columnId/tasks", taskRouter);
+app.use("/workspaces/:workspaceId/boards/:boardId/tasks", taskDetailRouter);
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });

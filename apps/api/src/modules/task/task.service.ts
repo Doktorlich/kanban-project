@@ -34,12 +34,11 @@ export async function getTasks(columnId: number) {
     });
 }
 
-export async function getTaskById(boardId: number, columnId: number, taskId: number) {
+export async function getTaskById(boardId: number, taskId: number) {
     const task = await prisma.task.findUnique({
         where: {
             id: taskId,
             column: { boardId },
-            columnId,
         },
     });
     if (!task) {
@@ -48,11 +47,10 @@ export async function getTaskById(boardId: number, columnId: number, taskId: num
     return task;
 }
 
-export async function updateTask(boardId: number, columnId: number, taskId: number, dto: UpdateTaskDto) {
+export async function updateTask(boardId: number, taskId: number, dto: UpdateTaskDto) {
     return prisma.task.update({
         where: {
             id: taskId,
-            columnId,
             column: { boardId },
         },
         data: {
@@ -64,11 +62,10 @@ export async function updateTask(boardId: number, columnId: number, taskId: numb
     });
 }
 
-export async function deleteTask(boardId: number, columnId: number, taskId: number) {
+export async function deleteTask(boardId: number, taskId: number) {
     return prisma.task.delete({
         where: {
             id: taskId,
-            columnId,
             column: { boardId },
         },
     });

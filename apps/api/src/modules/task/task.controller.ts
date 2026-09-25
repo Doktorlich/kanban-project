@@ -28,9 +28,9 @@ export async function getAll(req: Request, res: Response) {
 }
 
 export async function getOne(req: Request, res: Response) {
-    const { boardId, columnId, taskId } = req.params;
+    const { boardId, taskId } = req.params;
     try {
-        const task = await taskService.getTaskById(Number(boardId), Number(columnId), Number(taskId));
+        const task = await taskService.getTaskById(Number(boardId), Number(taskId));
         res.status(200).json(task);
     } catch (error) {
         res.status(404).json({ message: (error as Error).message });
@@ -38,9 +38,9 @@ export async function getOne(req: Request, res: Response) {
 }
 
 export async function update(req: Request, res: Response) {
-    const { boardId, columnId, taskId } = req.params;
+    const { boardId, taskId } = req.params;
     try {
-        const task = await taskService.updateTask(Number(boardId), Number(columnId), Number(taskId), req.body);
+        const task = await taskService.updateTask(Number(boardId), Number(taskId), req.body);
         res.status(200).json(task);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
@@ -48,9 +48,9 @@ export async function update(req: Request, res: Response) {
 }
 
 export async function remove(req: Request, res: Response) {
-    const { boardId, columnId, taskId } = req.params;
+    const { boardId, taskId } = req.params;
     try {
-        await taskService.deleteTask(Number(boardId), Number(columnId), Number(taskId));
+        await taskService.deleteTask(Number(boardId), Number(taskId));
         res.status(204).send();
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });

@@ -6,6 +6,7 @@ import { taskSchema } from "@myapp/shared-types";
 import { validate } from "../../middleware/validate.middleware";
 
 export const taskRouter = Router({ mergeParams: true });
+export const taskDetailRouter = Router({ mergeParams: true });
 
 taskRouter.post(
     "/",
@@ -15,12 +16,13 @@ taskRouter.post(
     taskController.create,
 );
 taskRouter.get("/", requireAuth, requireRole("board", ["owner", "member"]), taskController.getAll);
-taskRouter.get("/:taskId", requireAuth, requireRole("board", ["owner", "member"]), taskController.getOne);
-taskRouter.patch(
+
+taskDetailRouter.get("/:taskId", requireAuth, requireRole("board", ["owner", "member"]), taskController.getOne);
+taskDetailRouter.patch(
     "/:taskId",
     requireAuth,
     requireRole("board", ["owner", "member"]),
     validate(taskSchema.updateTaskSchema),
     taskController.update,
 );
-taskRouter.delete("/:taskId", requireAuth, requireRole("board", ["owner"]), taskController.remove);
+taskDetailRouter.delete("/:taskId", requireAuth, requireRole("board", ["owner"]), taskController.remove);
