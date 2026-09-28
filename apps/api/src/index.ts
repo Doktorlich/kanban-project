@@ -9,6 +9,7 @@ import { workspaceRouter } from "./modules/workspace/workspace.routes";
 import { boardRouter } from "./modules/board/board.routes";
 import { columnRouter } from "./modules/column/column.routes";
 import { taskDetailRouter, taskRouter } from "./modules/task/task.routes";
+import { priorityRouter } from "./modules/priority/priority.routes";
 const app = express();
 
 app.use(
@@ -21,6 +22,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use("/auth", authRouter);
+app.use("/priorities", priorityRouter);
 app.use("/workspaces", workspaceRouter);
 app.use("/workspaces/:workspaceId/boards", boardRouter);
 app.use("/workspaces/:workspaceId/boards/:boardId/columns", columnRouter);
