@@ -40,11 +40,15 @@ export async function getTaskById(boardId: number, taskId: number) {
             id: taskId,
             column: { boardId },
         },
+        include: {
+            owners: { include: { user: { select: publicUserSelect } } },
+            priority: true,
+        },
     });
     if (!task) {
         throw new Error("Task not found");
     }
-    return task;
+    return { ...task, owners: task.owners.map(o => o.user) };
 }
 
 export async function updateTask(boardId: number, taskId: number, dto: UpdateTaskDto) {
