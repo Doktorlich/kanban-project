@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { columnKeys, deleteColumn } from "@/lib/column";
 import { useParams } from "next/navigation";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
+import CreateTaskModal from "@/components/task/CreateTaskModal/CreateTaskModal";
 
 interface ColumnProps {
     children: ReactNode;
@@ -17,6 +18,7 @@ interface ColumnProps {
 
 export default function Column({ children, countTasks, column }: ColumnProps) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
     const mutation = useMutation({
@@ -51,6 +53,7 @@ export default function Column({ children, countTasks, column }: ColumnProps) {
                             type={"button"}
                             className={classes["column__create-board"]}
                             aria-label={"Add task"}
+                            onClick={() => setIsCreateTaskOpen(true)}
                         ></Button>
                         <Button variant="danger" onClick={() => setIsConfirmOpen(true)}>
                             <Trash size={24} />
@@ -59,6 +62,7 @@ export default function Column({ children, countTasks, column }: ColumnProps) {
                 </div>
                 {children}
             </section>
+            {isCreateTaskOpen && <CreateTaskModal columnId={column.id} onClose={() => setIsCreateTaskOpen(false)} />}
         </>
     );
 }
