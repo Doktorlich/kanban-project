@@ -1,30 +1,51 @@
+"use client";
+
 import Button from "@/components/ui/Button/Button";
-import Select from "@/components/ui/Select/Select";
 import Textarea from "@/components/ui/Textarea/Textarea";
-import {Board, COLUMNS, TaskCard, Workspace} from "@/constants/mock-workspaces";
-import CommentUserItem from "@/components/task/CommentUserItem/CommentUserItem";
 import CloseModalButton from "@/components/ui/CloseModalButton";
 import classes from "./TaskDetails.module.scss";
-import clsx from "clsx";
-import { Calendar, Send } from "lucide-react";
+import { Calendar } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getTaskById, taskKeys } from "@/lib/task";
+import { columnKeys, getColumnById } from "@/lib/column";
+import queryState from "@/lib/query-state";
 
 interface TaskDetailsProps {
-    board: Board;
-    task: TaskCard;
-    workspace:Workspace;
     isModal: boolean;
 }
 
-export default async function TaskDetails({ workspace, board, task, isModal }: TaskDetailsProps) {
-    const statusOptions = COLUMNS.map(col => ({
-        value: col.id,
-        label: col.title,
-    }));
+export default function TaskDetails({ isModal }: TaskDetailsProps) {
+    const { workspaceId, boardId, taskId } = useParams();
 
-    const column = COLUMNS.find(col => col.id === task.status);
-    const priorityClassName = clsx(classes["task-card__priority"], classes[`task-card__priority--${task.priority}`]);
-    const dateObj = new Date(task.dateCreated);
+    const queryTask = useQuery({
+        queryKey: taskKeys.detail(Number(taskId)),
+        queryFn: () => getTaskById(Number(workspaceId), Number(boardId), Number(taskId)),
+    });
+    const queryColumn = useQuery({
+        queryKey: columnKeys.detail(Number(queryTask.data?.columnId)),
+        queryFn: () => getColumnById(Number(workspaceId), Number(boardId), Number(queryTask.data?.columnId)),
+        enabled: !!queryTask.data?.columnId,
+    });
+
+    const stateTask = queryState(queryTask, {
+        emptyMessage: "Task not found",
+    });
+    if (stateTask) {
+        return stateTask;
+    }
+
+    const task = queryTask.data;
+    if (!task) {
+        return null;
+    }
+
+    // const priorityClassName = clsx(
+    //     classes["task-card__priority"],
+    //     classes[`task-card__priority--${queryTask.data?.priority}`],
+    // );
+    const dateObj = new Date(task.createdAt);
 
     const formattedDate: string = dateObj.toLocaleDateString("en-US", {
         month: "short",
@@ -34,8 +55,8 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
     return (
         <div className={classes["task-card"]}>
             <div className={classes["task-card__actions"]}>
-                <p className={priorityClassName}>{task.priority}</p>
-                {/*<Button type="button">share</Button>*/}
+                <p className={classes["task-card__priority"]}>{task.priority.name}</p>
+
                 {isModal ? (
                     <CloseModalButton
                         className={classes["task-card__close-btn"]}
@@ -43,7 +64,7 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
                     ></CloseModalButton>
                 ) : (
                     <Link
-                        href={`/workspaces/${workspace.id}/boards/${board.id}`}
+                        href={`/workspaces/${workspaceId}/boards/${boardId}`}
                         className={classes["task-card__close-btn"]}
                     ></Link>
                 )}
@@ -54,10 +75,11 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
                 {/*ХЛЕБНЫЕ КРОШКИ, РЕАЛИЗОВАТЬ ПОЗЖЕ, ВЫЯСНИТЬ КАК ЛУЧШЕ*/}
                 <div className={classes["task-card__breadcrumbs"]}>
                     <p className={classes["task-card__breadcrumb-item"]}>
-                        in board <span className={classes["task-card__breadcrumb-board"]}>{board?.nameBoard}</span>
+                        in board <span className={classes["task-card__breadcrumb-board"]}>BOARD</span>
                     </p>
                     <p className={classes["task-card__breadcrumb-item"]}>
-                        column <span className={classes["task-card__breadcrumb-column"]}>{column?.title}</span>
+                        column{" "}
+                        <span className={classes["task-card__breadcrumb-column"]}>{queryColumn.data?.title}</span>
                     </p>
                 </div>
             </div>
@@ -69,7 +91,7 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
                         <ul className={classes["task-card__avatars"]}>
                             {task.owners.map(owner => (
                                 <li key={owner.id} className={classes["task-card__avatars-item"]}>
-                                    <span>{owner.owner} </span>
+                                    <span>{owner.username} </span>
                                 </li>
                             ))}
                         </ul>
@@ -88,7 +110,7 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
                         {/*Заглушка временная*/}
                         {/*<span className={classes["task-card__date-icon"]}>"ICON CALENDAR"</span>*/}
                         <Calendar size={20} className={classes["task-card__date-icon"]} />
-                        <time dateTime={task.dateCreated} className={classes["task-card__date-text"]}>
+                        <time dateTime={task.createdAt} className={classes["task-card__date-text"]}>
                             {formattedDate}
                         </time>
                     </div>
@@ -97,7 +119,8 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
 
             <div className={classes["task-card__field"]}>
                 <span className={classes["task-card__label"]}>Status</span>
-                <Select options={statusOptions} defaultValue={task.status} className={classes["task-card__select"]} />
+                {/*<Select options={statusOptions} defaultValue={task.status} className={classes["task-card__select"]} />*/}
+                SELECT
             </div>
 
             <div className={classes["task-card__field"]}>
@@ -105,29 +128,28 @@ export default async function TaskDetails({ workspace, board, task, isModal }: T
                 <Textarea
                     className={classes["task-card__textarea"]}
                     placeholder="description"
-                    defaultValue={task.description}
+                    defaultValue={task?.description ?? ""}
                     disabled
                 />
             </div>
             <hr className={classes["task-card__line"]} />
             <div className={classes["task-card__comments-section"]}>
-                <div className={classes["task-card__comments-header"]}>
-                    <span className={classes["task-card__label"]}>Comments </span>
-                    <span className={classes["task-card__comments-count"]}>({task.commentsUser.length}) </span>
-                </div>
-
-                <ul className={classes["task-card__comments-list"]}>
-                    {task.commentsUser.map(item => (
-                        <CommentUserItem key={item.id} comment={item} />
-                    ))}
-                </ul>
-
-                <form action="" className={classes["task-card__comment-form"]}>
-                    <Textarea placeholder="Write a comment..." className={classes["task-card__comment-input"]} />
-                    <Button type="submit" className={classes["task-card__submit-btn"]} aria-label={"Send comment"}>
-                        <Send size={20} className={classes["task-card__button-send"]} />
-                    </Button>
-                </form>
+                COMMENTS BLOCK
+                {/*<div className={classes["task-card__comments-header"]}>*/}
+                {/*    <span className={classes["task-card__label"]}>Comments </span>*/}
+                {/*    <span className={classes["task-card__comments-count"]}>({task.commentsUser.length}) </span>*/}
+                {/*</div>*/}
+                {/*<ul className={classes["task-card__comments-list"]}>*/}
+                {/*    {task.commentsUser.map(item => (*/}
+                {/*        <CommentUserItem key={item.id} comment={item} />*/}
+                {/*    ))}*/}
+                {/*</ul>*/}
+                {/*<form action="" className={classes["task-card__comment-form"]}>*/}
+                {/*    <Textarea placeholder="Write a comment..." className={classes["task-card__comment-input"]} />*/}
+                {/*    <Button type="submit" className={classes["task-card__submit-btn"]} aria-label={"Send comment"}>*/}
+                {/*        <Send size={20} className={classes["task-card__button-send"]} />*/}
+                {/*    </Button>*/}
+                {/*</form>*/}
             </div>
             {/*Можно реализовать данную кнопку:
             при каком то изменении документа появляется блок Применить изменения или Отменить изменения
