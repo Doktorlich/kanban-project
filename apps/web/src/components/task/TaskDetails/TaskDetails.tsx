@@ -4,13 +4,14 @@ import Button from "@/components/ui/Button/Button";
 import Textarea from "@/components/ui/Textarea/Textarea";
 import CloseModalButton from "@/components/ui/CloseModalButton";
 import classes from "./TaskDetails.module.scss";
-import { Calendar } from "lucide-react";
+import { Calendar, MoreVertical } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getTaskById, taskKeys } from "@/lib/task";
 import { columnKeys, getColumnById } from "@/lib/column";
 import queryState from "@/lib/query-state";
+import { useEffect, useState } from "react";
 
 interface TaskDetailsProps {
     isModal: boolean;
@@ -18,6 +19,19 @@ interface TaskDetailsProps {
 
 export default function TaskDetails({ isModal }: TaskDetailsProps) {
     const { workspaceId, boardId, taskId } = useParams();
+    const [isVisibleMenu, setIsVisibleMenu] = useState(false);
+    useEffect(() => {
+        if (!isVisibleMenu) return;
+        function handleClickOutside(e: MouseEvent) {
+            const target = e.target as HTMLElement;
+            if (!target.closest(`.${classes["three-dots"]}`)) {
+                setIsVisibleMenu(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isVisibleMenu]);
 
     const queryTask = useQuery({
         queryKey: taskKeys.detail(Number(taskId)),
@@ -52,8 +66,32 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
         day: "numeric",
         year: "numeric",
     });
+
+    function handleDelete() {
+        setIsVisibleMenu(false);
+    }
+    function handleEdit() {
+        setIsVisibleMenu(false);
+    }
     return (
         <div className={classes["task-card"]}>
+            <div className={classes["three-dots"]}>
+                <MoreVertical
+                    onClick={() => setIsVisibleMenu(!isVisibleMenu)}
+                    className={classes["three-dots__dots"]}
+                />
+
+                {isVisibleMenu && (
+                    <div className={classes["three-dots__buttons-block"]}>
+                        <Button variant={"ghost"} className={classes["three-dots__button"]} onClick={handleEdit}>
+                            Edit
+                        </Button>
+                        <Button variant={"ghost"} className={classes["three-dots__button"]} onClick={handleDelete}>
+                            Delete
+                        </Button>
+                    </div>
+                )}
+            </div>
             <div className={classes["task-card__actions"]}>
                 <p className={classes["task-card__priority"]}>{task.priority.name}</p>
 
@@ -78,7 +116,7 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
                         in board <span className={classes["task-card__breadcrumb-board"]}>BOARD</span>
                     </p>
                     <p className={classes["task-card__breadcrumb-item"]}>
-                        column{" "}
+                        column
                         <span className={classes["task-card__breadcrumb-column"]}>{queryColumn.data?.title}</span>
                     </p>
                 </div>
