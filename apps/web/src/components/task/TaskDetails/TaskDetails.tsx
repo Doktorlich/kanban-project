@@ -11,7 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getTaskById, taskKeys } from "@/lib/task";
 import { columnKeys, getColumnById } from "@/lib/column";
 import queryState from "@/lib/query-state";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useClickOutside from "@/hooks/useClickOutside";
 
 interface TaskDetailsProps {
     isModal: boolean;
@@ -20,23 +21,15 @@ interface TaskDetailsProps {
 export default function TaskDetails({ isModal }: TaskDetailsProps) {
     const { workspaceId, boardId, taskId } = useParams();
     const [isVisibleMenu, setIsVisibleMenu] = useState(false);
-    useEffect(() => {
-        if (!isVisibleMenu) return;
-        function handleClickOutside(e: MouseEvent) {
-            const target = e.target as HTMLElement;
-            if (!target.closest(`.${classes["three-dots"]}`)) {
-                setIsVisibleMenu(false);
-            }
-        }
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isVisibleMenu]);
+    const ref = useRef<HTMLDivElement>(null);
+    useClickOutside(ref, () => setIsVisibleMenu(false));
 
     const queryTask = useQuery({
         queryKey: taskKeys.detail(Number(taskId)),
         queryFn: () => getTaskById(Number(workspaceId), Number(boardId), Number(taskId)),
     });
+
     const queryColumn = useQuery({
         queryKey: columnKeys.detail(Number(queryTask.data?.columnId)),
         queryFn: () => getColumnById(Number(workspaceId), Number(boardId), Number(queryTask.data?.columnId)),
@@ -75,7 +68,7 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
     }
     return (
         <div className={classes["task-card"]}>
-            <div className={classes["three-dots"]}>
+            <div className={classes["three-dots"]} ref={ref}>
                 <MoreVertical
                     onClick={() => setIsVisibleMenu(!isVisibleMenu)}
                     className={classes["three-dots__dots"]}
