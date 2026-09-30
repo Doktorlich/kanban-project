@@ -14,6 +14,7 @@ import queryState from "@/lib/query-state";
 import { useRef, useState } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
+import CreateTaskModal from "@/components/task/CreateTaskModal/CreateTaskModal";
 
 interface TaskDetailsProps {
     isModal: boolean;
@@ -25,14 +26,11 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
     const queryClient = useQueryClient();
     const [isVisibleMenu, setIsVisibleMenu] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const ref = useRef<HTMLDivElement>(null);
     useClickOutside(ref, () => setIsVisibleMenu(false));
 
-    // const mutationUpdate = useMutation({
-    // queryClient.invalidateQueries({ queryKey: columnKeys.list(Number(boardId)) });
-    // setIsConfirmOpen(false);
-    // });
     const mutationDelete = useMutation({
         mutationFn: () => deleteTask(Number(workspaceId), Number(boardId), Number(taskId)),
         onSuccess: () => {
@@ -69,10 +67,6 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
         return null;
     }
 
-    // const priorityClassName = clsx(
-    //     classes["task-card__priority"],
-    //     classes[`task-card__priority--${queryTask.data?.priority}`],
-    // );
     const dateObj = new Date(task.createdAt);
 
     const formattedDate: string = dateObj.toLocaleDateString("en-US", {
@@ -87,6 +81,7 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
     }
     function handleEdit() {
         setIsVisibleMenu(false);
+        setIsEditOpen(true);
     }
     return (
         <div className={classes["task-card"]}>
@@ -100,6 +95,8 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
                     errorMessage={mutationDelete.error?.message}
                 />
             )}
+            {isEditOpen && <CreateTaskModal task={task} onClose={() => setIsEditOpen(false)} />}
+
             <div className={classes["three-dots"]} ref={ref}>
                 <MoreVertical
                     onClick={() => setIsVisibleMenu(!isVisibleMenu)}
@@ -191,8 +188,9 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
                 <Textarea
                     className={classes["task-card__textarea"]}
                     placeholder="description"
-                    defaultValue={task?.description ?? ""}
+                    value={task?.description ?? ""}
                     disabled
+                    readOnly
                 />
             </div>
             <hr className={classes["task-card__line"]} />
