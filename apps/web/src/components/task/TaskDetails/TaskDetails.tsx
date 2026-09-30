@@ -6,24 +6,45 @@ import CloseModalButton from "@/components/ui/CloseModalButton";
 import classes from "./TaskDetails.module.scss";
 import { Calendar, MoreVertical } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { getTaskById, taskKeys } from "@/lib/task";
+import { useParams, useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteTask, getTaskById, taskKeys } from "@/lib/task";
 import { columnKeys, getColumnById } from "@/lib/column";
 import queryState from "@/lib/query-state";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
+import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
 
 interface TaskDetailsProps {
     isModal: boolean;
 }
 
 export default function TaskDetails({ isModal }: TaskDetailsProps) {
+    const router = useRouter();
     const { workspaceId, boardId, taskId } = useParams();
+    const queryClient = useQueryClient();
     const [isVisibleMenu, setIsVisibleMenu] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
     const ref = useRef<HTMLDivElement>(null);
     useClickOutside(ref, () => setIsVisibleMenu(false));
+
+    // const mutationUpdate = useMutation({
+    // queryClient.invalidateQueries({ queryKey: columnKeys.list(Number(boardId)) });
+    // setIsConfirmOpen(false);
+    // });
+    const mutationDelete = useMutation({
+        mutationFn: () => deleteTask(Number(workspaceId), Number(boardId), Number(taskId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: columnKeys.list(Number(boardId)) });
+            setIsConfirmOpen(false);
+            if (isModal) {
+                router.back();
+            } else {
+                router.push(`/workspaces/${workspaceId}/boards/${boardId}`);
+            }
+        },
+    });
 
     const queryTask = useQuery({
         queryKey: taskKeys.detail(Number(taskId)),
@@ -62,12 +83,23 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
 
     function handleDelete() {
         setIsVisibleMenu(false);
+        setIsConfirmOpen(true);
     }
     function handleEdit() {
         setIsVisibleMenu(false);
     }
     return (
         <div className={classes["task-card"]}>
+            {isConfirmOpen && (
+                <ConfirmModal
+                    title={`Delete task: "${task.title}"?`}
+                    message="This action cannot be undone."
+                    onConfirm={() => mutationDelete.mutate()}
+                    onClose={() => setIsConfirmOpen(false)}
+                    isPending={mutationDelete.isPending}
+                    errorMessage={mutationDelete.error?.message}
+                />
+            )}
             <div className={classes["three-dots"]} ref={ref}>
                 <MoreVertical
                     onClick={() => setIsVisibleMenu(!isVisibleMenu)}
