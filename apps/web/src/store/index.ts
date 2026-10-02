@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import boardFiltersReducer from "@/store/boardFilters.slice";
 
 export const store = configureStore({
     reducer: {
-        // Временная заглушка, чтобы Redux не ругался на пустой объект
-        tmp: (state = {}) => state,
+        boardFilters: boardFiltersReducer,
     },
 });
 
