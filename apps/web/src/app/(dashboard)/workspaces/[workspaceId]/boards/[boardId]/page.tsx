@@ -14,6 +14,8 @@ import { Plus } from "lucide-react";
 import type { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPriorityFilter, setSortBy, setSearchQuery } from "@/store/boardFilters.slice";
+import { getPriorities, priorityKeys } from "@/lib/priority";
+import { filterTasksByPriority } from "@/lib/task-filters";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
@@ -40,6 +42,12 @@ export default function BoardsPage() {
         queryFn: () => getColumns(Number(workspaceId), Number(boardId)),
     });
 
+    const queryPriorities = useQuery({
+        queryKey: priorityKeys.all,
+        queryFn: getPriorities,
+        staleTime: Infinity,
+    });
+
     const stateBoard = queryState(queryBoard, {
         emptyMessage: "Board not found",
     });
@@ -55,19 +63,21 @@ export default function BoardsPage() {
             return stateColumn;
         }
         if (!queryColumns.data) return null;
+
         return (
             <ul className={classes["column__list"]}>
                 {queryColumns.data.map(col => {
+                    const filteredTasks = filterTasksByPriority(col.tasks, priorityId);
                     return (
                         <li key={col.id} className={classes["column__item"]}>
-                            <Column countTasks={col.tasks.length} column={col}>
+                            <Column countTasks={filteredTasks.length} column={col}>
                                 <ul className={classes["board-column__list"]}>
-                                    {col.tasks.length === 0 ? (
+                                    {filteredTasks.length === 0 ? (
                                         <li className={columnItemClassName}>
                                             <p className={classes["board-column__empty-text"]}>No tasks</p>
                                         </li>
                                     ) : (
-                                        col.tasks?.map(task => {
+                                        filteredTasks.map(task => {
                                             return (
                                                 <TaskCard
                                                     key={task.id}
@@ -91,11 +101,25 @@ export default function BoardsPage() {
             <header className={classes["board-page__header"]}>
                 <div className={classes["board-page__title-wrapper"]}>
                     <h2 className={classes["board-page__title"]}>{queryBoard.data?.title}</h2>
+
                     <Button type={"button"} variant={"primary"} onClick={() => createColumnMutation.mutate()}>
                         Add New Column
                         <Plus size={24} />
                     </Button>
                 </div>
+                <select
+                    value={priorityId ?? ""}
+                    onChange={event =>
+                        dispatch(setPriorityFilter(event.target.value ? Number(event.target.value) : null))
+                    }
+                >
+                    <option value="">All priorities</option>
+                    {queryPriorities.data?.map(priority => (
+                        <option key={priority.id} value={priority.id}>
+                            {priority.name}
+                        </option>
+                    ))}
+                </select>
             </header>
             {renderContent()}
         </div>
