@@ -165,7 +165,7 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
                 </div>
 
                 <div className={classes["task-card__meta-item"]}>
-                    <span className={classes["task-card__label"]}>Due date</span>
+                    <span className={classes["task-card__label"]}>Created</span>
                     <div className={classes["task-card__date-display"]}>
                         {/*Заглушка временная*/}
                         {/*<span className={classes["task-card__date-icon"]}>"ICON CALENDAR"</span>*/}

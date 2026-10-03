@@ -11,12 +11,18 @@ import queryState from "@/lib/query-state";
 import { columnKeys, createColumn, getColumns } from "@/lib/column";
 import Button from "@/components/ui/Button/Button";
 import { Plus } from "lucide-react";
+import type { AppDispatch, RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setPriorityFilter, setSortBy, setSearchQuery } from "@/store/boardFilters.slice";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
+    const dispatch = useDispatch<AppDispatch>();
+    const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
+
     const queryBoard = useQuery({
         queryKey: boardKeys.detail(Number(boardId)),
         queryFn: () => getBoardById(Number(workspaceId), Number(boardId)),
