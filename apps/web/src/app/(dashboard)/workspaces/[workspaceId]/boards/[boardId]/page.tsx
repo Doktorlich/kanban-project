@@ -11,18 +11,17 @@ import queryState from "@/lib/query-state";
 import { columnKeys, createColumn, getColumns } from "@/lib/column";
 import Button from "@/components/ui/Button/Button";
 import { Plus } from "lucide-react";
-import type { AppDispatch, RootState } from "@/store";
-import { useDispatch, useSelector } from "react-redux";
-import { setPriorityFilter, setSortBy, setSearchQuery } from "@/store/boardFilters.slice";
-import { getPriorities, priorityKeys } from "@/lib/priority";
-import { filterTasksByPriority } from "@/lib/task-filters";
+import type { RootState } from "@/store";
+import { useSelector } from "react-redux";
+
+import { filterTasksByPriority, sortTasksByUpdatedAt } from "@/lib/task-filters";
+import BoardControls from "@/components/board/BoardControls/BoardControls";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
-    const dispatch = useDispatch<AppDispatch>();
     const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
 
     const queryBoard = useQuery({
@@ -40,12 +39,6 @@ export default function BoardsPage() {
     const queryColumns = useQuery({
         queryKey: columnKeys.list(Number(boardId)),
         queryFn: () => getColumns(Number(workspaceId), Number(boardId)),
-    });
-
-    const queryPriorities = useQuery({
-        queryKey: priorityKeys.all,
-        queryFn: getPriorities,
-        staleTime: Infinity,
     });
 
     const stateBoard = queryState(queryBoard, {
@@ -68,16 +61,17 @@ export default function BoardsPage() {
             <ul className={classes["column__list"]}>
                 {queryColumns.data.map(col => {
                     const filteredTasks = filterTasksByPriority(col.tasks, priorityId);
+                    const sortedTasks = sortTasksByUpdatedAt(filteredTasks, sortBy);
                     return (
                         <li key={col.id} className={classes["column__item"]}>
-                            <Column countTasks={filteredTasks.length} column={col}>
+                            <Column countTasks={sortedTasks.length} column={col}>
                                 <ul className={classes["board-column__list"]}>
-                                    {filteredTasks.length === 0 ? (
+                                    {sortedTasks.length === 0 ? (
                                         <li className={columnItemClassName}>
                                             <p className={classes["board-column__empty-text"]}>No tasks</p>
                                         </li>
                                     ) : (
-                                        filteredTasks.map(task => {
+                                        sortedTasks.map(task => {
                                             return (
                                                 <TaskCard
                                                     key={task.id}
@@ -107,19 +101,7 @@ export default function BoardsPage() {
                         <Plus size={24} />
                     </Button>
                 </div>
-                <select
-                    value={priorityId ?? ""}
-                    onChange={event =>
-                        dispatch(setPriorityFilter(event.target.value ? Number(event.target.value) : null))
-                    }
-                >
-                    <option value="">All priorities</option>
-                    {queryPriorities.data?.map(priority => (
-                        <option key={priority.id} value={priority.id}>
-                            {priority.name}
-                        </option>
-                    ))}
-                </select>
+                <BoardControls />
             </header>
             {renderContent()}
         </div>

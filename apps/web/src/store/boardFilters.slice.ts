@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-type SortOption = "updatedAt-asc" | "updatedAt-desc" | null;
+export type SortOption = "updatedAt-asc" | "updatedAt-desc" | null;
 
 interface BoardFiltersState {
     priorityId: number | null;
@@ -20,7 +20,7 @@ const boardFiltersSlice = createSlice({
         setPriorityFilter: (state, action: PayloadAction<number | null>) => {
             state.priorityId = action.payload;
         },
-        setSortBy: (state, action: PayloadAction<"updatedAt-asc" | "updatedAt-desc" | null>) => {
+        setSortBy: (state, action: PayloadAction<SortOption>) => {
             state.sortBy = action.payload;
         },
         setSearchQuery: (state, action: PayloadAction<string>) => {
