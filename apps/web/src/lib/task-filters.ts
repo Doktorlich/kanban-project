@@ -14,3 +14,14 @@ export function sortTasksByUpdatedAt(tasks: Task[], sortBy: SortOption): Task[] 
     });
     return sorted;
 }
+
+export function filterTasksBySearch(tasks: Task[], searchQuery: string): Task[] {
+    const query = searchQuery.trim().toLowerCase();
+    if (query === "") return tasks;
+
+    return tasks.filter(task => {
+        const titleMatch = task.title.toLowerCase().includes(query);
+        const descriptionMatch = task.description?.toLowerCase().includes(query) ?? false;
+        return titleMatch || descriptionMatch;
+    });
+}

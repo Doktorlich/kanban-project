@@ -7,11 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import type { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getPriorities, priorityKeys } from "@/lib/priority";
-import { setPriorityFilter, setSortBy } from "@/store/boardFilters.slice";
+import { setPriorityFilter, setSearchQuery, setSortBy } from "@/store/boardFilters.slice";
 
 export default function BoardControls() {
     const dispatch = useDispatch<AppDispatch>();
-    const { priorityId, sortBy } = useSelector((state: RootState) => state.boardFilters);
+    const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
     const queryPriorities = useQuery({ queryKey: priorityKeys.all, queryFn: getPriorities, staleTime: Infinity });
 
     return (
@@ -43,6 +43,12 @@ export default function BoardControls() {
                 <option value="updatedAt-desc">Newest first</option>
                 <option value="updatedAt-asc">Oldest first</option>
             </select>
+            <input
+                type="text"
+                placeholder="Search tasks..."
+                value={searchQuery}
+                onChange={event => dispatch(setSearchQuery(event.target.value))}
+            />
         </div>
     );
 }

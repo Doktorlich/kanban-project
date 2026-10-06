@@ -14,7 +14,7 @@ import { Plus } from "lucide-react";
 import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
 
-import { filterTasksByPriority, sortTasksByUpdatedAt } from "@/lib/task-filters";
+import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from "@/lib/task-filters";
 import BoardControls from "@/components/board/BoardControls/BoardControls";
 
 // interface BoardsProps {}
@@ -60,7 +60,8 @@ export default function BoardsPage() {
         return (
             <ul className={classes["column__list"]}>
                 {queryColumns.data.map(col => {
-                    const filteredTasks = filterTasksByPriority(col.tasks, priorityId);
+                    const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
+                    const filteredTasks = filterTasksByPriority(searchedTasks, priorityId);
                     const sortedTasks = sortTasksByUpdatedAt(filteredTasks, sortBy);
                     return (
                         <li key={col.id} className={classes["column__item"]}>
