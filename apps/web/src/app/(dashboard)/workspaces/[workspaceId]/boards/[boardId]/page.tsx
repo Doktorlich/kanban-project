@@ -18,12 +18,13 @@ import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from
 import BoardControls from "@/components/board/BoardControls/BoardControls";
 import { useState } from "react";
 import { ColumnWithTasks } from "@myapp/shared-types";
+import { closestCorners, DndContext } from "@dnd-kit/core";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const [localColumns, setLocalColumns] = useState<ColumnWithTasks[] | null>(null);
-    const [prevColumnsData, setPrevColumnsData] = useState<ColumnWithTasks[] | null>(null);
+    const [prevColumnsData, setPrevColumnsData] = useState<ColumnWithTasks[] | undefined>(undefined);
 
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
@@ -47,7 +48,7 @@ export default function BoardsPage() {
     });
 
     if (queryColumns.data !== prevColumnsData) {
-        setPrevColumnsData(queryColumns.data ?? null);
+        setPrevColumnsData(queryColumns.data);
         setLocalColumns(queryColumns.data ?? null);
     }
 
@@ -58,6 +59,9 @@ export default function BoardsPage() {
         return stateBoard;
     }
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
+
+    function handleDragEnd() {}
+
     function renderContent() {
         const stateColumn = queryState(queryColumns, {
             emptyMessage: "No columns yet — create your first one",
@@ -69,36 +73,38 @@ export default function BoardsPage() {
         if (!localColumns) return null;
 
         return (
-            <ul className={classes["column__list"]}>
-                {localColumns.map(col => {
-                    const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
-                    const filteredTasks = filterTasksByPriority(searchedTasks, priorityId);
-                    const sortedTasks = sortTasksByUpdatedAt(filteredTasks, sortBy);
-                    return (
-                        <li key={col.id} className={classes["column__item"]}>
-                            <Column countTasks={sortedTasks.length} column={col}>
-                                <ul className={classes["board-column__list"]}>
-                                    {sortedTasks.length === 0 ? (
-                                        <li className={columnItemClassName}>
-                                            <p className={classes["board-column__empty-text"]}>No tasks</p>
-                                        </li>
-                                    ) : (
-                                        sortedTasks.map(task => {
-                                            return (
-                                                <TaskCard
-                                                    key={task.id}
-                                                    task={task}
-                                                    href={`/workspaces/${workspaceId}/boards/${boardId}/tasks/${task.id}`}
-                                                />
-                                            );
-                                        })
-                                    )}
-                                </ul>
-                            </Column>
-                        </li>
-                    );
-                })}
-            </ul>
+            <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+                <ul className={classes["column__list"]}>
+                    {localColumns.map(col => {
+                        const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
+                        const filteredTasks = filterTasksByPriority(searchedTasks, priorityId);
+                        const sortedTasks = sortTasksByUpdatedAt(filteredTasks, sortBy);
+                        return (
+                            <li key={col.id} className={classes["column__item"]}>
+                                <Column countTasks={sortedTasks.length} column={col}>
+                                    <ul className={classes["board-column__list"]}>
+                                        {sortedTasks.length === 0 ? (
+                                            <li className={columnItemClassName}>
+                                                <p className={classes["board-column__empty-text"]}>No tasks</p>
+                                            </li>
+                                        ) : (
+                                            sortedTasks.map(task => {
+                                                return (
+                                                    <TaskCard
+                                                        key={task.id}
+                                                        task={task}
+                                                        href={`/workspaces/${workspaceId}/boards/${boardId}/tasks/${task.id}`}
+                                                    />
+                                                );
+                                            })
+                                        )}
+                                    </ul>
+                                </Column>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </DndContext>
         );
     }
 
