@@ -1,6 +1,8 @@
 import Link from "next/link";
 import classes from "./TaskCard.module.scss";
 import { Task } from "@myapp/shared-types";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface TaskCardProps {
     task: Task;
@@ -8,9 +10,16 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task, href }: TaskCardProps) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
     return (
-        <li className={classes["task-card__item"]}>
-            <Link href={href} className={classes["task-card__link"]}>
+        <li className={classes["task-card__item"]} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <Link href={href} className={classes["task-card__link"]} draggable={false}>
                 <span className={classes["task-card__priority"]} style={{ backgroundColor: task.priority.color }}>
                     {task.priority.name}
                 </span>

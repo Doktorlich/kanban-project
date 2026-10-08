@@ -18,7 +18,7 @@ import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from
 import BoardControls from "@/components/board/BoardControls/BoardControls";
 import { useState } from "react";
 import { ColumnWithTasks } from "@myapp/shared-types";
-import { closestCorners, DndContext } from "@dnd-kit/core";
+import { closestCorners, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 // interface BoardsProps {}
@@ -26,7 +26,7 @@ const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const [localColumns, setLocalColumns] = useState<ColumnWithTasks[] | null>(null);
     const [prevColumnsData, setPrevColumnsData] = useState<ColumnWithTasks[] | undefined>(undefined);
-
+    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
     const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
@@ -74,7 +74,7 @@ export default function BoardsPage() {
         if (!localColumns) return null;
 
         return (
-            <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+            <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
                 <ul className={classes["column__list"]}>
                     {localColumns.map(col => {
                         const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
@@ -83,7 +83,7 @@ export default function BoardsPage() {
                         return (
                             <li key={col.id} className={classes["column__item"]}>
                                 <SortableContext
-                                    items={col.tasks.map(t => t.id)}
+                                    items={sortedTasks.map(t => t.id)}
                                     strategy={verticalListSortingStrategy}
                                 >
                                     <Column countTasks={sortedTasks.length} column={col}>
