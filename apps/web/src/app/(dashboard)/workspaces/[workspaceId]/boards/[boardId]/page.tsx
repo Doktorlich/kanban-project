@@ -16,10 +16,15 @@ import { useSelector } from "react-redux";
 
 import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from "@/lib/task-filters";
 import BoardControls from "@/components/board/BoardControls/BoardControls";
+import { useState } from "react";
+import { ColumnWithTasks } from "@myapp/shared-types";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
+    const [localColumns, setLocalColumns] = useState<ColumnWithTasks[] | null>(null);
+    const [prevColumnsData, setPrevColumnsData] = useState<ColumnWithTasks[] | null>(null);
+
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
     const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
@@ -41,6 +46,11 @@ export default function BoardsPage() {
         queryFn: () => getColumns(Number(workspaceId), Number(boardId)),
     });
 
+    if (queryColumns.data !== prevColumnsData) {
+        setPrevColumnsData(queryColumns.data ?? null);
+        setLocalColumns(queryColumns.data ?? null);
+    }
+
     const stateBoard = queryState(queryBoard, {
         emptyMessage: "Board not found",
     });
@@ -55,11 +65,12 @@ export default function BoardsPage() {
         if (stateColumn) {
             return stateColumn;
         }
-        if (!queryColumns.data) return null;
+
+        if (!localColumns) return null;
 
         return (
             <ul className={classes["column__list"]}>
-                {queryColumns.data.map(col => {
+                {localColumns.map(col => {
                     const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
                     const filteredTasks = filterTasksByPriority(searchedTasks, priorityId);
                     const sortedTasks = sortTasksByUpdatedAt(filteredTasks, sortBy);
