@@ -19,6 +19,7 @@ import BoardControls from "@/components/board/BoardControls/BoardControls";
 import { useState } from "react";
 import { ColumnWithTasks } from "@myapp/shared-types";
 import { closestCorners, DndContext } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
@@ -81,25 +82,30 @@ export default function BoardsPage() {
                         const sortedTasks = sortTasksByUpdatedAt(filteredTasks, sortBy);
                         return (
                             <li key={col.id} className={classes["column__item"]}>
-                                <Column countTasks={sortedTasks.length} column={col}>
-                                    <ul className={classes["board-column__list"]}>
-                                        {sortedTasks.length === 0 ? (
-                                            <li className={columnItemClassName}>
-                                                <p className={classes["board-column__empty-text"]}>No tasks</p>
-                                            </li>
-                                        ) : (
-                                            sortedTasks.map(task => {
-                                                return (
-                                                    <TaskCard
-                                                        key={task.id}
-                                                        task={task}
-                                                        href={`/workspaces/${workspaceId}/boards/${boardId}/tasks/${task.id}`}
-                                                    />
-                                                );
-                                            })
-                                        )}
-                                    </ul>
-                                </Column>
+                                <SortableContext
+                                    items={col.tasks.map(t => t.id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    <Column countTasks={sortedTasks.length} column={col}>
+                                        <ul className={classes["board-column__list"]}>
+                                            {sortedTasks.length === 0 ? (
+                                                <li className={columnItemClassName}>
+                                                    <p className={classes["board-column__empty-text"]}>No tasks</p>
+                                                </li>
+                                            ) : (
+                                                sortedTasks.map(task => {
+                                                    return (
+                                                        <TaskCard
+                                                            key={task.id}
+                                                            task={task}
+                                                            href={`/workspaces/${workspaceId}/boards/${boardId}/tasks/${task.id}`}
+                                                        />
+                                                    );
+                                                })
+                                            )}
+                                        </ul>
+                                    </Column>
+                                </SortableContext>
                             </li>
                         );
                     })}
