@@ -9,6 +9,7 @@ import { columnKeys, deleteColumn } from "@/lib/column";
 import { useParams } from "next/navigation";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
 import CreateTaskModal from "@/components/task/CreateTaskModal/CreateTaskModal";
+import { useDroppable } from "@dnd-kit/core";
 
 interface ColumnProps {
     children: ReactNode;
@@ -19,6 +20,10 @@ interface ColumnProps {
 export default function Column({ children, countTasks, column }: ColumnProps) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
+    const { setNodeRef } = useDroppable({
+        id: `column-${column.id}`,
+        data: { type: "column", columnId: column.id },
+    });
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
     const mutation = useMutation({
@@ -40,7 +45,7 @@ export default function Column({ children, countTasks, column }: ColumnProps) {
                     errorMessage={mutation.error?.message}
                 />
             )}
-            <section className={classes.column}>
+            <section className={classes.column} ref={setNodeRef}>
                 <div className={classes["container"]}>
                     <header className={classes["column__header"]}>
                         <span className={classes["column__header-count"]}>
