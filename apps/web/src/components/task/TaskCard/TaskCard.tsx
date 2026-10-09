@@ -8,10 +8,15 @@ import { GripVertical } from "lucide-react";
 interface TaskCardProps {
     task: Task;
     href: string;
+    isDragDisabled?: boolean;
 }
 
-export default function TaskCard({ task, href }: TaskCardProps) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id });
+export default function TaskCard({ task, href, isDragDisabled }: TaskCardProps) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+        id: task.id,
+        data: { type: "task", columnId: task.columnId },
+        disabled: isDragDisabled,
+    });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -20,7 +25,9 @@ export default function TaskCard({ task, href }: TaskCardProps) {
     };
     return (
         <li className={classes["task-card__item"]} ref={setNodeRef} style={style}>
-            <GripVertical size={36} className={classes["task-card__grip"]} {...attributes} {...listeners} />
+            {!isDragDisabled && (
+                <GripVertical size={36} className={classes["task-card__grip"]} {...attributes} {...listeners} />
+            )}
             <Link href={href} className={classes["task-card__link"]}>
                 <span className={classes["task-card__priority"]} style={{ backgroundColor: task.priority.color }}>
                     {task.priority.name}

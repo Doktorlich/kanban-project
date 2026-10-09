@@ -31,6 +31,8 @@ export default function BoardsPage() {
     const queryClient = useQueryClient();
     const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
 
+    const isDragDisabled = searchQuery.trim() !== "" || priorityId !== null || sortBy !== null;
+
     const queryBoard = useQuery({
         queryKey: boardKeys.detail(Number(boardId)),
         queryFn: () => getBoardById(Number(workspaceId), Number(boardId)),
@@ -99,6 +101,7 @@ export default function BoardsPage() {
                                                             key={task.id}
                                                             task={task}
                                                             href={`/workspaces/${workspaceId}/boards/${boardId}/tasks/${task.id}`}
+                                                            isDragDisabled={isDragDisabled}
                                                         />
                                                     );
                                                 })
@@ -125,7 +128,7 @@ export default function BoardsPage() {
                         <Plus size={24} />
                     </Button>
                 </div>
-                <BoardControls />
+                <BoardControls isDragDisabled={isDragDisabled} />
             </header>
             {renderContent()}
         </div>
