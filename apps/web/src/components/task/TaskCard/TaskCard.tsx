@@ -3,6 +3,7 @@ import classes from "./TaskCard.module.scss";
 import { Task } from "@myapp/shared-types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
 
 interface TaskCardProps {
     task: Task;
@@ -18,8 +19,9 @@ export default function TaskCard({ task, href }: TaskCardProps) {
         opacity: isDragging ? 0.5 : 1,
     };
     return (
-        <li className={classes["task-card__item"]} ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <Link href={href} className={classes["task-card__link"]} draggable={false}>
+        <li className={classes["task-card__item"]} ref={setNodeRef} style={style}>
+            <GripVertical size={36} className={classes["task-card__grip"]} {...attributes} {...listeners} />
+            <Link href={href} className={classes["task-card__link"]}>
                 <span className={classes["task-card__priority"]} style={{ backgroundColor: task.priority.color }}>
                     {task.priority.name}
                 </span>
