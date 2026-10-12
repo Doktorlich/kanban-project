@@ -18,8 +18,9 @@ import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from
 import BoardControls from "@/components/board/BoardControls/BoardControls";
 import { useState } from "react";
 import { ColumnWithTasks } from "@myapp/shared-types";
-import { closestCorners, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { closestCorners, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { findColumnByTaskId } from "@/lib/board-dnd";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
@@ -63,7 +64,12 @@ export default function BoardsPage() {
     }
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
 
-    function handleDragEnd() {}
+    function handleDragEnd(event: DragEndEvent) {
+        if (!localColumns) return;
+        const { active, over } = event;
+        console.log(active.id, over?.id, over?.data.current);
+        console.log(findColumnByTaskId(localColumns, Number(active.id))?.id);
+    }
 
     function renderContent() {
         const stateColumn = queryState(queryColumns, {

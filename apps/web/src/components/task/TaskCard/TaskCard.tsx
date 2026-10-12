@@ -14,7 +14,7 @@ interface TaskCardProps {
 export default function TaskCard({ task, href, isDragDisabled }: TaskCardProps) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: task.id,
-        data: { type: "task", columnId: task.columnId },
+        data: { type: "task" },
         disabled: isDragDisabled,
     });
 
@@ -24,7 +24,7 @@ export default function TaskCard({ task, href, isDragDisabled }: TaskCardProps) 
         opacity: isDragging ? 0.5 : 1,
     };
     return (
-        <li className={classes["task-card__item"]} ref={setNodeRef} style={style}>
+        <li className={classes["task-card__item"]} ref={setNodeRef} style={style} onDragStart={e => e.preventDefault()}>
             {!isDragDisabled && (
                 <GripVertical size={36} className={classes["task-card__grip"]} {...attributes} {...listeners} />
             )}
