@@ -3,6 +3,7 @@
 import Column from "@/components/board/Column/Column";
 import TaskCard from "@/components/task/TaskCard/TaskCard";
 import classes from "./page.module.scss";
+import taskClasses from "@/components/task/TaskCard/TaskCard.module.scss";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,18 +17,30 @@ import { useSelector } from "react-redux";
 
 import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from "@/lib/task-filters";
 import BoardControls from "@/components/board/BoardControls/BoardControls";
-import { useState } from "react";
-import { ColumnWithTasks } from "@myapp/shared-types";
-import { closestCorners, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import type { DragEndEvent } from "@dnd-kit/core";
+import { useRef, useState } from "react";
+import { ColumnWithTasks, Task } from "@myapp/shared-types";
+import {
+    closestCorners,
+    DndContext,
+    DragOverEvent,
+    DragOverlay,
+    DragEndEvent,
+    DragStartEvent,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { findColumnByTaskId, moveTaskInColumn, moveTaskToColumn, resolveDropTarget } from "@/lib/board-dnd";
+import TaskCardView from "@/components/task/TaskCard/TaskCardView";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const [localColumns, setLocalColumns] = useState<ColumnWithTasks[] | null>(null);
     const [prevColumnsData, setPrevColumnsData] = useState<ColumnWithTasks[] | undefined>(undefined);
+    const [activeTask, setActiveTask] = useState<Task | null>(null);
+    const columnsBeforeDrag = useRef<ColumnWithTasks[] | null>(null);
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
@@ -66,8 +79,12 @@ export default function BoardsPage() {
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
 
     function handleDragEnd(event: DragEndEvent) {
+        setActiveTask(null);
         const { active, over } = event;
-        if (!over || !localColumns) return;
+        if (!over || !localColumns) {
+            setLocalColumns(columnsBeforeDrag.current);
+            return;
+        }
         if (active.id === over.id) return;
 
         const taskId = Number(active.id);
@@ -91,7 +108,22 @@ export default function BoardsPage() {
 
         setLocalColumns(moveTaskToColumn(localColumns, taskId, target.column.id, target.index));
     }
+    function handleDragStart(event: DragStartEvent) {
+        const task = localColumns?.flatMap(col => col.tasks).find(t => t.id === event.active.id);
+        columnsBeforeDrag.current = localColumns;
+        setActiveTask(task ?? null);
+    }
+    function handleDragOver(event: DragOverEvent) {
+        const { active, over } = event;
+        if (!over || !localColumns) return;
 
+        const taskId = Number(active.id);
+        const source = findColumnByTaskId(localColumns, taskId);
+        const target = resolveDropTarget(localColumns, over);
+        if (!source || !target || source.id === target.column.id) return;
+
+        setLocalColumns(moveTaskToColumn(localColumns, taskId, target.column.id, target.index));
+    }
     function renderContent() {
         const stateColumn = queryState(queryColumns, {
             emptyMessage: "No columns yet — create your first one",
@@ -103,7 +135,17 @@ export default function BoardsPage() {
         if (!localColumns) return null;
 
         return (
-            <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCorners}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+                onDragOver={handleDragOver}
+                onDragCancel={() => {
+                    setLocalColumns(columnsBeforeDrag.current);
+                    setActiveTask(null);
+                }}
+            >
                 <ul className={classes["column__list"]}>
                     {localColumns.map(col => {
                         const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
@@ -140,6 +182,15 @@ export default function BoardsPage() {
                         );
                     })}
                 </ul>
+                <DragOverlay>
+                    {activeTask ? (
+                        <div className={taskClasses["task-card__item"]}>
+                            <div className={taskClasses["task-card__link"]}>
+                                <TaskCardView task={activeTask} />
+                            </div>
+                        </div>
+                    ) : null}
+                </DragOverlay>
             </DndContext>
         );
     }
