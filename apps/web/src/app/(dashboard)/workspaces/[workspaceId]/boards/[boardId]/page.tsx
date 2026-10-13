@@ -18,9 +18,10 @@ import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from
 import BoardControls from "@/components/board/BoardControls/BoardControls";
 import { useState } from "react";
 import { ColumnWithTasks } from "@myapp/shared-types";
-import { closestCorners, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { closestCorners, DndContext, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { findColumnByTaskId } from "@/lib/board-dnd";
+import { findColumnByTaskId, moveTaskInColumn, moveTaskToColumn, resolveDropTarget } from "@/lib/board-dnd";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
@@ -65,10 +66,30 @@ export default function BoardsPage() {
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
 
     function handleDragEnd(event: DragEndEvent) {
-        if (!localColumns) return;
         const { active, over } = event;
-        console.log(active.id, over?.id, over?.data.current);
-        console.log(findColumnByTaskId(localColumns, Number(active.id))?.id);
+        if (!over || !localColumns) return;
+        if (active.id === over.id) return;
+
+        const taskId = Number(active.id);
+        const target = resolveDropTarget(localColumns, over);
+        if (!target) return;
+
+        const source = findColumnByTaskId(localColumns, taskId);
+        if (!source) return;
+
+        if (source.id === target.column.id) {
+            const oldIndex = source.tasks.findIndex(t => t.id === taskId);
+            const newIndex = Math.min(target.index, source.tasks.length - 1);
+            if (oldIndex === newIndex) return;
+            setLocalColumns(
+                localColumns.map(col =>
+                    col.id === source.id ? { ...col, tasks: moveTaskInColumn(col.tasks, oldIndex, newIndex) } : col,
+                ),
+            );
+            return;
+        }
+
+        setLocalColumns(moveTaskToColumn(localColumns, taskId, target.column.id, target.index));
     }
 
     function renderContent() {
