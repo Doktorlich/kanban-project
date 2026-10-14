@@ -13,33 +13,16 @@ import Button from "@/components/ui/Button/Button";
 import { Plus } from "lucide-react";
 import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
-
 import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from "@/lib/task-filters";
 import BoardControls from "@/components/board/BoardControls/BoardControls";
-import { useRef, useState } from "react";
-import { ColumnWithTasks, Task } from "@myapp/shared-types";
-import {
-    closestCorners,
-    DndContext,
-    DragOverEvent,
-    DragEndEvent,
-    DragStartEvent,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
+import { DndContext } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { findColumnByTaskId, moveTaskInColumn, moveTaskToColumn, resolveDropTarget } from "@/lib/board-dnd";
 import TaskCardOverlay from "@/components/task/TaskCard/TaskCardOverlay";
+import useBoardDnd from "@/hooks/useBoardDnd";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
-    const [localColumns, setLocalColumns] = useState<ColumnWithTasks[] | null>(null);
-    const [prevColumnsData, setPrevColumnsData] = useState<ColumnWithTasks[] | undefined>(undefined);
-    const [activeTask, setActiveTask] = useState<Task | null>(null);
-    const columnsBeforeDrag = useRef<ColumnWithTasks[] | null>(null);
-    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
     const { workspaceId, boardId } = useParams();
     const queryClient = useQueryClient();
     const { priorityId, sortBy, searchQuery } = useSelector((state: RootState) => state.boardFilters);
@@ -57,17 +40,12 @@ export default function BoardsPage() {
             queryClient.invalidateQueries({ queryKey: columnKeys.list(Number(boardId)) });
         },
     });
-
     const queryColumns = useQuery({
         queryKey: columnKeys.list(Number(boardId)),
         queryFn: () => getColumns(Number(workspaceId), Number(boardId)),
     });
 
-    if (queryColumns.data !== prevColumnsData) {
-        setPrevColumnsData(queryColumns.data);
-        setLocalColumns(queryColumns.data ?? null);
-    }
-
+    const { localColumns, activeTask, dndContextProps } = useBoardDnd(queryColumns.data);
     const stateBoard = queryState(queryBoard, {
         emptyMessage: "Board not found",
     });
@@ -76,52 +54,6 @@ export default function BoardsPage() {
     }
     const columnItemClassName = clsx(classes["board-column__item"], classes["board-column__item--empty"]);
 
-    function handleDragEnd(event: DragEndEvent) {
-        setActiveTask(null);
-        const { active, over } = event;
-        if (!over || !localColumns) {
-            setLocalColumns(columnsBeforeDrag.current);
-            return;
-        }
-        if (active.id === over.id) return;
-
-        const taskId = Number(active.id);
-        const target = resolveDropTarget(localColumns, over);
-        if (!target) return;
-
-        const source = findColumnByTaskId(localColumns, taskId);
-        if (!source) return;
-
-        if (source.id === target.column.id) {
-            const oldIndex = source.tasks.findIndex(t => t.id === taskId);
-            const newIndex = Math.min(target.index, source.tasks.length - 1);
-            if (oldIndex === newIndex) return;
-            setLocalColumns(
-                localColumns.map(col =>
-                    col.id === source.id ? { ...col, tasks: moveTaskInColumn(col.tasks, oldIndex, newIndex) } : col,
-                ),
-            );
-            return;
-        }
-
-        setLocalColumns(moveTaskToColumn(localColumns, taskId, target.column.id, target.index));
-    }
-    function handleDragStart(event: DragStartEvent) {
-        const task = localColumns?.flatMap(col => col.tasks).find(t => t.id === event.active.id);
-        columnsBeforeDrag.current = localColumns;
-        setActiveTask(task ?? null);
-    }
-    function handleDragOver(event: DragOverEvent) {
-        const { active, over } = event;
-        if (!over || !localColumns) return;
-
-        const taskId = Number(active.id);
-        const source = findColumnByTaskId(localColumns, taskId);
-        const target = resolveDropTarget(localColumns, over);
-        if (!source || !target || source.id === target.column.id) return;
-
-        setLocalColumns(moveTaskToColumn(localColumns, taskId, target.column.id, target.index));
-    }
     function renderContent() {
         const stateColumn = queryState(queryColumns, {
             emptyMessage: "No columns yet — create your first one",
@@ -133,17 +65,7 @@ export default function BoardsPage() {
         if (!localColumns) return null;
 
         return (
-            <DndContext
-                sensors={sensors}
-                collisionDetection={closestCorners}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                onDragOver={handleDragOver}
-                onDragCancel={() => {
-                    setLocalColumns(columnsBeforeDrag.current);
-                    setActiveTask(null);
-                }}
-            >
+            <DndContext {...dndContextProps}>
                 <ul className={classes["column__list"]}>
                     {localColumns.map(col => {
                         const searchedTasks = filterTasksBySearch(col.tasks, searchQuery);
