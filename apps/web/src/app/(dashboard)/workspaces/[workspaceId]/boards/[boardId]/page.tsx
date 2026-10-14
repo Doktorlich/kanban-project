@@ -3,7 +3,6 @@
 import Column from "@/components/board/Column/Column";
 import TaskCard from "@/components/task/TaskCard/TaskCard";
 import classes from "./page.module.scss";
-import taskClasses from "@/components/task/TaskCard/TaskCard.module.scss";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,7 +22,6 @@ import {
     closestCorners,
     DndContext,
     DragOverEvent,
-    DragOverlay,
     DragEndEvent,
     DragStartEvent,
     PointerSensor,
@@ -32,7 +30,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { findColumnByTaskId, moveTaskInColumn, moveTaskToColumn, resolveDropTarget } from "@/lib/board-dnd";
-import TaskCardView from "@/components/task/TaskCard/TaskCardView";
+import TaskCardOverlay from "@/components/task/TaskCard/TaskCardOverlay";
 
 // interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
@@ -182,15 +180,7 @@ export default function BoardsPage() {
                         );
                     })}
                 </ul>
-                <DragOverlay>
-                    {activeTask ? (
-                        <div className={taskClasses["task-card__item"]}>
-                            <div className={taskClasses["task-card__link"]}>
-                                <TaskCardView task={activeTask} />
-                            </div>
-                        </div>
-                    ) : null}
-                </DragOverlay>
+                <TaskCardOverlay task={activeTask} />
             </DndContext>
         );
     }
