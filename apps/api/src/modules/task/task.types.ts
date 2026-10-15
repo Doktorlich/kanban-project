@@ -1,3 +1,6 @@
+import { taskSchema } from "@myapp/shared-types";
+import { z } from "zod";
+
 export interface CreateTaskDto {
     title: string;
     description?: string;
@@ -9,3 +12,4 @@ export interface UpdateTaskDto {
     position?: number;
     priorityId?: number;
 }
+export type ReorderTasksDto = z.infer<typeof taskSchema.reorderTasksSchema>;

@@ -1,5 +1,5 @@
 import { prisma } from "../../prisma";
-import { CreateTaskDto, UpdateTaskDto } from "./task.types";
+import { CreateTaskDto, ReorderTasksDto, UpdateTaskDto } from "./task.types";
 import { publicUserSelect } from "../../lib/prisma-selects";
 
 export async function createTask(columnId: number, creatorId: number, dto: CreateTaskDto) {
@@ -73,4 +73,47 @@ export async function deleteTask(boardId: number, taskId: number) {
             column: { boardId },
         },
     });
+}
+
+export async function reorderTasks(boardId: number, dto: ReorderTasksDto) {
+    const columnIds = dto.columns.map(c => c.columnId);
+    const taskIds = dto.columns.flatMap(c => c.taskIds);
+
+    if (new Set(columnIds).size !== columnIds.length) {
+        throw new Error("Duplicate column ids");
+    }
+    if (new Set(taskIds).size !== taskIds.length) {
+        throw new Error("Duplicate task ids");
+    }
+
+    const columnCount = await prisma.column.count({
+        where: {
+            id: { in: columnIds },
+            boardId,
+        },
+    });
+    if (columnCount !== columnIds.length) {
+        throw new Error("Column not found");
+    }
+
+    const tasks = await prisma.task.findMany({
+        where: { id: { in: taskIds }, column: { boardId } },
+        select: { id: true, updatedAt: true },
+    });
+    if (tasks.length !== taskIds.length) {
+        throw new Error("Task not found");
+    }
+
+    const updatedAtById = new Map(tasks.map(t => [t.id, t.updatedAt]));
+
+    await prisma.$transaction(
+        dto.columns.flatMap(({ columnId, taskIds: ids }) =>
+            ids.map((id, index) =>
+                prisma.task.update({
+                    where: { id },
+                    data: { columnId, position: index, updatedAt: updatedAtById.get(id) },
+                }),
+            ),
+        ),
+    );
 }
