@@ -13,3 +13,15 @@ export const updateTaskSchema = baseTaskSchema
         position: z.number().int("Position must be an integer").nonnegative("Position must be 0 or greater"),
     })
     .partial();
+
+export const reorderTasksSchema = z.object({
+    columns: z
+        .array(
+            z.object({
+                columnId: z.number().int().positive(),
+                taskIds: z.array(z.number().int().positive()),
+            }),
+        )
+        .min(1)
+        .max(2),
+});
