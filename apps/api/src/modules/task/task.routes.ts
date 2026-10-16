@@ -16,7 +16,13 @@ taskRouter.post(
     taskController.create,
 );
 taskRouter.get("/", requireAuth, requireRole("board", ["owner", "member"]), taskController.getAll);
-
+taskDetailRouter.patch(
+    "/reorder",
+    requireAuth,
+    requireRole("board", ["owner", "member"]),
+    validate(taskSchema.reorderTasksSchema),
+    taskController.reorder,
+);
 taskDetailRouter.get("/:taskId", requireAuth, requireRole("board", ["owner", "member"]), taskController.getOne);
 taskDetailRouter.patch(
     "/:taskId",

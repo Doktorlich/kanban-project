@@ -56,3 +56,13 @@ export async function remove(req: Request, res: Response) {
         res.status(400).json({ message: (error as Error).message });
     }
 }
+
+export async function reorder(req: Request, res: Response) {
+    const { boardId } = req.params;
+    try {
+        await taskService.reorderTasks(Number(boardId), req.body);
+        res.status(204).send();
+    } catch (error) {
+        res.status(400).json({ message: (error as Error).message });
+    }
+}
