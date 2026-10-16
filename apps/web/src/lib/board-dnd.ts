@@ -1,6 +1,7 @@
 import { ColumnWithTasks, Task } from "@myapp/shared-types";
 import type { Over } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
+import { TaskPayloadReorder } from "@/lib/task";
 
 /**
  * Куда пользователь бросил карточку:
@@ -112,4 +113,23 @@ export function moveTaskToColumn(
         // Остальные колонки не трогаем
         return col;
     });
+}
+
+function isSameTaskOrder(beforeIds: number[], afterIds: number[]): boolean {
+    return beforeIds.length === afterIds.length && beforeIds.every((id, i) => id === afterIds[i]);
+}
+
+export function buildReorderPayload(before: ColumnWithTasks[], after: ColumnWithTasks[]): TaskPayloadReorder | null {
+    const changedColumns: TaskPayloadReorder["columns"] = [];
+
+    for (const afterColumn of after) {
+        const beforeColumn = findColumnById(before, afterColumn.id);
+        const beforeIds = beforeColumn?.tasks.map(t => t.id) ?? [];
+        const afterIds = afterColumn.tasks.map(t => t.id);
+
+        if (!isSameTaskOrder(beforeIds, afterIds)) {
+            changedColumns.push({ columnId: afterColumn.id, taskIds: afterIds });
+        }
+    }
+    return changedColumns.length > 0 ? { columns: changedColumns } : null;
 }

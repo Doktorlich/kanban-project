@@ -4,6 +4,7 @@ import { apiFetch } from "@/lib/api";
 
 export type TaskPayloadCreate = z.infer<typeof taskSchema.createTaskSchema>;
 export type TaskPayloadUpdate = z.infer<typeof taskSchema.updateTaskSchema>;
+export type TaskPayloadReorder = z.infer<typeof taskSchema.reorderTasksSchema>;
 
 export const taskKeys = {
     all: ["task"] as const,
@@ -39,5 +40,12 @@ export function updateTask(workspaceId: number, boardId: number, taskId: number,
 export function deleteTask(workspaceId: number, boardId: number, taskId: number) {
     return apiFetch<void>(`/workspaces/${workspaceId}/boards/${boardId}/tasks/${taskId}`, {
         method: "DELETE",
+    });
+}
+
+export function reorderTasks(workspaceId: number, boardId: number, payload: TaskPayloadReorder) {
+    return apiFetch<void>(`/workspaces/${workspaceId}/boards/${boardId}/tasks/reorder`, {
+        method: "PATCH",
+        body: JSON.stringify(payload),
     });
 }
