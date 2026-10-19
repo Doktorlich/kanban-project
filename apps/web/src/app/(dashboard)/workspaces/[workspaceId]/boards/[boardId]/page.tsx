@@ -15,7 +15,7 @@ import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from "@/lib/task-filters";
 import BoardControls from "@/components/board/BoardControls/BoardControls";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, pointerWithin } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import TaskCardOverlay from "@/components/task/TaskCard/TaskCardOverlay";
 import useBoardDnd from "@/hooks/useBoardDnd";
@@ -65,6 +65,7 @@ export default function BoardsPage() {
         if (!localColumns) return null;
 
         return (
+            // collisionDetection={pointerWithin} добавить это если понадобится, для более строго перетаскивания
             <DndContext {...dndContextProps}>
                 <ul className={classes["column__list"]}>
                     {localColumns.map(col => {
