@@ -1,5 +1,7 @@
 // ./index.ts
 import type {} from "./types/express.d.ts";
+import { createServer } from "http";
+import { initSocketServer } from "./socket";
 import express, { type Response, type Request } from "express";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
@@ -32,9 +34,12 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
 
-app.listen(8080, (error: Error | undefined) => {
-    if (error) {
-        console.log("Failed running server");
-    }
+const httpServer = createServer(app);
+initSocketServer(httpServer);
+
+httpServer.on("error", () => {
+    console.log("Failed running server", error.message);
+});
+httpServer.listen(8080, () => {
     console.log("Server is running");
 });
