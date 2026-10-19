@@ -15,12 +15,11 @@ import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { filterTasksByPriority, filterTasksBySearch, sortTasksByUpdatedAt } from "@/lib/task-filters";
 import BoardControls from "@/components/board/BoardControls/BoardControls";
-import { DndContext, pointerWithin } from "@dnd-kit/core";
+import { DndContext } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import TaskCardOverlay from "@/components/task/TaskCard/TaskCardOverlay";
 import useBoardDnd from "@/hooks/useBoardDnd";
 
-// interface BoardsProps {}
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
     const { workspaceId, boardId } = useParams();
