@@ -1,3 +1,5 @@
+import { socket } from "@/lib/socket";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
@@ -7,6 +9,7 @@ export async function apiFetch<T>(path: string, options?: RequestInit): Promise<
         headers: {
             "Content-Type": "application/json",
             ...options?.headers,
+            ...(socket.id ? { "X-Socket-Id": socket.id } : {}),
         },
     });
     if (!response.ok) {

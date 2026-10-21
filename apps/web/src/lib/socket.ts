@@ -1,5 +1,6 @@
 import { io, type Socket } from "socket.io-client";
-import type { ClientToServerEvents, ServerToClientEvents } from "@myapp/shared-types";
+import { ClientToServerEvents, ServerToClientEvents } from "@myapp/shared-types";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_URL) {
