@@ -62,7 +62,11 @@ export async function reorder(req: Request, res: Response) {
     const { boardId } = req.params;
     try {
         await taskService.reorderTasks(Number(boardId), req.body);
-        emitTasksReordered(Number(boardId), req.header("x-socket-id"));
+        try {
+            emitTasksReordered(Number(boardId), req.header("x-socket-id"));
+        } catch (error) {
+            console.error("Failed to emit tasks:reordered", error);
+        }
         res.status(204).send();
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
