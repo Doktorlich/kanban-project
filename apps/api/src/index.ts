@@ -1,9 +1,9 @@
 // ./index.ts
+import "dotenv/config";
 import type {} from "./types/express.d.ts";
 import { createServer } from "http";
 import { initSocketServer } from "./socket";
 import express, { type Response, type Request } from "express";
-import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { authRouter } from "./modules/auth/auth.routes";
@@ -37,7 +37,7 @@ app.get("/", (req: Request, res: Response) => {
 const httpServer = createServer(app);
 initSocketServer(httpServer);
 
-httpServer.on("error", () => {
+httpServer.on("error", error => {
     console.log("Failed running server", error.message);
 });
 httpServer.listen(8080, () => {
