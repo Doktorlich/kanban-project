@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 import type { ClientToServerEvents, ServerToClientEvents } from "@myapp/shared-types";
 import { socketAuthMiddleware } from "./socket-auth";
 import { registerBoardHandlers } from "./board-handlers";
-import { SocketData } from "./types";
+import type { SocketData } from "./types";
 
 let io: Server<ClientToServerEvents, ServerToClientEvents, Record<string, never>, SocketData> | null = null;
 

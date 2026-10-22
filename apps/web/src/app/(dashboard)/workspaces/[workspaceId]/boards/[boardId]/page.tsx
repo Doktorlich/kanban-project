@@ -19,6 +19,7 @@ import { DndContext } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import TaskCardOverlay from "@/components/task/TaskCard/TaskCardOverlay";
 import useBoardDnd from "@/hooks/useBoardDnd";
+import useBoardSocket from "@/hooks/useBoardSocket";
 
 const DEFAULT_COLUMN_TITLE = { title: "NEW COLUMN" };
 export default function BoardsPage() {
@@ -44,7 +45,8 @@ export default function BoardsPage() {
         queryFn: () => getColumns(Number(workspaceId), Number(boardId)),
     });
 
-    const { localColumns, activeTask, dndContextProps } = useBoardDnd(queryColumns.data);
+    const { localColumns, activeTask, dndContextProps, isDragging } = useBoardDnd(queryColumns.data);
+    useBoardSocket(Number(boardId), isDragging);
     const stateBoard = queryState(queryBoard, {
         emptyMessage: "Board not found",
     });

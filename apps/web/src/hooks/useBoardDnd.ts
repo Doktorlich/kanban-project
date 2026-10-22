@@ -104,5 +104,5 @@ export default function useBoardDnd(serverColumns: ColumnWithTasks[] | undefined
         onDragCancel: handleDragCancel,
     };
 
-    return { localColumns, activeTask, dndContextProps };
+    return { localColumns, activeTask, dndContextProps, isDragging: activeTask !== null };
 }
