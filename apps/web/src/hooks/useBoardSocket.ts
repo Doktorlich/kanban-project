@@ -18,7 +18,7 @@ export default function useBoardSocket(boardId: number, isDragging: boolean) {
     }, [isDragging, boardId, queryClient]);
 
     useEffect(() => {
-        function handleTasksReordered() {
+        function handleBoardUpdate() {
             if (isDraggingRef.current) {
                 hasPendingUpdateRef.current = true;
                 return;
@@ -32,10 +32,11 @@ export default function useBoardSocket(boardId: number, isDragging: boolean) {
         }
 
         function handleConnectError(error: Error) {
-            console.warn("Ошибка подключения сокета:", error.message);
+            console.warn("Socket connection error:", error.message);
         }
 
-        socket.on(SOCKET_EVENTS.TASKS_REORDERED, handleTasksReordered);
+        socket.on(SOCKET_EVENTS.TASKS_REORDERED, handleBoardUpdate);
+        socket.on(SOCKET_EVENTS.BOARD_CHANGED, handleBoardUpdate);
         socket.on("connect", joinBoard);
         socket.on("connect_error", handleConnectError);
 
@@ -43,7 +44,8 @@ export default function useBoardSocket(boardId: number, isDragging: boolean) {
         if (socket.connected) joinBoard();
 
         return () => {
-            socket.off(SOCKET_EVENTS.TASKS_REORDERED, handleTasksReordered);
+            socket.off(SOCKET_EVENTS.TASKS_REORDERED, handleBoardUpdate);
+            socket.off(SOCKET_EVENTS.BOARD_CHANGED, handleBoardUpdate);
             socket.off("connect", joinBoard);
             socket.off("connect_error", handleConnectError);
             disconnectSocket();

@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import * as taskService from "./task.service";
-import { emitTasksReordered } from "../../socket/emit";
+import { emitBoardChanged, emitTasksReordered } from "../../socket/emit";
 
 export async function create(req: Request, res: Response) {
-    const { columnId } = req.params;
+    const { boardId, columnId } = req.params;
     const creatorId = req.userId;
 
     if (!creatorId) {
@@ -12,6 +12,7 @@ export async function create(req: Request, res: Response) {
     }
     try {
         const task = await taskService.createTask(Number(columnId), Number(creatorId), req.body);
+        emitBoardChanged(Number(boardId), req.header("x-socket-id"));
         res.status(201).json(task);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
@@ -42,6 +43,7 @@ export async function update(req: Request, res: Response) {
     const { boardId, taskId } = req.params;
     try {
         const task = await taskService.updateTask(Number(boardId), Number(taskId), req.body);
+        emitBoardChanged(Number(boardId), req.header("x-socket-id"));
         res.status(200).json(task);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
@@ -52,6 +54,7 @@ export async function remove(req: Request, res: Response) {
     const { boardId, taskId } = req.params;
     try {
         await taskService.deleteTask(Number(boardId), Number(taskId));
+        emitBoardChanged(Number(boardId), req.header("x-socket-id"));
         res.status(204).send();
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });

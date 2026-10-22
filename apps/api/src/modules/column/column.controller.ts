@@ -1,11 +1,13 @@
 import type { Request, Response } from "express";
 import * as columnService from "./column.service";
+import { emitBoardChanged } from "../../socket/emit";
 
 export async function create(req: Request, res: Response) {
     const { boardId } = req.params;
 
     try {
         const column = await columnService.createColumn(Number(boardId), req.body);
+        emitBoardChanged(Number(boardId), req.header("x-socket-id"));
         res.status(201).json(column);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
@@ -36,6 +38,7 @@ export async function update(req: Request, res: Response) {
 
     try {
         const column = await columnService.updateColumn(Number(boardId), Number(columnId), req.body);
+        emitBoardChanged(Number(boardId), req.header("x-socket-id"));
         res.status(200).json(column);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
@@ -45,6 +48,7 @@ export async function remove(req: Request, res: Response) {
     const { boardId, columnId } = req.params;
     try {
         await columnService.deleteColumn(Number(boardId), Number(columnId));
+        emitBoardChanged(Number(boardId), req.header("x-socket-id"));
         res.status(204).send();
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
