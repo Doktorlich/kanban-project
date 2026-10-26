@@ -3,9 +3,11 @@ import { workspaceSchema as workspaceSchemaImpl } from "./workspace.schema";
 import { boardSchema as boardSchemaImpl } from "./board.schema";
 import { createColumnSchema, updateColumnSchema } from "./column.schema";
 import { createTaskSchema, updateTaskSchema, reorderTasksSchema } from "./task.schema";
+import { createCommentSchema, updateCommentSchema } from "./comment.schema";
 
 export const authSchema = { loginSchema, registerSchema };
 export const workspaceSchema = { workspaceSchema: workspaceSchemaImpl };
 export const boardSchema = { boardSchema: boardSchemaImpl };
 export const columnSchema = { createColumnSchema, updateColumnSchema };
 export const taskSchema = { createTaskSchema, updateTaskSchema, reorderTasksSchema };
+export const commentSchema = { createCommentSchema, updateCommentSchema };
