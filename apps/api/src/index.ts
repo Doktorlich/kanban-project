@@ -12,6 +12,7 @@ import { boardRouter } from "./modules/board/board.routes";
 import { columnRouter } from "./modules/column/column.routes";
 import { taskDetailRouter, taskRouter } from "./modules/task/task.routes";
 import { priorityRouter } from "./modules/priority/priority.routes";
+import { commentRouter } from "./modules/comment/comment.routes";
 const app = express();
 
 app.use(
@@ -31,6 +32,7 @@ app.use("/workspaces/:workspaceId/boards", boardRouter);
 app.use("/workspaces/:workspaceId/boards/:boardId/columns", columnRouter);
 app.use("/workspaces/:workspaceId/boards/:boardId/columns/:columnId/tasks", taskRouter);
 app.use("/workspaces/:workspaceId/boards/:boardId/tasks", taskDetailRouter);
+app.use("/workspaces/:workspaceId/boards/:boardId/tasks/:taskId/comments", commentRouter);
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
