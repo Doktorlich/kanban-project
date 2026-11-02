@@ -15,6 +15,7 @@ import { useRef, useState } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
 import CreateTaskModal from "@/components/task/CreateTaskModal/CreateTaskModal";
+import TaskComments from "@/components/task/TaskComments/TaskComments";
 
 interface TaskDetailsProps {
     isModal: boolean;
@@ -194,24 +195,7 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
                 />
             </div>
             <hr className={classes["task-card__line"]} />
-            <div className={classes["task-card__comments-section"]}>
-                COMMENTS BLOCK
-                {/*<div className={classes["task-card__comments-header"]}>*/}
-                {/*    <span className={classes["task-card__label"]}>Comments </span>*/}
-                {/*    <span className={classes["task-card__comments-count"]}>({task.commentsUser.length}) </span>*/}
-                {/*</div>*/}
-                {/*<ul className={classes["task-card__comments-list"]}>*/}
-                {/*    {task.commentsUser.map(item => (*/}
-                {/*        <CommentUserItem key={item.id} comment={item} />*/}
-                {/*    ))}*/}
-                {/*</ul>*/}
-                {/*<form action="" className={classes["task-card__comment-form"]}>*/}
-                {/*    <Textarea placeholder="Write a comment..." className={classes["task-card__comment-input"]} />*/}
-                {/*    <Button type="submit" className={classes["task-card__submit-btn"]} aria-label={"Send comment"}>*/}
-                {/*        <Send size={20} className={classes["task-card__button-send"]} />*/}
-                {/*    </Button>*/}
-                {/*</form>*/}
-            </div>
+            <TaskComments />
             {/*Можно реализовать данную кнопку:
             при каком то изменении документа появляется блок Применить изменения или Отменить изменения
             */}
