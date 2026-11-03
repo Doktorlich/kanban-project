@@ -22,7 +22,7 @@ export async function getComments(boardId: number, taskId: number, currentUserId
             task: { column: { boardId } },
         },
         include: { user: { select: publicUserSelect } },
-        orderBy: { createdAt: "asc" },
+        orderBy: { createdAt: "desc" },
     });
     return comments.map(comment => ({ ...comment, isAuthor: comment.userId === currentUserId }));
 }
