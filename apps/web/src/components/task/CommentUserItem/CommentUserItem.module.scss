@@ -6,7 +6,25 @@
 
     display: flex;
     gap: 10px;
+}
 
+.three-dots {
+    position: absolute;
+    right: 10px;
+
+    cursor: pointer;
+}
+
+.three-dots__buttons-block {
+    position: absolute;
+    right: 10px;
+
+    background-color: v.$color-accent-light;
+    border-radius: v.$radius-sm;
+}
+
+.three-dots__button {
+    width: 100%;
 }
 
 .task-card__comment-avatar {
@@ -23,16 +41,20 @@
 }
 
 .task-card__comment-body {
-    @include m.flex-direction-col;
-box-sizing: border-box;
+    position: relative;
+    left: 12px;
+
+    box-sizing: border-box;
     gap: 5px;
-    width: 590px;
+    width: 100%;
+    max-width: 590px;
 
     padding: 10px;
 
     background-color: v.$color-bg-primary;
 
     border-radius: v.$radius-base;
+    @include m.flex-direction-col;
 }
 
 .task-card__date-create {
@@ -61,5 +83,4 @@ box-sizing: border-box;
 
     color: v.$color-text-secondary;
     overflow-wrap: break-word;
-
 }
