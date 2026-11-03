@@ -1,5 +1,6 @@
 import type { TaskComment } from "@myapp/shared-types";
 import classes from "./CommentUserItem.module.scss";
+import { formatChatDate } from "@/lib/format-date";
 
 interface CommentUserItemProps {
     comment: TaskComment;
@@ -11,7 +12,7 @@ export default function CommentUserItem({ comment }: CommentUserItemProps) {
     return (
         <div className={classes["task-card__container"]}>
             <li className={classes["task-card__comment-item"]}>
-                <time className={classes["task-card__date-create"]}>{createdAt}</time>
+                <time className={classes["task-card__date-create"]}>{formatChatDate(createdAt)}</time>
                 <span className={classes["task-card__comment-avatar"]}>{user.username.charAt(0).toUpperCase()}</span>
 
                 <div className={classes["task-card__comment-body"]}>
