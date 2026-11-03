@@ -10,18 +10,16 @@ export default function CommentUserItem({ comment }: CommentUserItemProps) {
     const { user, text, createdAt } = comment;
 
     return (
-        <div className={classes["task-card__container"]}>
-            <li className={classes["task-card__comment-item"]}>
-                <time className={classes["task-card__date-create"]}>{formatChatDate(createdAt)}</time>
-                <span className={classes["task-card__comment-avatar"]}>{user.username.charAt(0).toUpperCase()}</span>
-
-                <div className={classes["task-card__comment-body"]}>
-                    <h4 className={classes["task-card__comment-author"]}>
-                        {user.firstName} {user.lastName}
-                    </h4>
-                    <p className={classes["task-card__comment-text"]}>{text}</p>
-                </div>
-            </li>
-        </div>
+        <li className={classes["task-card__comment-item"]}>
+            <time className={classes["task-card__date-create"]}>{formatChatDate(createdAt)}</time>
+            <span className={classes["task-card__comment-avatar"]}>{user.username.charAt(0).toUpperCase()}</span>
+            <div></div>
+            <div className={classes["task-card__comment-body"]}>
+                <h4 className={classes["task-card__comment-author"]}>
+                    {user.firstName} {user.lastName}
+                </h4>
+                <p className={classes["task-card__comment-text"]}>{text}</p>
+            </div>
+        </li>
     );
 }
