@@ -18,6 +18,7 @@
 .three-dots__buttons-block {
     position: absolute;
     right: 10px;
+    z-index: 10;
 
     background-color: v.$color-accent-light;
     border-radius: v.$radius-sm;
@@ -83,4 +84,33 @@
 
     color: v.$color-text-secondary;
     overflow-wrap: break-word;
+}
+
+.task-card__comment-edit {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 60px;
+
+    padding: 8px;
+
+    border: 1px solid v.$color-accent;
+    border-radius: v.$radius-sm;
+
+    font: inherit;
+
+    resize: vertical;
+    outline: none;
+}
+
+.task-card__comment-edit-actions {
+    display: flex;
+    gap: 8px;
+
+    margin-top: 8px;
+}
+
+.task-card__comment-edit-error {
+    margin: 4px 0 0;
+
+    color: v.$color-danger;
 }
