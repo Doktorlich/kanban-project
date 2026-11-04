@@ -17,6 +17,8 @@ export default function CommentEditForm({ comment, onClose }: CommentEditFormPro
     const queryClient = useQueryClient();
     const [draft, setDraft] = useState(comment.text);
 
+    const canSave = draft.trim().length > 0 && draft.trim() !== comment.text;
+
     const updateCommentMutation = useMutation({
         mutationFn: (text: string) =>
             updateComment(Number(workspaceId), Number(boardId), Number(taskId), comment.id, { text }),
@@ -61,7 +63,11 @@ export default function CommentEditForm({ comment, onClose }: CommentEditFormPro
                 autoFocus
             />
             <div className={classes["task-card__comment-edit-actions"]}>
-                <Button type="button" onClick={handleSaveComment} disabled={updateCommentMutation.isPending}>
+                <Button
+                    type="button"
+                    onClick={handleSaveComment}
+                    disabled={!canSave || updateCommentMutation.isPending}
+                >
                     Save
                 </Button>
                 <Button
