@@ -5,9 +5,12 @@ import { commentKeys, getComments } from "@/lib/comment";
 import queryState from "@/lib/query-state";
 import CommentUserItem from "@/components/task/CommentUserItem/CommentUserItem";
 import CommentForm from "@/components/task/CommentForm/CommentForm";
+import { useState } from "react";
 
 export default function TaskComments() {
     const { workspaceId, boardId, taskId } = useParams();
+    const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+
     const queryComments = useQuery({
         queryKey: commentKeys.list(Number(taskId)),
         queryFn: () => getComments(Number(workspaceId), Number(boardId), Number(taskId)),
@@ -26,7 +29,13 @@ export default function TaskComments() {
             </div>
             <ul className={classes["task-card__comments-list"]}>
                 {comments.map(item => (
-                    <CommentUserItem key={item.id} comment={item} />
+                    <CommentUserItem
+                        key={item.id}
+                        comment={item}
+                        isEditing={editingCommentId === item.id}
+                        onStartEdit={() => setEditingCommentId(item.id)}
+                        onStopEdit={() => setEditingCommentId(null)}
+                    />
                 ))}
             </ul>
             <CommentForm />

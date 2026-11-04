@@ -13,15 +13,17 @@ import CommentEditForm from "@/components/task/CommentEditForm/CommentEditForm";
 
 interface CommentUserItemProps {
     comment: TaskComment;
+    isEditing: boolean;
+    onStartEdit: () => void;
+    onStopEdit: () => void;
 }
 
-export default function CommentUserItem({ comment }: CommentUserItemProps) {
+export default function CommentUserItem({ comment, isEditing, onStartEdit, onStopEdit }: CommentUserItemProps) {
     const { workspaceId, boardId, taskId } = useParams();
     const queryClient = useQueryClient();
 
     const [isVisibleMenu, setIsVisibleMenu] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
 
     const ref = useRef<HTMLDivElement>(null);
     useClickOutside(ref, () => setIsVisibleMenu(false));
@@ -42,7 +44,7 @@ export default function CommentUserItem({ comment }: CommentUserItemProps) {
     }
     function handleEdit() {
         setIsVisibleMenu(false);
-        setIsEditing(true);
+        onStartEdit();
     }
     return (
         <li className={classes["task-card__comment-item"]}>
@@ -94,7 +96,7 @@ export default function CommentUserItem({ comment }: CommentUserItemProps) {
                     {user.firstName} {user.lastName}
                 </h4>
                 {isEditing ? (
-                    <CommentEditForm comment={comment} onClose={() => setIsEditing(false)} />
+                    <CommentEditForm comment={comment} onClose={onStopEdit} />
                 ) : (
                     <p className={classes["task-card__comment-text"]}>
                         {text}
