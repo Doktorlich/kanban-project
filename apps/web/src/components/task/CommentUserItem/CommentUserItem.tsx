@@ -59,12 +59,12 @@ export default function CommentUserItem({ comment, isEditing, onStartEdit, onSto
                 />
             )}
 
-            <time dateTime={createdAt} className={classes["task-card__date-create"]}>
-                {formatChatDate(createdAt)}
-            </time>
             <span className={classes["task-card__comment-avatar"]}>{user.username.charAt(0).toUpperCase()}</span>
 
             <div className={classes["task-card__comment-body"]}>
+                <time dateTime={createdAt} className={classes["task-card__date-create"]}>
+                    {formatChatDate(createdAt)}
+                </time>
                 {isAuthor && !isEditing && (
                     <div className={classes["three-dots"]} ref={ref}>
                         <MoreHorizontal

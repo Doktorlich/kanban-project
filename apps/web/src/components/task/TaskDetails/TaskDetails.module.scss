@@ -287,9 +287,9 @@
 .task-card__comment-input {
     box-sizing: border-box;
     width: 100%;
-
-    max-width: 600px;
     min-height: 40px;
+
+   margin-right: 15px;
 
     border: 2px solid v.$color-text-muted;
 
