@@ -1,3 +1,5 @@
+const EDITED_THRESHOLD_MS = 1000;
+
 export function formatChatDate(iso: string, now: Date = new Date()): string {
     const date = new Date(iso);
     const time = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
@@ -15,4 +17,8 @@ export function formatChatDate(iso: string, now: Date = new Date()): string {
         ...(sameYear ? {} : { year: "numeric" }),
     });
     return `${day}, ${time}`;
+}
+
+export function isEdited(createdAt: string, updatedAt: string): boolean {
+    return new Date(updatedAt).getTime() - new Date(createdAt).getTime() > EDITED_THRESHOLD_MS;
 }

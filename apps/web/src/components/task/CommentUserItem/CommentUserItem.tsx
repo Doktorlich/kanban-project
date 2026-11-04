@@ -1,6 +1,6 @@
 import type { TaskComment } from "@myapp/shared-types";
 import classes from "./CommentUserItem.module.scss";
-import { formatChatDate } from "@/lib/format-date";
+import { formatChatDate, isEdited } from "@/lib/format-date";
 import { MoreHorizontal } from "lucide-react";
 import { useRef, useState } from "react";
 import Button from "@/components/ui/Button/Button";
@@ -26,7 +26,7 @@ export default function CommentUserItem({ comment }: CommentUserItemProps) {
     const ref = useRef<HTMLDivElement>(null);
     useClickOutside(ref, () => setIsVisibleMenu(false));
 
-    const { user, text, createdAt, isAuthor } = comment;
+    const { user, text, createdAt, updatedAt, isAuthor } = comment;
 
     const deleteCommentMutation = useMutation({
         mutationFn: () => deleteComment(Number(workspaceId), Number(boardId), Number(taskId), comment.id),
@@ -96,7 +96,17 @@ export default function CommentUserItem({ comment }: CommentUserItemProps) {
                 {isEditing ? (
                     <CommentEditForm comment={comment} onClose={() => setIsEditing(false)} />
                 ) : (
-                    <p className={classes["task-card__comment-text"]}>{text}</p>
+                    <p className={classes["task-card__comment-text"]}>
+                        {text}
+                        {isEdited(createdAt, updatedAt) && (
+                            <span
+                                className={classes["task-card__comment-edited"]}
+                                title={`Edited ${formatChatDate(updatedAt)}`}
+                            >
+                                (edited)
+                            </span>
+                        )}
+                    </p>
                 )}
             </div>
         </li>

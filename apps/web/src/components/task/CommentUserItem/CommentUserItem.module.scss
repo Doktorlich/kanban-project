@@ -114,3 +114,11 @@
 
     color: v.$color-danger;
 }
+
+.task-card__comment-edited {
+    margin-left: 6px;
+
+    font-size: v.$font-size-sm;
+
+    color: v.$color-text-muted;
+}
