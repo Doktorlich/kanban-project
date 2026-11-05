@@ -3,3 +3,4 @@ export type { Board } from "./board";
 export type { Column, ColumnWithTasks } from "./column";
 export type { Task, Owner, Priority } from "./task";
 export type { TaskComment } from "./comment";
+export type { TaskAttachment } from "./attachment";
