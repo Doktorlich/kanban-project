@@ -16,6 +16,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import ConfirmModal from "@/components/ui/ConfirmModal/ConfirmModal";
 import CreateTaskModal from "@/components/task/CreateTaskModal/CreateTaskModal";
 import TaskComments from "@/components/task/TaskComments/TaskComments";
+import TaskAttachments from "@/components/task/TaskAttachments/TaskAttachments";
 
 interface TaskDetailsProps {
     isModal: boolean;
@@ -194,6 +195,7 @@ export default function TaskDetails({ isModal }: TaskDetailsProps) {
                     readOnly
                 />
             </div>
+            <TaskAttachments />
             <hr className={classes["task-card__line"]} />
             <TaskComments />
             {/*Можно реализовать данную кнопку:

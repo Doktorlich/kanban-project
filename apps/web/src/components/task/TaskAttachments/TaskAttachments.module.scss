@@ -1,0 +1,112 @@
+@use "../../../styles/variables" as v;
+
+.task-attachments {
+  margin-bottom: 15px;
+}
+
+.task-attachments__header {
+  margin-bottom: 10px;
+
+  color: v.$color-text-muted;
+}
+
+.task-attachments__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin: 0 0 10px;
+  padding: 0;
+
+  list-style: none;
+}
+
+.attachment-item {
+  box-sizing: border-box;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  max-width: 600px;
+
+  padding: 8px;
+
+  background-color: v.$color-bg-primary;
+
+  border-radius: v.$radius-base;
+}
+
+.attachment-item__preview {
+  overflow: hidden;
+
+  flex-shrink: 0;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: v.$radius-sm;
+}
+
+.attachment-item__image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.attachment-item__icon {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  color: v.$color-accent-dark;
+}
+
+.attachment-item__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.attachment-item__name {
+  overflow: hidden;
+
+  color: v.$color-text-primary;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+	color: v.$color-accent-dark;
+  }
+}
+
+.attachment-item__meta {
+  font-size: v.$font-size-sm;
+
+  color: v.$color-text-muted;
+}
+
+.attachment-item__delete {
+  flex-shrink: 0;
+}
+
+.attachment-upload {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.attachment-upload__error {
+  margin: 0;
+
+  color: v.$color-danger;
+}
