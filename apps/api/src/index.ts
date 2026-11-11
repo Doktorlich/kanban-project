@@ -14,6 +14,8 @@ import { taskDetailRouter, taskRouter } from "./modules/task/task.routes";
 import { priorityRouter } from "./modules/priority/priority.routes";
 import { commentRouter } from "./modules/comment/comment.routes";
 import { attachmentRouter } from "./modules/attachment/attachment.routes";
+import { removeOrphanUploads } from "./modules/attachment/attachment.service";
+
 const app = express();
 
 app.use(
@@ -45,6 +47,8 @@ initSocketServer(httpServer);
 httpServer.on("error", error => {
     console.log("Failed running server", error.message);
 });
+
 httpServer.listen(8080, () => {
     console.log("Server is running");
+    removeOrphanUploads().catch(error => console.error("Failed to clean uploads", error));
 });

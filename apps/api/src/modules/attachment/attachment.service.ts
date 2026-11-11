@@ -1,7 +1,9 @@
 import path from "node:path";
+import fs from "node:fs";
 import type { TaskAttachment } from "@myapp/shared-types";
 import { prisma } from "../../prisma";
 import { getUploadPath, removeUploadedFile } from "../../lib/upload";
+import { UPLOAD_DIR } from "../../lib/upload";
 
 const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".webp", ".gif"]);
 type AttachmentRow = { id: number; fileName: string; fileUrl: string; fileSize: number; createdAt: Date };
@@ -83,4 +85,16 @@ export async function deleteAttachment(boardId: number, taskId: number, attachme
 
     await prisma.attachment.delete({ where: { id: attachmentId } });
     await removeUploadedFile(existing.fileUrl);
+}
+// Удаляет файлы из папки uploads, на которые не ссылается ни одна запись Attachment.
+export async function removeOrphanUploads(): Promise<void> {
+    const [filesOnDisk, rows] = await Promise.all([
+        fs.promises.readdir(UPLOAD_DIR),
+        prisma.attachment.findMany({ select: { fileUrl: true } }),
+    ]);
+
+    const knownFiles = new Set(rows.map(row => row.fileUrl));
+    const orphans = filesOnDisk.filter(name => !knownFiles.has(name));
+
+    await Promise.all(orphans.map(name => removeUploadedFile(name)));
 }
