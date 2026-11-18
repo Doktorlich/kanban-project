@@ -3,6 +3,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { SOCKET_EVENTS } from "@myapp/shared-types";
 import { columnKeys } from "@/lib/column";
 import { connectSocket, disconnectSocket, socket } from "@/lib/socket";
+import { taskKeys } from "@/lib/task";
+import { commentKeys } from "@/lib/comment";
+import { attachmentKeys } from "@/lib/attachment";
 
 export default function useBoardSocket(boardId: number, isDragging: boolean) {
     const queryClient = useQueryClient();
@@ -14,6 +17,9 @@ export default function useBoardSocket(boardId: number, isDragging: boolean) {
         if (!isDragging && hasPendingUpdateRef.current) {
             hasPendingUpdateRef.current = false;
             queryClient.invalidateQueries({ queryKey: columnKeys.list(boardId) });
+            queryClient.invalidateQueries({ queryKey: taskKeys.all });
+            queryClient.invalidateQueries({ queryKey: commentKeys.all });
+            queryClient.invalidateQueries({ queryKey: attachmentKeys.all });
         }
     }, [isDragging, boardId, queryClient]);
 
@@ -24,6 +30,9 @@ export default function useBoardSocket(boardId: number, isDragging: boolean) {
                 return;
             }
             queryClient.invalidateQueries({ queryKey: columnKeys.list(boardId) });
+            queryClient.invalidateQueries({ queryKey: taskKeys.all });
+            queryClient.invalidateQueries({ queryKey: commentKeys.all });
+            queryClient.invalidateQueries({ queryKey: attachmentKeys.all });
         }
         function joinBoard() {
             socket.emit(SOCKET_EVENTS.JOIN_BOARD, boardId, result => {
