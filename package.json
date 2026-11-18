@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "npm run test --workspaces --if-present",
         "server": "npm run dev --workspace=apps/api",
         "client": "npm run dev --workspace=apps/web",
         "sort-css": "npx stylelint \"apps/web/src/**/*.scss\" --fix"
